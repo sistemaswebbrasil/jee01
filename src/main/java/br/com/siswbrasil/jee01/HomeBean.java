@@ -7,7 +7,7 @@ import javax.inject.Named;
 @RequestScoped
 public class HomeBean {
 
-	private String initialMessage = "Hello World";
+	private String initialMessage = "Hello World!";
 
 	public String getInitialMessage() {
 		return initialMessage;
