@@ -25,11 +25,17 @@
 			<artifactId>javaee-api</artifactId>
 			<version>8.0</version>
 			<scope>provided</scope>
+		</dependency>		
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.12</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-	
-    <build>
-        <finalName>jee01</finalName>
-    </build>	
+
+	<build>
+		<finalName>jee01</finalName>
+	</build>
 
 </project>
