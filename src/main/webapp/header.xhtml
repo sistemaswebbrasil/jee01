@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<h:body>
+	<h1 style="text-align: left; float: left;">
+		<h:outputText
+			value="#{msg['project.name']} #{msg['project.description']}" />
+	</h1>
+
+	<div style="text-align: right; float: right; display: inline;">
+		<h:form>
+			<p:growl showDetail="true" id="messages" sticky="true" />
+			<h:panelGrid columns="2">
+				<p:selectOneMenu value="#{language.localeCode}" onchange="submit()"
+					valueChangeListener="#{language.countryLocaleCodeChanged}">
+					<f:selectItems value="#{language.countriesInMap}" />
+				</p:selectOneMenu>
+			</h:panelGrid>
+		</h:form>
+	</div>
+	<div style="clear: both;" />	
+</h:body>
+</html>

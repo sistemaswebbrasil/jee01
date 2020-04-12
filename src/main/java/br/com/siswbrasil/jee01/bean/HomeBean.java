@@ -1,4 +1,4 @@
-package br.com.siswbrasil.jee01;
+package br.com.siswbrasil.jee01.bean;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
