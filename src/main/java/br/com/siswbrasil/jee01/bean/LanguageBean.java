@@ -22,6 +22,9 @@ import lombok.Setter;
 public class LanguageBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	private Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+
 	private String localeCode;
 
 	private static Map<String, Object> countries;
@@ -36,19 +39,15 @@ public class LanguageBean implements Serializable {
 		return countries;
 	}
 
-	// value change event listener
 	public void countryLocaleCodeChanged(ValueChangeEvent e) {
 		String newLocaleValue = e.getNewValue().toString();
-		// loop country map to compare the locale code
-		for (Map.Entry<String, Object> entry : countries.entrySet()) {
+		changeLanguage(newLocaleValue);
+	}
 
-			if (entry.getValue().toString().equals(newLocaleValue)) {
-
-				FacesContext.getCurrentInstance().getViewRoot().setLocale((Locale) entry.getValue());
-				addMessage(MessageUtil.getMsg("success"), MessageUtil.getMsg(e.getNewValue().toString()));
-
-			}
-		}
+	public void changeLanguage(String language) {
+		locale = new Locale(language);
+		FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale(language));
+		addMessage(MessageUtil.getMsg("success"), MessageUtil.getMsg(language));
 	}
 
 	public void addMessage(String summary, String detail) {

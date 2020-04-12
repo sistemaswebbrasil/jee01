@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="../template/master-page.xhtml">
+	<ui:define name="content">
+
+
+		<h:body>
+			<center>
+				<h2>
+					<h:outputText value="Create user" />
+				</h2>
+			</center>
+			<h:form id="userBeanForm" styleClass="form-horizontal">
+				<div class="form-group">
+					<h:outputLabel for="id" styleClass="control-label col-sm-4">Id:</h:outputLabel>
+					<div class="col-sm-4">
+						<h:outputText value="Auto Selected By The System :)"
+							styleClass="text text-success" />
+					</div>
+				</div>
+				<div class="form-group">
+					<h:outputLabel for="name" styleClass="control-label col-sm-4">Nome:</h:outputLabel>
+					<div class="col-sm-4">
+
+						<p:inputText id="name" value="#{userBean.user}" />
+
+
+					</div>
+					<h:message for="school-name" styleClass="text text-danger" />
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 col-sm-27" />
+					<div class="col-sm-4">
+						<div class="col-sm-2">
+
+
+							<h:commandButton value="Salvar" update="display"
+								action="#{userBean.save}" process="@form" type="submmit"
+								immediate="true" />
+
+
+
+						</div>
+						<div class="col-sm-1" />
+						<div class="col-sm-updated">
+							<h:outputLink value="schoolsList.xhtml">View School Record List</h:outputLink>
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</h:body>
+	</ui:define>
+</ui:composition>
+</html>

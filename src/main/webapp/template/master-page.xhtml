@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><ui:insert name="title">JEE01 - Estudos</ui:insert></title>
@@ -18,7 +18,7 @@
 
 <h:body>
 	<div id="container">
-		
+		<f:view locale="#{language.locale}" />
 		<div id="header">
 			<ui:insert name="header">
 				<ui:include src="header.xhtml" />
@@ -32,7 +32,6 @@
 		</div>
 		<p />
 
-
 		<div id="content">
 			<ui:insert name="content" />
 		</div>
@@ -40,7 +39,7 @@
 	<div id="footer">
 		<ui:insert name="footer">
 			<ui:include src="footer.xhtml" />
-		</ui:insert> 
+		</ui:insert>
 	</div>
 </h:body>
 </html>
