@@ -1,21 +1,27 @@
 package br.com.siswbrasil.jee01.model.repository;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import br.com.siswbrasil.jee01.model.User;
 
 public class UserRepositoryImpl implements UserRepository {
 
-	private EntityManager entityManager;
+	private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+	private EntityManager entityManager = entityManagerFactory.createEntityManager();
 
 	@Override
 	public void create(User entity) {
-		executeInsideTransaction(entityManager -> entityManager.persist(entity));
 
+		entityManager.getTransaction().begin();
+		entityManager.persist(entity);
+		entityManager.getTransaction().commit();
+
+		entityManager.close();
+		entityManagerFactory.close();
 	}
 
 	@Override
@@ -41,17 +47,4 @@ public class UserRepositoryImpl implements UserRepository {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	private void executeInsideTransaction(Consumer<EntityManager> action) {
-		EntityTransaction tx = entityManager.getTransaction();
-		try {
-			tx.begin();
-			action.accept(entityManager);
-			tx.commit();
-		} catch (RuntimeException e) {
-			tx.rollback();
-			throw e;
-		}
-	}
-
 }
