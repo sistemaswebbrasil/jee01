@@ -12,8 +12,8 @@ public interface UserRepository {
 
 	public User findById(Long id);
 
-	public void delete(User entity);
-
 	public List<User> findAll();
+
+	public void delete(Long id);
 
 }

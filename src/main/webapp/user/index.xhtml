@@ -8,34 +8,48 @@
 	<ui:define name="content">
 
 
-		<h:form id="createStudentForm" class="form-horizontal">
-			<div class="form-group">
-				<div class="col-sm-4"></div>
-				<div class="col-sm-4">
-					<h2>Create User</h2>
-				</div>
-			</div>
-			<hr />
-			<div class="form-group">
-				<h:outputLabel for="username" class="control-label col-sm-4">User Name:</h:outputLabel>
-				<div class="col-sm-4">
-					<h:inputText id="name-id" value="#{userBean.name}"
-						class="form-control" validatorMessage="User name is required">
-						<f:validateRequired />
-					</h:inputText>
-				</div>
-			</div>
+		<h:body>
+			<center>
+				<h2>
+					<h:outputText value="Usuários" />
+				</h2>
+			</center>
+			<h:form id="userForm">
+				<h:dataTable id="userTable" binding="#{table}"
+					value="#{userBean.listAll()}" var="user"
+					class="table table-striped table-hover table-bordered tableUpdated">
+					<h:column>
+						<f:facet name="header">Id</f:facet>
+						<h:outputText value="#{user.id}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Student Name</f:facet>
+						<h:outputText value="#{user.name}" />
+					</h:column>
 
-			<div class="form-group">
-				<div class="col-sm-4"></div>
-				<div class="col-sm-4">
-					<div class="col-sm-2">
-						<h:commandButton value="Save" action="#{userBean.save}"
-							class="btn btn-success btnWidth" />
-					</div>
-				</div>
-			</div>
-		</h:form>
+
+					<h:column>
+						<f:facet name="header">Update</f:facet>
+						<h:commandButton
+							action="#{userBean.edit(user.id)}"
+							value="Update" class="btn btn-primary" />
+					</h:column>
+										
+					<h:column>
+						<f:facet name="header">Delete</f:facet>
+						<h:commandButton
+							action="#{userBean.delete(user.id)}"
+							value="Delete" class="btn btn-danger" />
+					</h:column>
+
+
+				</h:dataTable>
+				<center>
+					<h:commandButton action="form.xhtml?faces-redirect=true"
+						value="Create New User" class="btn btn-success btnSpace" />
+				</center>
+			</h:form>
+		</h:body>
 
 	</ui:define>
 </ui:composition>
