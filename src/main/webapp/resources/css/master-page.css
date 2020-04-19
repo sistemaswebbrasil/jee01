@@ -19,3 +19,8 @@ body {
 #footer {
 	padding: 20px;
 }
+
+.ui-panelgrid-content {
+	align-items: left;
+	border-style: none;
+}

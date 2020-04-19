@@ -13,8 +13,7 @@
 	</h1>
 
 	<div style="text-align: right; float: right; display: inline;">
-		<h:form>
-			<p:growl showDetail="true" id="messages" sticky="true" />
+		<h:form>			
 			<h:panelGrid columns="2">
 				<p:selectOneMenu value="#{language.localeCode}" onchange="submit()"
 					valueChangeListener="#{language.countryLocaleCodeChanged}">

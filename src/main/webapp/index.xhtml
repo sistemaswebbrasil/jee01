@@ -1,81 +1,30 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="template/master-page.xhtml">
 	<ui:define name="content">
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="box-row">
-					<h:form>
-
-						<div class="row">
-							<div
-								class="col-xs-12
-                col-sm-8
-                col-md-6
-                col-lg-4">
-								<p:panel id="basic" header="Basic 1" footer="Movie Details"
-									style="margin-bottom:20px">
-									<h:panelGrid columns="2" cellpadding="10">
-
-										<h:outputText
-											value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
-                His beloved son Michael has just come home from the war, but does not intend to become part of his father's business.
-                Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,
-                but given to ruthless violence whenever anything stands against the good of the family." />
-									</h:panelGrid>
-								</p:panel>
-
-							</div>
-							<div
-								class="col-xs-12
-                col-sm-8
-                col-md-6
-                col-lg-4">
 
 
-								<p:panel id="basic2" header="Basic 2" footer="Movie Details"
-									style="margin-bottom:20px">
-									<h:panelGrid columns="2" cellpadding="10">
+		<div class="p-grid">
+			<div class="p-col-12 p-md-6 p-lg-3">
+				<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+				<p:panel id="toggleable" header="#{msg.list_user}" toggleable="true" toggleSpeed="500" closeSpeed="500"
+					widgetVar="panel" style="margin-bottom:20px">					
+					<h:panelGrid columns="2" cellpadding="10">
+						<p:graphicImage name="img/user-icon.png" />
+						<p:menu>
+							<p:menuitem value="Listar" url="user" icon="pi pi-home" />
+							<p:menuitem value="Criar" url="user/form.xhtml" icon="pi pi-home" />
+						</p:menu>
+					</h:panelGrid>
 
-										<h:outputText
-											value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
-                His beloved son Michael has just come home from the war, but does not intend to become part of his father's business.
-                Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,
-                but given to ruthless violence whenever anything stands against the good of the family." />
-									</h:panelGrid>
-								</p:panel>
-
-							</div>
-							<div
-								class="col-xs-12
-                col-sm-8
-                col-md-6
-                col-lg-4">
-
-								<p:panel id="basic3" header="Basic 3" footer="Movie Details"
-									style="margin-bottom:20px">
-									<h:panelGrid columns="2" cellpadding="10">
-
-										<h:outputText
-											value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
-                His beloved son Michael has just come home from the war, but does not intend to become part of his father's business.
-                Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,
-                but given to ruthless violence whenever anything stands against the good of the family." />
-									</h:panelGrid>
-								</p:panel>
-
-							</div>
-						</div>
-
-
-					</h:form>
-				</div>
+				</p:panel>
 			</div>
+
 		</div>
+
+
+
 	</ui:define>
 </ui:composition>
 </html>

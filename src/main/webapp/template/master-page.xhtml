@@ -1,17 +1,14 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><ui:insert name="title">JEE01 - Estudos</ui:insert></title>
-	<h:outputStylesheet name="primeicons/primeicons.css"
-		library="primefaces" />
-	<link rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css"
+	<h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css"
 		type="text/css" />
+	<h:outputStylesheet name="css/primeflex/primeflex.css" />
 
 	<h:outputStylesheet name="master-page.css" library="css" />
 </h:head>
@@ -19,6 +16,7 @@
 <h:body>
 	<div id="container">
 		<f:view locale="#{language.locale}" />
+		<p:growl id="growl" showDetail="true" sticky="true" />  
 		<div id="header">
 			<ui:insert name="header">
 				<ui:include src="header.xhtml" />
@@ -33,6 +31,9 @@
 		<p />
 
 		<div id="content">
+			<p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
 			<ui:insert name="content" />
 		</div>
 	</div>

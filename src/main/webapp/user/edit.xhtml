@@ -1,45 +1,44 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
 	<ui:define name="content">
-		<h:form id="createStudentForm" class="form-horizontal">
-			<div class="form-group">
-				<div class="col-sm-4"></div>
-				<div class="col-sm-4">
-					<h2>Edit User</h2>
+
+
+
+		<h:form>
+		
+			<div class="p-grid">
+				<div class="p-col p-col-align-start">
+					<p:panel id="panel" header="#{msg.edit_user}">
+
+						
+						
+						
+						
+						<p:panelGrid columns="4" layout="flex"
+							columnClasses="p-col-6 p-md-6 p-lg-1,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-1,p-col-12 p-md-6 p-lg-7"
+							contentStyleClass="p-align-baseline ui-fluid">
+
+							<p:outputLabel for="id" value="#{msg.id}" />
+							<p:inputText id="id" value="#{editRecordObj.id}" disabled="true" size="5"/>
+
+							<p:outputLabel for="name" value="#{msg.name}" />
+							<p:inputText id="name" value="#{editRecordObj.name}" required="true" 
+								requiredMessage="#{msg.error_required_user_name}" />
+
+						</p:panelGrid>
+					</p:panel>
 				</div>
 			</div>
-			<hr />
-			<div class="form-group">
-				<h:outputLabel for="id" class="control-label col-sm-4">Id:</h:outputLabel>
-				<div class="col-sm-4">
-					<h:inputText id="id" value="#{editRecordObj.id}" disabled="true"
-						class="form-control" />
-				</div>
-			</div>
-			<div class="form-group">
-				<h:outputLabel for="name" class="control-label col-sm-4">Name:</h:outputLabel>
-				<div class="col-sm-4">
-					<h:inputText id="name" value="#{editRecordObj.name}"
-						class="form-control" validatorMessage="Name is required">
-						<f:validateRequired />
-					</h:inputText>
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-sm-4"></div>
-				<div class="col-sm-4">
-					<div class="col-sm-2">
-						<h:commandButton value="Update"
-							action="#{userBean.update(editRecordObj)}"
-							class="btn btn-primary updateBtnStyle" />
-					</div>
-				</div>
-			</div>
+
+			<p:toolbar>
+				<f:facet name="right">
+					<p:linkButton outcome="index" value="#{msg.list_user}" action="index.xhtml?faces-redirect=true" icon="pi pi-search"/>
+					<p:commandButton value="#{msg.save}" action="#{userBean.update(editRecordObj)}" update="panel" icon="pi pi-save" />					
+				</f:facet>
+			</p:toolbar>
+
 		</h:form>
 	</ui:define>
 </ui:composition>
