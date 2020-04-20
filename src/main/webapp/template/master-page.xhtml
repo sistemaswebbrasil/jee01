@@ -11,12 +11,13 @@
 	<h:outputStylesheet name="css/primeflex/primeflex.css" />
 
 	<h:outputStylesheet name="master-page.css" library="css" />
+	<h:outputStylesheet library="primefaces-#{themeBean.theme}" name="theme.css" />
 </h:head>
 
 <h:body>
 	<div id="container">
 		<f:view locale="#{language.locale}" />
-		<p:growl id="growl" showDetail="true" sticky="true" />  
+		<p:growl id="growl" showDetail="true" sticky="true" />
 		<div id="header">
 			<ui:insert name="header">
 				<ui:include src="header.xhtml" />
