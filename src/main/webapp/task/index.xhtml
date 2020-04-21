@@ -1,35 +1,32 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
-<ui:composition template="../template/master-page.xhtml">
+<ui:composition template="../template/master-page.xhtml">  
 	<ui:define name="content">
 		<h:form>
 
 			<div class="p-grid">
 				<div class="p-col p-col-align-start">
-					<p:panel id="panel" header="#{msg.list_user}">
+					<p:panel id="panel" header="#{bundle.ListTaskTitle}">
 
-						<p:dataTable var="item" value="#{userBean.listAll()}"  reflow="true">
-						
-							<p:column style="width:33px;text-align: center">
-								<p:commandButton action="#{userBean.edit(item.id)}" icon="pi pi-search" />
-							</p:column>						
-
-							 <p:column style="width:33px;text-align: center">
-								<p:commandButton action="#{userBean.delete(item.id)}" icon="pi pi-trash" />
-							</p:column>						
+						<p:dataTable var="item" value="#{taskBean.listAll()}"  reflow="true">					
 						
 							<p:column headerText="#{msg.id}" style="width:33px;text-align: center">
 								<h:outputText value="#{item.id}" />
 							</p:column>
 
 							<p:column headerText="#{msg.name}">
-								<h:outputText value="#{item.name}" />
+								<h:outputText value="#{item.title}" />
 							</p:column>
 							
 							<p:column headerText="#{msg.email}">
-								<h:outputText value="#{item.email}" />
-							</p:column>							
+								<h:outputText value="#{item.description}" />
+							</p:column>
+							
+							<p:column style="width:64px;text-align: center">								
+									<p:commandButton action="#{taskBean.edit(item.id)}" icon="pi pi-search" />
+									<p:commandButton action="#{userBean.delete(item.id)}" icon="pi pi-trash" />
+							</p:column>												
 							
 						</p:dataTable>
 					</p:panel>
@@ -38,7 +35,7 @@
 
 			<p:toolbar>
 				<f:facet name="right">
-					<p:commandButton value="#{msg.create_user}" action="form.xhtml?faces-redirect=true" icon="pi pi-save" />					
+					<p:commandButton value="#{bundle.ListTaskCreateLink}" action="form.xhtml?faces-redirect=true" icon="pi pi-save" />					
 				</f:facet>
 			</p:toolbar>
 

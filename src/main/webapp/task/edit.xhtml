@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="../template/master-page.xhtml">
+	<ui:define name="content">
+		<h:form>
+
+			<div class="p-grid">
+				<div class="p-col p-col-align-start">
+					<p:panel id="panel" header="#{bundle.EditTaskTitle}">
+					
+						<p:panelGrid columns="4" layout="flex"
+							columnClasses="
+							p-col-12 p-md-6 p-lg-1,
+							p-col-12 p-md-6 p-lg-2,							
+							p-col-12 p-md-6 p-lg-1,
+							p-col-12 p-md-6 p-lg-8"
+																				
+							contentStyleClass="p-align-baseline ui-fluid">
+							
+							<p:outputLabel value="#{bundle.EditTaskLabel_id}" for="id" />
+							<p:inputText id="id" value="#{taskBean.selected.id}" title="#{bundle.EditTaskTitle_id}" required="true" requiredMessage="#{bundle.EditTaskRequiredMessage_id}" disabled="true" />
+
+							<p:outputLabel value="#{bundle.EditTaskLabel_title}" for="title" />
+							<p:inputText id="title" value="#{taskBean.selected.title}" title="#{bundle.EditTaskTitle_title}" />	    							
+
+						</p:panelGrid>
+						
+						<p/>
+						
+						<p:panelGrid columns="2" layout="flex"
+							columnClasses="
+							p-col-12 p-md-12 p-lg-1,
+							p-col-12 p-md-12 p-lg-11"							
+																				
+							contentStyleClass="p-align-baseline ui-fluid">
+
+							<p:outputLabel value="#{bundle.EditTaskLabel_description}" for="description" />
+							<p:inputTextarea id="description" rows="6" cols="33" value="#{taskBean.selected.description}" />    							
+
+						</p:panelGrid>						
+					</p:panel>
+				</div>
+			</div>
+
+			<p:toolbar>
+				<f:facet name="right">
+					<p:linkButton outcome="index" value="#{bundle.EditTaskShowAllLink}" action="index.xhtml?faces-redirect=true" icon="pi pi-search" style="margin-right:20px;" />
+					<p:commandButton value="#{bundle.CreateTaskSaveLink}" action="#{taskBean.update}" update="panel" icon="pi pi-save" />
+				</f:facet>
+			</p:toolbar>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

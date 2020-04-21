@@ -9,6 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import br.com.siswbrasil.jee01.model.Address;
 import br.com.siswbrasil.jee01.model.User;
 import br.com.siswbrasil.jee01.service.UserService;
 import lombok.Getter;
@@ -28,16 +29,23 @@ public class UserBean implements Serializable {
 	private Long id;
 
 	private String name;
+	
+	private String email;
 
 	private User user;
+	
+	private List<Address> addressList;
+
 
 	public String save() {
 		User user = new User();
 		user.setName(name);
+		user.setEmail(email);
 		service.create(user);
 
 		id = null;
 		name = null;
+		email = null;
 
 		return "index.xhtml?faces-redirect=true";
 	}
@@ -53,6 +61,8 @@ public class UserBean implements Serializable {
 
 		editRecord.setId(user.getId());
 		editRecord.setName(user.getName());
+		editRecord.setEmail(user.getEmail());
+		editRecord.setAddressList(user.getAddressList());
 
 		Map<String, Object> sessionMapObj = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 
@@ -65,7 +75,8 @@ public class UserBean implements Serializable {
 		User user = new User();
 		
 		user.setId(userBean.getId());
-		user.setName(userBean.getName());		
+		user.setName(userBean.getName());	
+		user.setEmail(userBean.getEmail());
 		
 		service.update(user);
 		return "index.xhtml?faces-redirect=true";

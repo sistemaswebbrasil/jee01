@@ -3,6 +3,7 @@ package br.com.siswbrasil.jee01.util;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 public class MessageUtil {
@@ -18,5 +19,15 @@ public class MessageUtil {
 		}
 		return msg;
 	}
+	
+    public static void addSuccessMessage(String msg) {
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
+        FacesContext.getCurrentInstance().addMessage("successInfo", facesMsg);
+    }	
+    
+    public static void addErrorMessage(String msg) {
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg);
+        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+    }    
 
 }
