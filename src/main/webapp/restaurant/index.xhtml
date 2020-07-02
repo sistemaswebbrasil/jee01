@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="../template/master-page.xhtml">
+	<ui:define name="content">
+		<h:form>
+
+			<div class="p-grid">
+				<div class="p-col p-col-align-start">
+					<p:panel id="panel" header="Restaurantes">
+
+						<p:dataTable var="item" value="#{restaurantBean.list()}"
+							reflow="true">
+
+							<p:column headerText="id" style="width:33px;text-align: center">
+								<h:outputText value="#{item.id}" />
+							</p:column>
+
+							<p:column headerText="nome" style="width:33px;text-align: center">
+								<h:outputText value="#{item.nome}" />
+							</p:column>
+
+							<p:column headerText="Frete"
+								style="width:33px;text-align: center">
+								<h:outputText value="#{item.taxaFrete}" />
+							</p:column>
+
+						</p:dataTable>
+					</p:panel>
+				</div>
+			</div>
+
+			<p:toolbar>
+				<f:facet name="right">
+					<p:commandButton value="#{msg.create_user}"
+						action="form.xhtml?faces-redirect=true" icon="pi pi-save" />
+				</f:facet>
+			</p:toolbar>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>
