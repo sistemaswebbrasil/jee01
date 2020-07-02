@@ -25,7 +25,7 @@
 							
 							<p:column style="width:64px;text-align: center">								
 									<p:commandButton action="#{taskBean.edit(item.id)}" icon="pi pi-search" />
-									<p:commandButton action="#{userBean.delete(item.id)}" icon="pi pi-trash" />
+									<p:commandButton action="#{taskBean.delete(item.id)}" icon="pi pi-trash" process="@this" update="@form" />
 							</p:column>												
 							
 						</p:dataTable>

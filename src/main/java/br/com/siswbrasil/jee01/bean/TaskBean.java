@@ -1,6 +1,7 @@
 package br.com.siswbrasil.jee01.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -23,8 +24,10 @@ public class TaskBean implements Serializable {
 
 	@EJB
 	private TaskFacade facade;
-	private List<Task> taskList = null;
-	private Task selected = new Task();
+	
+	private List<Task> taskList = new ArrayList<Task>();
+	
+	private Task selected = new Task();  
 
 	public List<Task> listAll() {
 		return facade.findAll();
@@ -49,7 +52,7 @@ public class TaskBean implements Serializable {
 	public String create() {
 		try {
 			facade.create(selected);
-			MessageUtil.addSuccessMessage("Criado com sucesso");
+			MessageUtil.addSuccessMessage("Sucesso","Criado com sucesso");
 
 			selected = new Task();
 			return "index.xhtml?faces-redirect=true";
@@ -59,10 +62,10 @@ public class TaskBean implements Serializable {
 		}
 	}
 	
-	public String destroy() {
-		Task entity = facade.find(selected);
+	public void delete(Long id) {
+		Task entity = facade.find(id);
 		facade.remove(entity);
-		return "index";
+		MessageUtil.addSuccessMessage("Sucesso","Removido com sucesso");		
 	}	
 
 }

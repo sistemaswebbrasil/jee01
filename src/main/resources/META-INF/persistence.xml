@@ -5,14 +5,12 @@
 
 	<persistence-unit name="default" transaction-type="JTA">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>		
-		<jta-data-source>java:jboss/datasources/jeeDS</jta-data-source>
-		<class>br.com.siswbrasil.jee01.model.User</class>
-		<class>br.com.siswbrasil.jee01.model.Address</class>
+		<jta-data-source>java:jboss/datasources/PostgreSqlDevDS</jta-data-source>
 		<class>br.com.siswbrasil.jee01.model.Task</class>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 
 			<property name="hibernate.archive.autodetection" value="class" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />

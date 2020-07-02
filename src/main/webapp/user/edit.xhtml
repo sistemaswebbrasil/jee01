@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
 	<ui:define name="content">
 
@@ -21,10 +24,12 @@
 							contentStyleClass="p-align-baseline ui-fluid">
 
 							<p:outputLabel for="id" value="#{msg.id}" />
-							<p:inputText id="id" value="#{editRecordObj.id}" disabled="true" size="5" />
+							<p:inputText id="id" value="#{editRecordObj.id}" disabled="true"
+								size="5" />
 
 							<p:outputLabel for="name" value="#{msg.name}" />
-							<p:inputText id="name" value="#{editRecordObj.name}" required="true"
+							<p:inputText id="name" value="#{editRecordObj.name}"
+								required="true"
 								requiredMessage="#{msg.error_required_user_name}" />
 
 							<p:outputLabel for="email" value="#{msg.email}" />
@@ -45,26 +50,18 @@
 					</p:panel>
 				</div>
 			</div>
-			
-			<p/>
 
-			<p:dataTable var="item" value="#{editRecordObj.addressList}" reflow="true">
-				<p:column headerText="#{msg.id}" style="width:33px;text-align: center">
-					<h:outputText value="#{item.id}" />
-				</p:column>
 
-				<p:column headerText="#{msg.publicPlace}">
-					<h:outputText value="#{item.publicPlace}" />
-				</p:column>
 
-			</p:dataTable>
-			
-			<p/>
+			<p />
 
 			<p:toolbar>
 				<f:facet name="right">
-					<p:linkButton outcome="index" value="#{msg.list_user}" action="index.xhtml?faces-redirect=true" icon="pi pi-search" />
-					<p:commandButton value="#{msg.save}" action="#{userBean.update(editRecordObj)}" update="panel" icon="pi pi-save" />
+					<p:linkButton outcome="index" value="#{msg.list_user}"
+						action="index.xhtml?faces-redirect=true" icon="pi pi-search" />
+					<p:commandButton value="#{msg.save}"
+						action="#{userBean.update(editRecordObj)}" update="panel"
+						icon="pi pi-save" />
 				</f:facet>
 			</p:toolbar>
 

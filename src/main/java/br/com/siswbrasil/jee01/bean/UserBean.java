@@ -9,9 +9,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.siswbrasil.jee01.model.Address;
 import br.com.siswbrasil.jee01.model.User;
 import br.com.siswbrasil.jee01.service.UserService;
+import br.com.siswbrasil.jee01.util.MessageUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,28 +26,18 @@ public class UserBean implements Serializable {
 	@Inject
 	private UserService service;
 
-	private Long id;
-
-	private String name;
-	
-	private String email;
-
-	private User user;
-	
-	private List<Address> addressList;
-
+	private User user = new User();
 
 	public String save() {
-		User user = new User();
-		user.setName(name);
-		user.setEmail(email);
-		service.create(user);
-
-		id = null;
-		name = null;
-		email = null;
-
-		return "index.xhtml?faces-redirect=true";
+		try {
+			service.create(user);
+			User user = new User();
+			MessageUtil.addSuccessMessage("Criado com sucesso");
+			return "index.xhtml?faces-redirect=true";
+		} catch (Exception e) {
+			MessageUtil.addErrorMessage(e.getMessage());
+			return null;
+		}
 	}
 
 	public List<User> listAll() {
@@ -55,35 +45,44 @@ public class UserBean implements Serializable {
 	}
 
 	public String edit(Long id) {
-		UserBean editRecord = new UserBean();
-
-		User user = service.findById(id);
-
-		editRecord.setId(user.getId());
-		editRecord.setName(user.getName());
-		editRecord.setEmail(user.getEmail());
-		editRecord.setAddressList(user.getAddressList());
+		User editUser = service.findById(id);
 
 		Map<String, Object> sessionMapObj = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 
-		sessionMapObj.put("editRecordObj", editRecord);
+		sessionMapObj.put("editRecordObj", editUser);
 
 		return "edit.xhtml?faces-redirect=true";
 	}
 
-	public String update(UserBean userBean) {
-		User user = new User();
-		
-		user.setId(userBean.getId());
-		user.setName(userBean.getName());	
-		user.setEmail(userBean.getEmail());
-		
-		service.update(user);
-		return "index.xhtml?faces-redirect=true";
+	public String update(User editUser) {
+		try {
+			User user = new User();
+
+			user.setId(editUser.getId());
+			user.setName(editUser.getName());
+			user.setEmail(editUser.getEmail());
+
+			service.update(editUser);
+
+			MessageUtil.addSuccessMessage("Atualizado com sucesso");
+			return "index.xhtml?faces-redirect=true";
+
+		} catch (Exception e) {
+			MessageUtil.addErrorMessage(e.getMessage());
+			return null;
+		}
+
 	}
 
 	public void delete(Long id) {
-		service.delete(id);
+		try {
+			service.delete(id);
+			MessageUtil.addSuccessMessage("Excluído com sucesso");
+
+		} catch (Exception e) {
+			MessageUtil.addErrorMessage(e.getMessage());
+		}
+
 	}
 
 }
