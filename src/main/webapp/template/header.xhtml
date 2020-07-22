@@ -15,12 +15,6 @@
 					valueChangeListener="#{language.countryLocaleCodeChanged}">
 					<f:selectItems value="#{language.countriesInMap}" />
 				</p:selectOneMenu>
-
-				<p:themeSwitcher value="#{themeBean.theme}" effect="fade">
-					<f:selectItem itemLabel="Choose Theme" itemValue="" />
-					<f:selectItems value="#{themeBean.themes}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme.name}" />
-					<p:ajax listener="#{themeBean.saveTheme}" />
-				</p:themeSwitcher>
 			</h:panelGrid>
 		</h:form>
 	</div>

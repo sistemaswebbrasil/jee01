@@ -5,13 +5,14 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
+<ui:define name="title">#{msg.edit_task} #{taskBean.selected.id}</ui:define>
 	<ui:define name="content">
 		<h:form>
 
 			<div class="p-grid">
 				<div class="p-col p-col-align-start">
 					<h:inputHidden value="#{taskBean.selected.id}" />
-					<p:panel id="panel" header="#{bundle.EditTaskTitle} #{taskBean.selected.id}">
+					<p:panel id="panel" header=" ">
 
 						<p:panelGrid columns="2" layout="flex"
 							columnClasses="

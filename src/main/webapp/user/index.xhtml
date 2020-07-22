@@ -2,12 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
+
+	<ui:define name="title">#{msg.list_user}</ui:define>
+
+
 	<ui:define name="content">
 		<h:form>
 
 			<div class="p-grid">
 				<div class="p-col p-col-align-start">
-					<p:panel id="panel" header="#{msg.list_user}">
+					<p:panel id="panel" header=" ">
 
 						<p:dataTable var="item" value="#{userBean.listAll()}"  reflow="true">
 						
