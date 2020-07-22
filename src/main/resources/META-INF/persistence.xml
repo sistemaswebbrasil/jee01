@@ -6,7 +6,6 @@
 	<persistence-unit name="default" transaction-type="JTA">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>		
 		<jta-data-source>java:jboss/datasources/PostgreSqlDevDS</jta-data-source>
-		<class>br.com.siswbrasil.jee01.model.Task</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 
