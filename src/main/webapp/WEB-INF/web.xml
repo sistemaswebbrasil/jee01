@@ -24,4 +24,10 @@
 	<welcome-file-list>
 		<welcome-file>index.xhtml</welcome-file>
 	</welcome-file-list>
+	
+	<context-param>
+		<param-name>scaffold.base.path</param-name>
+		<param-value>${scaffold.base.path}</param-value>
+	</context-param>	
+	
 </web-app>

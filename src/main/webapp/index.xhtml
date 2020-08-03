@@ -8,15 +8,21 @@
 		<div class="p-grid">
 			<div class="p-col-12 p-md-6 p-lg-3">
 				<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
-				<p:panel id="toggleable" header="#{msg.list_user}" toggleable="true" toggleSpeed="500" closeSpeed="500"
-					widgetVar="panel" style="margin-bottom:20px">					
-					<h:panelGrid columns="2" cellpadding="10">
-						<p:graphicImage name="img/user-icon.png" />
-						<p:menu>
-							<p:menuitem value="Listar" url="user" icon="pi pi-home" />
-							<p:menuitem value="Criar" url="user/form.xhtml" icon="pi pi-home" />
-						</p:menu>
-					</h:panelGrid>
+				<p:panel id="toggleable" header="#{msg.list_user}" toggleable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel"
+					style="margin-bottom:20px">
+
+
+
+
+					<p:dataTable var="item" value="#{scaffoldBean.entities}">
+						<p:column headerText="#{msg['object.name']}">
+							<h:outputText value="#{item.name}" />
+						</p:column>
+						<p:column headerText="#{msg['object.type']}">
+							<h:outputText value="#{item.type}" />
+						</p:column>						
+						
+					</p:dataTable>
 
 				</p:panel>
 			</div>

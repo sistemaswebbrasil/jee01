@@ -1,4 +1,4 @@
-package br.com.siswbrasil.jee01.model;
+package br.com.siswbrasil.jee01.dto;
 
 import java.util.List;
 import java.util.Map;
@@ -14,9 +14,6 @@ import javax.ws.rs.core.Response;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
-
-import br.com.siswbrasil.jee01.dto.PageDto;
-import br.com.siswbrasil.jee01.dto.PurchaseOrderDto;
 
 @ViewScoped
 public class PurchaseOrderDataModel extends LazyDataModel<PurchaseOrderDto> {
