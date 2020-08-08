@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+	<ui:composition>
+
+		<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+			<div class="menu_section">
+				<h3>
+					<h:outputText value="#{msg['project.general']}" />
+				</h3>
+				<ul class="nav side-menu">
+					<li><a><i class="fa fa-home"></i> <h:outputText value="#{msg['users']}" /> <span class="fa fa-chevron-down"></span></a>
+						<ul class="nav child_menu">
+							<li><a href="${facesContext.externalContext.requestContextPath}/user/"><h:outputText value="#{msg['list_user']}" /></a></li>
+							<li><a href="${facesContext.externalContext.requestContextPath}/user/form.xhtml"><h:outputText value="#{msg['create_user']}" /></a></li>
+						</ul></li>
+					<li><a><i class="fa fa-edit"></i> <h:outputText value="#{msg['tasks']}" /> <span class="fa fa-chevron-down"></span></a>
+						<ul class="nav child_menu">
+							<li><a href="${facesContext.externalContext.requestContextPath}/task/"> <h:outputText value="#{msg['list_task']}" /></a></li>
+							<li><a href="${facesContext.externalContext.requestContextPath}/task/form.xhtml"><h:outputText value="#{msg['create_task']}" />
+							</a></li>
+						</ul></li>
+
+					<li><a><i class="fa fa-edit"></i> <h:outputText value="#{msg['scaffold.project']}" /> <span class="fa fa-chevron-down"></span></a>
+						<ul class="nav child_menu">
+							<li><a href="${facesContext.externalContext.requestContextPath}/scaffold/"> <h:outputText value="#{msg['list_scaffold']}" /></a></li>
+							<li style="display: none;"><a href="${facesContext.externalContext.requestContextPath}/scaffold/detail.xhtml" ><h:outputText value="#{msg['list_scaffold']}" /></a></li>
+						</ul></li>
+				</ul>
+			</div>
+		</div>
+	</ui:composition>
+</body>
+</html>

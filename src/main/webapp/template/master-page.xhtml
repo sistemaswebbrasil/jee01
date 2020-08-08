@@ -3,7 +3,7 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title><ui:insert name="title">JEE01 - Estudos</ui:insert></title>
+	<title><ui:insert name="title">#{msg['project.name']}</ui:insert></title>
 	<h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
 	<h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
 	<h:outputStylesheet library="gentelella" name="css/custom.min.css" />
@@ -11,134 +11,66 @@
 	<h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
 </h:head>
 
-  <body class="nav-md">
-    <div class="container body">
-      <div class="main_container">
-        <div class="col-md-3 left_col">
-          <div class="left_col scroll-view">
-            <div class="navbar nav_title" style="border: 0;">
-              <a href="${facesContext.externalContext.requestContextPath}/" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
-            </div>
+<body class="nav-md">
+	<div class="container body">
+	
+		<div class="main_container">
+		
+			<div class="col-md-3 left_col">
+				<div class="left_col scroll-view">
+					<div class="navbar nav_title" style="border: 0;">
+						<a href="${facesContext.externalContext.requestContextPath}/" class="site_title"><i class="fa fa-paw"></i> <span>#{msg['project.name']}</span></a>
+					</div>
 
-            <div class="clearfix"></div>
-
-
-            <div class="profile clearfix">
-              <div class="profile_pic">
-                <h:graphicImage library="img" name="/img.jpg" alt="..." styleClass="img-circle profile_img" />
-              </div>
-              <div class="profile_info">
-                <span><h:outputText value="#{msg['user.welcome']}" />,</span>
-                <h2>
-                <h:outputText value="#{msg['user.name']}" />
-                </h2>
-              </div>
-            </div>
+					<div class="clearfix"></div>
 
 
-            <br />
+					<div class="profile clearfix">
+						<div class="profile_pic">
+							<h:graphicImage library="img" name="/img.jpg" alt="..." styleClass="img-circle profile_img" />
+						</div>
+						<div class="profile_info">
+							<span><h:outputText value="#{msg['user.welcome']}" />,</span>
+							<h2>
+								<h:outputText value="#{msg['user.name']}" />
+							</h2>
+						</div>
+					</div>
+					<br />
+					<ui:include src="/template/sidebar-menu.xhtml" />
+				</div>
+			</div>
 
+			<ui:include src="/template/top-menu.xhtml" />
 
-            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-              <div class="menu_section">
-                <h3><h:outputText value="#{msg['project.general']}" /></h3>
-                <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> <h:outputText value="#{msg['users']}" /> <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="${facesContext.externalContext.requestContextPath}/user"><h:outputText value="#{msg['list_user']}" /></a></li>
-                      <li><a href="${facesContext.externalContext.requestContextPath}/user/form.xhtml"><h:outputText value="#{msg['create_user']}" /></a></li>
+			<div class="right_col" role="main">
+				<div class="">
+					<div class="page-title">
+						<div class="title_left">
+							<h3>
+								<ui:insert name="title" />
+							</h3>
+						</div>
+					</div>
+					
+					<div class="clearfix"></div>
 
-                    </ul> 
-                  </li>
-                  <li><a><i class="fa fa-edit"></i> <h:outputText value="#{msg['tasks']}" /> <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="${facesContext.externalContext.requestContextPath}/task"> <h:outputText value="#{msg['list_task']}" /></a></li>
-                      <li><a href="${facesContext.externalContext.requestContextPath}/task/form.xhtml"><h:outputText value="#{msg['create_task']}" /> </a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-
-
-            </div>
-
-          </div>
-        </div>
-
-        <!-- top navigation -->
-        <div class="top_nav">
-            <div class="nav_menu">
-                <div class="nav toggle">
-                  <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-                </div>
-                <nav class="nav navbar-nav">
-                <ul class=" navbar-right">
-                  <li class="nav-item dropdown open" style="padding-left: 15px;">
-                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                      <h:graphicImage library="img" name="/img.jpg" alt="..." /> 
-                      <h:outputText value="#{msg['user.name']}" />
-                    </a>
-                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item"  href="javascript:;"> Profile</a>
-                        <a class="dropdown-item"  href="javascript:;">
-                          <span class="badge bg-red pull-right">50%</span>
-                          <span>Settings</span>
-                        </a>
-                    	<a class="dropdown-item"  href="javascript:;">Help</a>
-                      	<a class="dropdown-item"  href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
-                    </div>
-                  </li>
-  
-    
-                </ul>
-              </nav>
-            </div>
-          </div>
-        <!-- /top navigation -->
-
-        <!-- page content -->
-        <div class="right_col" role="main">
-          <div class="">
-            <div class="page-title">
-              <div class="title_left">
-                <h3><ui:insert name="title"/></h3>
-              </div>
-            </div>
-            <div class="clearfix"></div>
-            
-		<div id="content">
-<!-- 			<p:messages id="messages"  closable="true"> -->
-<!-- 				<p:autoUpdate /> -->
-<!-- 			</p:messages> -->
-			<ui:insert name="content" />
-		</div>            
-
-
-          </div>
-        </div>
-        <!-- /page content -->
-
-        <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
-      </div>
-    </div>
-
-
-    
-    
-    <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+					<div id="content">
+						<ui:include src="commons.xhtml" />
+						<ui:insert name="content" />
+					</div>
+				</div>
+			</div>
+				
+			<ui:include src="/template/footer.xhtml" />
+		</div>
+		
+	</div>
+	
+	<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
 	<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />
 	<h:outputScript library="popper" name="popper.min.js" target="head" />
-	
-	<h:outputScript library="bootstrap" name="/js/bootstrap.min.js"/>
-	<h:outputScript library="gentelella" name="/js/custom.min.js"/>    
-    
-    
-  </body>
+	<h:outputScript library="bootstrap" name="/js/bootstrap.min.js" />
+	<h:outputScript library="gentelella" name="/js/custom.js" />
+</body>
 </html>
