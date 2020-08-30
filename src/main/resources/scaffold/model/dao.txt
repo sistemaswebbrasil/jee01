@@ -1,0 +1,13 @@
+package ${dao.package};
+
+import javax.ejb.Stateless;
+import ${entity.package}.${entity.class};
+
+@Stateless
+public class ${dao.class} extends GenericDAO<${entity.class}> {
+
+	public ${dao.class}() {
+		super(${entity.class}.class);
+	}	
+	
+}

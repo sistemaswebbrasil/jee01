@@ -4,7 +4,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import br.com.siswbrasil.jee01.model.Task;
 import br.com.siswbrasil.jee01.model.User;
 
 @Stateless

@@ -39,7 +39,9 @@ public class ScaffoldBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static final String SCAFFOLD_BASE_PATH = "scaffold.base.path";
 	public static final String SCAFFOLD_ENTITY_PATH = "scaffold.entity.path";
+	public static final String SCAFFOLD_DAO_PATH = "scaffold.dao.path";
 	public static final String SCAFFOLD_LABEL_PATH = "scaffold.labels_pt_BR.path";
+	public static final String SCAFFOLD_GENERATE_MODELS_PATH = "scaffold.generate_models.path";
 
 	private List<AvailableObject> entities = new ArrayList<AvailableObject>();
 	private AvailableObject selected = new AvailableObject();
@@ -101,6 +103,76 @@ public class ScaffoldBean implements Serializable {
 
 	}
 
+	public void generateDao() {
+		try {
+
+			if (selected.getProperties().isEmpty()) {
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
+						MessageUtil.getMsg("error.scaffold.not_found"));
+			}
+			String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
+			String daoParcialPath = propertiesUtil.get(SCAFFOLD_DAO_PATH);
+			String modelParcialDaoPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
+
+			String daoPath = basePath.concat(daoParcialPath);
+			String modelDaoPath = basePath.concat(modelParcialDaoPath.concat("/dao.txt"));
+			String entityPackage = "";
+			for (AvaliableProperties entityLine : selected.getProperties()) {
+				if (entityLine.getName() == "packageName") {
+					entityPackage = entityLine.getValue();
+				}
+			}
+			String daoPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".dao");
+
+			System.out.println("daoPackage "+daoPackage);
+			System.out.println("daoPath "+daoPath);
+			System.out.println("modelDaoPath "+modelDaoPath);
+			System.out.println("entityPackage "+entityPackage);
+			
+			String daoClass = selected.getName().concat("DAO");
+			String daoClassPath = String.format("%s/%s.%s", daoPath,daoClass,"java")   ;
+			
+			System.out.println(daoClassPath);
+
+			List<String> lines = readFile(modelDaoPath,false);
+			List<String> newLines = new ArrayList<String>();
+
+			for (String line : lines) {
+				if (line.contains("${dao.package}")) {
+					line = line.replace("${dao.package}", daoPackage);
+				}
+				if (line.contains("${entity.package}")) {
+					line = line.replace("${entity.package}", entityPackage);
+				}
+				if (line.contains("${entity.class}")) {
+					line = line.replace("${entity.class}", selected.getName());
+				}
+				if (line.contains("${dao.class}")) {
+					line = line.replace("${dao.class}", daoClass);
+				}			
+
+				newLines.add(line);
+			}
+
+			objectContent = "";
+			for (String line : newLines) {
+				objectContent += line + "\n";
+			}
+			
+			try {
+				FileWriter fileWriter = new FileWriter(daoClassPath);
+				fileWriter.write(objectContent);
+				fileWriter.close();
+			} catch (IOException e) {
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+			}			
+
+		} catch (Exception e) {
+			MessageUtil.addErrorMessage("asas", "dsdsdsd");
+		}
+
+	}
+
 	public void generateLabels() {
 		if (selected.getProperties().isEmpty()) {
 			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.scaffold.not_found"));
@@ -113,7 +185,7 @@ public class ScaffoldBean implements Serializable {
 					MessageUtil.getMsg("scaffold.labels_config.not_found"));
 		}
 
-		List<String> lines = readFile(labelPath);
+		List<String> lines = readFile(labelPath,true);
 		List<String> newLines = new ArrayList<String>();
 		List<AvaliableProperties> properties = selected.getProperties();
 
@@ -122,6 +194,10 @@ public class ScaffoldBean implements Serializable {
 		}
 
 		for (AvaliableProperties item : properties) {
+			if (!StringUtils.isEmpty(item.getValue())) {
+				continue;
+			}
+
 			String formattedName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, item.getName());
 			formattedName = formattedName.replace("-", " ");
 			formattedName = StringUtils.capitalize(formattedName);
@@ -137,7 +213,7 @@ public class ScaffoldBean implements Serializable {
 				newLines.add(newLine);
 			}
 		}
-		
+
 		newLines.sort((p1, p2) -> p1.compareTo(p2));
 
 		objectContent = "";
@@ -155,7 +231,7 @@ public class ScaffoldBean implements Serializable {
 	}
 
 	public void readProperties() {
-		List<String> lines = readFile(selected.getPath());
+		List<String> lines = readFile(selected.getPath(),true);
 		objectContent = "";
 		List<AvaliableProperties> properties = new ArrayList<>();
 		Boolean selectedIsId = false;
@@ -178,6 +254,14 @@ public class ScaffoldBean implements Serializable {
 					selectedName = partLine[2];
 				}
 			}
+
+			if (line.startsWith("package")) {
+				String packageName = line.split("package ")[1].trim();
+				selectedName = "packageName";
+				selectedType = "package";
+				selectedValue = packageName;
+			}
+
 			if (selected.getType().equalsIgnoreCase("entity") && selectedType != null) {
 				AvaliableProperties property = selected.new AvaliableProperties(selectedType, selectedName,
 						selectedIsId.booleanValue(), selectedValue);
@@ -188,14 +272,17 @@ public class ScaffoldBean implements Serializable {
 		selected.setProperties(properties);
 	}
 
-	private List<String> readFile(String objectPath) {
+	private List<String> readFile(String objectPath,Boolean clear) {
 		List<String> rowsArray = new ArrayList<String>();
 		Path path = Paths.get(objectPath);
 		try {
-			Files.lines(path).map(s -> s.trim()).filter(s -> !((String) s).isEmpty()).forEach(s -> rowsArray.add(s));
+			if(clear) {
+				Files.lines(path).map(s -> s.trim()).filter(s -> !((String) s).isEmpty()).forEach(s -> rowsArray.add(s));
+			}else {
+				Files.lines(path).forEach(s -> rowsArray.add(s));
+			}
 		} catch (IOException e) {
-			e.printStackTrace();
-			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.not_found"));
+			MessageUtil.addErrorMessage(MessageUtil.getMsg("error.file.not_found"), e.getMessage());
 		}
 		return rowsArray;
 	}

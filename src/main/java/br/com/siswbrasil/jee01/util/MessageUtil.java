@@ -1,12 +1,15 @@
 package br.com.siswbrasil.jee01.util;
 
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-public class MessageUtil {
+public class MessageUtil implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	public static String getMsg(String messageId) {
 		String msg = "";
