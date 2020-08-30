@@ -5,6 +5,11 @@
 
 		<p:messages id="messages" showDetail="true" closable="true"/>
 		<p:growl id="growl" showDetail="true" sticky="true" />
+		
+	    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+	        <p:commandButton value="#{msg.yes}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+	        <p:commandButton value="#{msg.no}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+	    </p:confirmDialog>		
 
 	</ui:composition>
 </body>

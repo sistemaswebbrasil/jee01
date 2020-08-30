@@ -36,6 +36,8 @@ public class User implements Serializable {
 	@NotEmpty
 	@Email
 	private String email;	
+	
+	private String loginName;
 
 	
 }

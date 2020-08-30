@@ -13,6 +13,12 @@
 			<base-name>messages</base-name>
 			<var>msg</var>
 		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>labels</base-name>
+			<var>lb</var>
+		</resource-bundle>		
+		
 		<resource-bundle>
 			<base-name>/Bundle</base-name>
 			<var>bundle</var>

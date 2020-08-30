@@ -24,3 +24,9 @@ body {
 	align-items: left;
 	border-style: none;
 }
+
+ .old {
+     background-color: #fca752 !important;
+     background-image: none !important;
+     color: #000000 !important;
+ }
