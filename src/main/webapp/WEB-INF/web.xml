@@ -33,13 +33,4 @@
 		<location>/error/404.xhtml</location>
 	</error-page>
 
-	<filter>
-		<filter-name>FlashScopeFixerFilter</filter-name>
-		<filter-class>br.com.siswbrasil.jee01.filter.FlashScopeFixerFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>FlashScopeFixerFilter</filter-name>
-		<url-pattern>*.xhtml</url-pattern>
-	</filter-mapping>
-
 </web-app>
