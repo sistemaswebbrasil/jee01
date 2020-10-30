@@ -20,13 +20,15 @@ public abstract class GenericServiceImpl<T> implements GenericService<T> {
 	}
 
 	@Override
-	public void save(T entity) {
-		try {
-			dao.create(entity);
-		} catch (DataBaseException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		}		
+	public void create(T entity) {
+		//try {
+			dao.create(entity);	
+//		//} catch (Exception e) {
+//			System.err.println("#####################################################");
+//			System.err.println("#####################################################");
+//			System.err.println("#####################################################");
+//			throw new DataBaseException("Falha ao processar requisição no banco de dados", e);
+//		}		
 	}
 
 	@Override

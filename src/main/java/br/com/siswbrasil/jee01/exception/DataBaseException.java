@@ -1,13 +1,15 @@
 package br.com.siswbrasil.jee01.exception;
 
-import javax.management.RuntimeErrorException;
-
-public class DataBaseException extends RuntimeErrorException {
+public class DataBaseException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public DataBaseException(Error message) {
-		super(message);
-	}	
+	public DataBaseException(String mensagem) {
+		super(mensagem);
+	}
+
+	public DataBaseException(String mensagem, Throwable causa) {
+		super(mensagem, causa);
+	}
 
 }

@@ -6,7 +6,7 @@ public interface GenericService<T> {
 
 	List<T> findAll();
 
-	void save(T entity);
+	void create(T entity);
 
 	T findById(long id);
 
