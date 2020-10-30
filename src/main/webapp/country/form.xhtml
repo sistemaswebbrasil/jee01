@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="../template/master-page.xhtml">
+
+<ui:define name="title">#{msg.create}</ui:define>
+	<ui:define name="content">
+		<h:form>
+			
+			<div class="p-grid">
+				<div class="p-col p-col-align-start">
+					<p:panel id="panel" header=" ">
+						<p:panelGrid columns="4" layout="flex"
+							columnClasses="p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3"
+							contentStyleClass="p-align-baseline ">
+
+							<p:outputLabel for="iddCode" value="#{lb['country.iddCode']}" />
+							<p:inputText id="iddCode" value="#{countryBean.country.iddCode}" required="true" />
+							
+							<p:outputLabel for="name" value="#{lb['country.name']}" />
+							<p:inputText id="name" value="#{countryBean.country.name}" required="true" />							
+							
+							<p:outputLabel for="continent" value="#{lb['country.continent']}" />
+							<p:inputText id="continent" value="#{countryBean.country.continent}" required="true" />
+							
+
+						</p:panelGrid>
+					</p:panel>
+				</div>
+			</div> 
+			 
+			<p:toolbar>
+				<f:facet name="right">					
+					<p:commandButton value="#{msg.save}" action="#{countryBean.save()}" update="@form messages" icon="pi pi-save" />					
+				</f:facet>
+			</p:toolbar>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -2,9 +2,12 @@ package br.com.siswbrasil.jee01.dao;
 
 import java.util.List;
 
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
+
+import br.com.siswbrasil.jee01.exception.DataBaseException;
 
 public abstract class GenericDAO<T> {
 
@@ -17,8 +20,12 @@ public abstract class GenericDAO<T> {
 		this.entityClass = entityClass;
 	}
 
-	public void create(T entity) {
-		em.persist(entity);
+	public void create(T entity) throws DataBaseException {
+		try {
+			em.persist(entity);
+		} catch (EJBTransactionRolledbackException e) {
+			throw new DataBaseException(new Error());
+		}
 	}
 
 	public void edit(T entity) {
