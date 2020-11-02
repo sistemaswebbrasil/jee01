@@ -1,14 +1,18 @@
 package br.com.siswbrasil.jee01.bean;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.ConstraintViolationException;
 
+import br.com.siswbrasil.jee01.exception.DatabaseException;
 import br.com.siswbrasil.jee01.model.User;
 import br.com.siswbrasil.jee01.service.UserService;
 import br.com.siswbrasil.jee01.util.MessageUtil;
@@ -27,17 +31,26 @@ public class UserBean implements Serializable {
 	private UserService service;
 
 	private User user = new User();
+	
+	@PostConstruct
+	public void init() {
+		user.setId(1L);
+		user.setEmail("teste@teste.com");
+		user.setLoginName("teste");
+		user.setName("teste");
+	}	
 
-	public String save() {
-		try {
+	public String save() throws DatabaseException  {
+		//throw new NullPointerException("A NullPointerException!");
+//		try {
 			service.create(user);
 			User user = new User();
 			MessageUtil.addSuccessMessage("Criado com sucesso");
 			return "index.xhtml?faces-redirect=true";
-		} catch (Exception e) {
-			MessageUtil.addErrorMessage(e.getMessage());
-			return null;
-		}
+//		} catch (Exception e) {			
+//			MessageUtil.addErrorMessage("Erro", e.getCause().getMessage());
+//			return null;
+//		}
 	}
 
 	public List<User> listAll() {

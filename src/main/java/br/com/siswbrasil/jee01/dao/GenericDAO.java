@@ -3,13 +3,11 @@ package br.com.siswbrasil.jee01.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
-public abstract class GenericDAO<T> {
+import br.com.siswbrasil.jee01.exception.DataBaseRuntimeException;
 
-	@PersistenceContext(unitName = "default")
-	private EntityManager em;
+public abstract class GenericDAO<T> {
 
 	private Class<T> entityClass;
 
@@ -17,34 +15,44 @@ public abstract class GenericDAO<T> {
 		this.entityClass = entityClass;
 	}
 
-	public void create(T entity)  {
-		em.persist(entity);
+	protected abstract EntityManager getEntityManager();
+
+	public void create(T entity) {
+		
+		
+		try {
+			getEntityManager().persist(entity);
+		} catch (Exception e) {
+			throw new DataBaseRuntimeException("Falha ao executar a operação no banco de dados", e);
+		}		
+		
+		
 	}
 
 	public void edit(T entity) {
-		em.merge(entity);
+		getEntityManager().merge(entity);
 	}
 
 	public void remove(T entity) {
-		em.remove(em.merge(entity));
+		getEntityManager().remove(getEntityManager().merge(entity));
 	}
 
 	public T find(Object id) {
-		return em.find(entityClass, id);
+		return getEntityManager().find(entityClass, id);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<T> findAll() {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
 		cq.select(cq.from(entityClass));
-		return em.createQuery(cq).getResultList();
+		return getEntityManager().createQuery(cq).getResultList();
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<T> findRange(int[] range) {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
 		cq.select(cq.from(entityClass));
-		javax.persistence.Query q = em.createQuery(cq);
+		javax.persistence.Query q = getEntityManager().createQuery(cq);
 		q.setMaxResults(range[1] - range[0] + 1);
 		q.setFirstResult(range[0]);
 		return q.getResultList();
@@ -52,10 +60,10 @@ public abstract class GenericDAO<T> {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public int count() {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+		CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
 		javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
-		cq.select(em.getCriteriaBuilder().count(rt));
-		javax.persistence.Query q = em.createQuery(cq);
+		cq.select(getEntityManager().getCriteriaBuilder().count(rt));
+		javax.persistence.Query q = getEntityManager().createQuery(cq);
 		return ((Long) q.getSingleResult()).intValue();
 	}
 

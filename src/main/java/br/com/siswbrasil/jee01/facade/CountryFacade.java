@@ -1,13 +1,13 @@
-package br.com.siswbrasil.jee01.dao;
+package br.com.siswbrasil.jee01.facade;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import br.com.siswbrasil.jee01.model.Task;
+import br.com.siswbrasil.jee01.model.Country;
 
 @Stateless
-public class TaskDAO extends GenericDAO<Task> {
+public class CountryFacade extends AbstractFacade<Country> {
 
     @PersistenceContext(unitName = "default")
     private EntityManager em;
@@ -17,8 +17,8 @@ public class TaskDAO extends GenericDAO<Task> {
         return em;
     }
 
-    public TaskDAO() {
-        super(Task.class);
+    public CountryFacade() {
+        super(Country.class);
     }
-
+    
 }

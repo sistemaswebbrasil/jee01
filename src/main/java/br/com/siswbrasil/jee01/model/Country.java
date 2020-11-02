@@ -22,7 +22,7 @@ public class Country implements Serializable {
 	@Id
 	private String iddCode;
 	
-	@NotNull
+	@NotBlank
 	private String name;
 	
 	@NotBlank

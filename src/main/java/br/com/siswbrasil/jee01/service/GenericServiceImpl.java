@@ -1,17 +1,18 @@
 package br.com.siswbrasil.jee01.service;
 
+import java.io.Serializable;
 import java.util.List;
 
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import br.com.siswbrasil.jee01.dao.GenericDAO;
-import br.com.siswbrasil.jee01.exception.DataBaseException;
+import br.com.siswbrasil.jee01.exception.DataBaseRuntimeException;
 
-@Stateful
-public abstract class GenericServiceImpl<T> implements GenericService<T> {
 
-	@Inject
+public abstract class GenericServiceImpl<T extends Serializable> implements GenericService<T> {
+
+	
 	private GenericDAO<T> dao;
 
 	@Override
@@ -21,14 +22,11 @@ public abstract class GenericServiceImpl<T> implements GenericService<T> {
 
 	@Override
 	public void create(T entity) {
-		//try {
-			dao.create(entity);	
-//		//} catch (Exception e) {
-//			System.err.println("#####################################################");
-//			System.err.println("#####################################################");
-//			System.err.println("#####################################################");
-//			throw new DataBaseException("Falha ao processar requisição no banco de dados", e);
-//		}		
+		try {
+			dao.create(entity);
+		} catch (Exception e) {
+			throw new DataBaseRuntimeException("Falha ao processar requisição no banco de dados", e);
+		}
 	}
 
 	@Override

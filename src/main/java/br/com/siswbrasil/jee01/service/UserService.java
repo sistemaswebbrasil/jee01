@@ -4,18 +4,26 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.transaction.Transactional;
 
+import br.com.siswbrasil.jee01.exception.DataBaseRuntimeException;
+import br.com.siswbrasil.jee01.exception.DatabaseException;
 import br.com.siswbrasil.jee01.facade.UserFacade;
 import br.com.siswbrasil.jee01.model.User;
 
 @Stateless
 public class UserService {
 	
-	@EJB
+	@EJB  
 	private UserFacade facade;
 
-	public void create(User user) {		
-		facade.create(user);
+	@Transactional
+	public void create(User user) throws DatabaseException  {
+		try {
+			facade.create(user);
+		} catch (Exception e) {
+			throw new DatabaseException("Falha ao executar a operação no banco de dados", e);			
+		}		
 	}
 
 	public List<User> findAll() {
