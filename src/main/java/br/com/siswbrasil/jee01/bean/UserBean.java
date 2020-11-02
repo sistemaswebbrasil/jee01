@@ -1,7 +1,6 @@
 package br.com.siswbrasil.jee01.bean;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -10,8 +9,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.validation.ConstraintViolationException;
 
+import br.com.siswbrasil.jee01.exception.BusinessException;
 import br.com.siswbrasil.jee01.exception.DatabaseException;
 import br.com.siswbrasil.jee01.model.User;
 import br.com.siswbrasil.jee01.service.UserService;
@@ -34,26 +33,25 @@ public class UserBean implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-		user.setId(1L);
 		user.setEmail("teste@teste.com");
 		user.setLoginName("teste");
 		user.setName("teste");
 	}	
 
-	public String save() throws DatabaseException  {
+	public String save() throws Throwable  {
 		//throw new NullPointerException("A NullPointerException!");
-//		try {
-			service.create(user);
-			User user = new User();
+		try {
+			service.create(user); 
+			user = new User();
 			MessageUtil.addSuccessMessage("Criado com sucesso");
 			return "index.xhtml?faces-redirect=true";
-//		} catch (Exception e) {			
-//			MessageUtil.addErrorMessage("Erro", e.getCause().getMessage());
-//			return null;
-//		}
+		} catch (BusinessException e) {
+			MessageUtil.addErrorMessage(e.getMessage(), e.getDetail() );
+			return null;  
+		}
 	}
 
-	public List<User> listAll() {
+	public List<User> listAll() throws DatabaseException {
 		return service.findAll();
 	}
 
@@ -89,7 +87,7 @@ public class UserBean implements Serializable {
 
 	public void delete(Long id) {
 		try {
-			service.delete(id);
+			service.deleteById(id);
 			MessageUtil.addSuccessMessage("Excluído com sucesso");
 
 		} catch (Exception e) {

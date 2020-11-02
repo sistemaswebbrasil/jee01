@@ -36,10 +36,11 @@
 <!-- 	            br.com.siswbrasil.jee01.util.teste.CustomExceptionHandlerFactory -->
 <!-- 	        </exception-handler-factory> -->
 <!-- 	</factory>	 -->
-
+<!-- 	    org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory -->
 	<factory>
 	    <exception-handler-factory>
-	    org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory
+
+	    	br.com.siswbrasil.jee01.util.teste.CustomPrimeExceptionHandlerFactory
 	    </exception-handler-factory>
 	</factory>	
 	

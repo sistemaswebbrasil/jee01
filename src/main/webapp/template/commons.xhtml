@@ -8,20 +8,30 @@
 		<p:growl id="growl" showDetail="true" sticky="true" />
 
 		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-			<p:commandButton value="#{msg.yes}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-			<p:commandButton value="#{msg.no}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+			<h:form>
+				<p:commandButton value="#{msg.yes}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				<p:commandButton value="#{msg.no}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+			</h:form>
 		</p:confirmDialog>
 
 		<p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
-		<p:ajaxExceptionHandler type="java.lang.NullPointerException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
-		<p:ajaxExceptionHandler type="br.com.siswbrasil.jee01.exception.DataBaseException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
-									  		
-<!-- 		<p:ajaxExceptionHandler type="java.lang.Exception" update="exceptionDialog" onexception="PF('exceptionDialog').show();" /> -->
+		<p:ajaxExceptionHandler type="java.lang.NullPointerException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />		
+		<p:ajaxExceptionHandler type="br.com.siswbrasil.jee01.exception.DatabaseException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
+		<p:ajaxExceptionHandler type="java.lang.Exception" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
 
-		<p:dialog id="exceptionDialog" header="Exception '#{pfExceptionHandler.type}' occured!" widgetVar="exceptionDialog" height="500px">
-        	Message: #{pfExceptionHandler.message} <br/>
-        	StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" /><br/>
-			<p:button onclick="document.location.href = document.location.href;" value="Reload!" rendered="#{pfExceptionHandler.type == 'javax.faces.application.ViewExpiredException'}" />
+		<p:dialog id="exceptionDialog" header="Exception '#{pfExceptionHandler.type}' occured!" widgetVar="exceptionDialog" height="500px"
+			width="80%">
+        	Message: #{pfExceptionHandler.message} <br />
+        	
+        	StackTrace:        	
+			<h:form>
+				<p:inputTextarea value="#{pfExceptionHandler.formattedStackTrace}" escape="false" style="width:100%;" autoResize="true" readonly="true" />
+			</h:form>
+
+
+			<br />
+			<p:button onclick="document.location.href = document.location.href;" value="Reload!"
+				rendered="#{pfExceptionHandler.type == 'javax.faces.application.ViewExpiredException'}" />
 		</p:dialog>
 
 	</ui:composition>

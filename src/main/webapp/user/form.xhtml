@@ -12,9 +12,6 @@
 						<p:panelGrid columns="4" layout="flex"
 							columnClasses="p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3"
 							contentStyleClass="p-align-baseline ">
-							
-							<p:outputLabel for="name" value="id" />
-							<p:inputText id="id" value="#{userBean.user.id}" required="true" requiredMessage="#{msg.error_required_user_id}" />							
 
 							<p:outputLabel for="name" value="#{msg.name}" />
 							<p:inputText id="name" value="#{userBean.user.name}" required="true" requiredMessage="#{msg.error_required_user_name}" />

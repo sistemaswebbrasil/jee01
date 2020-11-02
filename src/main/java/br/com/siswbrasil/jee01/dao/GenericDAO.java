@@ -1,8 +1,10 @@
 package br.com.siswbrasil.jee01.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 import br.com.siswbrasil.jee01.exception.DataBaseRuntimeException;
@@ -18,18 +20,10 @@ public abstract class GenericDAO<T> {
 	protected abstract EntityManager getEntityManager();
 
 	public void create(T entity) {
-		
-		
-		try {
-			getEntityManager().persist(entity);
-		} catch (Exception e) {
-			throw new DataBaseRuntimeException("Falha ao executar a operação no banco de dados", e);
-		}		
-		
-		
+		getEntityManager().persist(entity);		
 	}
 
-	public void edit(T entity) {
+	public void update(T entity) {
 		getEntityManager().merge(entity);
 	}
 
@@ -41,7 +35,7 @@ public abstract class GenericDAO<T> {
 		return getEntityManager().find(entityClass, id);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
 	public List<T> findAll() {
 		CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
 		cq.select(cq.from(entityClass));

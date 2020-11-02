@@ -19,7 +19,7 @@ public class CountryService {
 			facade.create(entity);
 		} catch (Exception e) {
 			//throw new DataBaseRuntimeException("Falha ao executar a operação no banco de dados", e);
-			throw new DatabaseException("Falha ao executar a operação no banco de dados", e);
+			throw new DatabaseException("Falha ao executar a operação no banco de dados3", e);
 		}
 		
 	}

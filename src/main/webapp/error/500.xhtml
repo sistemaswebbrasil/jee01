@@ -19,11 +19,9 @@
 					<br/>
 					<h:outputText value="#{pfExceptionHandler.message}" />					
 				</div>
- 				<h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" /> 
-<!--  				<p:inputTextarea style="width: 100%;"  value="#{pfExceptionHandler.formattedStackTrace}"  escape="false" disabled="true" />  -->
-
-
-				
+				<h:form>
+					<p:inputTextarea value="#{pfExceptionHandler.formattedStackTrace}" escape="false" style="width:100%;" autoResize="true" readonly="true"/>
+				</h:form>				
 			</div>
 		</div>
 	</ui:define>
