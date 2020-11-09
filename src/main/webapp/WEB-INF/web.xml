@@ -33,21 +33,11 @@
 		<location>/error/404.xhtml</location>
 	</error-page>
 
-	<!-- <filter> -->
-	<!-- <filter-name>f1</filter-name> -->
-	<!-- <filter-class>br.com.siswbrasil.jee01.util.teste.MyFilter</filter-class> -->
-	<!-- </filter> -->
-
-	<!-- <filter-mapping> -->
-	<!-- <filter-name>f1</filter-name> -->
-	<!-- <url-pattern>/*</url-pattern> -->
-	<!-- </filter-mapping> -->
-
 	<error-page>
 		<exception-type>java.lang.Throwable</exception-type>
 		<location>/error/500.xhtml</location>
 	</error-page>
-	
+
 	<error-page>
 		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
 		<location>/error/500.xhtml</location>
@@ -58,11 +48,13 @@
 		<param-value>Development</param-value>
 	</context-param>
 
-
-
-
-
-
-
+	<filter>
+		<filter-name>FlashScopeFixerFilter</filter-name>
+		<filter-class>dk.sd.medarbejderdata.common.FlashScopeFixerFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>FlashScopeFixerFilter</filter-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</filter-mapping>
 
 </web-app>

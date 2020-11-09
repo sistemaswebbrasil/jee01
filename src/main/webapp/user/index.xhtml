@@ -20,7 +20,7 @@
 							</p:column>						
 
 							 <p:column style="width:33px;text-align: center">
-								<p:commandButton action="#{userBean.delete(item.id)}" icon="pi pi-trash" />
+								<p:commandButton action="#{userBean.delete(item.id)}" update="@form messages"  icon="pi pi-trash" />
 							</p:column>						
 						
 							<p:column headerText="#{msg.id}" style="width:33px;text-align: center">

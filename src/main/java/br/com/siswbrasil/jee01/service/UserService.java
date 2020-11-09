@@ -1,53 +1,25 @@
 package br.com.siswbrasil.jee01.service;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
+import br.com.siswbrasil.jee01.dao.UserDAO;
+import br.com.siswbrasil.jee01.exception.BusinessException;
 import br.com.siswbrasil.jee01.model.User;
+import br.com.siswbrasil.jee01.util.MessageUtil;
 
 @Stateless
 public class UserService extends GenericServiceImpl<User> {
-	//public class UserDAO extends GenericDAO<User> {
 
-	
-//@EJB  
-//PRIVATE USERFACADE FACADE;
-//PRIVATE USERDAO DAO;	
-	
+	@Inject
+	protected UserDAO dao;
 
-//	public List<User> findAll() {
-//		return dao.findAll();
-//	}	
-//	
-//	
-////	@EJB  
-//////	private UserFacade facade;
-////	private UserDAO facade;
-////	
-//	@Transactional
-//	public void create(User user) throws DatabaseException {
-//		try {
-//			dao.create(user);
-//		} catch (Exception e) {
-//			throw new DatabaseException("Falha ao executar a operação no banco de dados", e);  			
-//		}		
-//	}
-//
-//	public List<User> findAll() {
-//		return super.getDao().findAll();
-//				//dao.findAll();
-//				//facade.findAll();
-//	}
-//
-//	public User findById(Long id) {
-//		return facade.find(id);
-//	}
-//
-//	public void update(User user) {
-//		facade.edit(user);
-//	}
-//
-//	public void delete(Long id) {
-//		facade.remove(findById(id));
-//	}
-
+	@Override
+	public void create(User user) throws Throwable {
+		if (!dao.isUniqueEmail(user.getEmail())) {
+			throw new BusinessException(MessageUtil.getMsg("error.uniqueEmail"),
+					MessageUtil.getMsg("error.uniqueEmail.detail"));
+		}
+		super.create(user);
+	}
 }

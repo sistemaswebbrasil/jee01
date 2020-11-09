@@ -1,6 +1,7 @@
 package br.com.siswbrasil.jee01.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ public class UserBean implements Serializable {
 	private UserService service;
 
 	private User user = new User();
+	private List<User> userList = new ArrayList<User>();
 	
 	@PostConstruct
 	public void init() {
@@ -39,7 +41,6 @@ public class UserBean implements Serializable {
 	}	
 
 	public String save() throws Throwable  {
-		//throw new NullPointerException("A NullPointerException!");
 		try {
 			service.create(user); 
 			user = new User();
@@ -88,6 +89,7 @@ public class UserBean implements Serializable {
 	public void delete(Long id) {
 		try {
 			service.deleteById(id);
+			this.listAll();
 			MessageUtil.addSuccessMessage("Excluído com sucesso");
 
 		} catch (Exception e) {

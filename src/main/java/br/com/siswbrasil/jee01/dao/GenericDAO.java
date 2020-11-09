@@ -20,7 +20,7 @@ public abstract class GenericDAO<T> {
 	protected abstract EntityManager getEntityManager();
 
 	public void create(T entity) {
-		getEntityManager().persist(entity);		
+		getEntityManager().persist(entity);
 	}
 
 	public void update(T entity) {
@@ -35,7 +35,6 @@ public abstract class GenericDAO<T> {
 		return getEntityManager().find(entityClass, id);
 	}
 
-	
 	public List<T> findAll() {
 		CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
 		cq.select(cq.from(entityClass));

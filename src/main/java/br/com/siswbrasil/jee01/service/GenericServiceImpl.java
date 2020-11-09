@@ -1,7 +1,6 @@
 package br.com.siswbrasil.jee01.service;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -9,7 +8,6 @@ import javax.inject.Inject;
 import br.com.siswbrasil.jee01.dao.GenericDAO;
 import br.com.siswbrasil.jee01.exception.CustomExceptions;
 import br.com.siswbrasil.jee01.exception.DatabaseException;
-import br.com.siswbrasil.jee01.util.MessageUtil;
 
 public abstract class GenericServiceImpl<T extends Serializable> implements GenericService<T> {
 
