@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 import br.com.siswbrasil.jee01.model.Task;
 
 @Stateless
-public class TaskDAO extends GenericDAO<Task> {
+public class TaskDAO extends GenericDAO<Task,Long> {
 
     @PersistenceContext(unitName = "default")
     private EntityManager em;

@@ -32,41 +32,33 @@ public class UserBean implements Serializable {
 
 	private User user = new User();
 	private List<User> userList = new ArrayList<User>();
-	
+
 	@PostConstruct
 	public void init() {
 		user.setEmail("teste@teste.com");
 		user.setLoginName("teste");
 		user.setName("teste");
-	}	
+	}
 
-	public String save() throws Throwable  {
+	public String save() throws Throwable {
 		try {
-			service.create(user); 
+			service.create(user);
 			user = new User();
 			MessageUtil.addSuccessMessage("Criado com sucesso");
 			return "index.xhtml?faces-redirect=true";
 		} catch (BusinessException e) {
-			MessageUtil.addErrorMessage(e.getMessage(), e.getDetail() );
-			return null;  
+			MessageUtil.addErrorMessage(e.getMessage(), e.getDetail());
+			return null;
+		}
+	}
+	
+	public void emailUnique() {
+		if (!service.emailUnique(user.getEmail())) {
+			MessageUtil.addErrorMessageWhithField("form.email","Email já utilizado","Favor selecionar outro email , pois este já está em uso");			
 		}
 	}
 
-	public List<User> listAll() throws DatabaseException {
-		return service.findAll();
-	}
-
-	public String edit(Long id) {
-		User editUser = service.findById(id);
-
-		Map<String, Object> sessionMapObj = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-
-		sessionMapObj.put("editRecordObj", editUser);
-
-		return "edit.xhtml?faces-redirect=true";
-	}
-
-	public String update(User editUser) {
+	public String update(User editUser) throws Throwable {
 		try {
 			User user = new User();
 
@@ -79,11 +71,22 @@ public class UserBean implements Serializable {
 			MessageUtil.addSuccessMessage("Atualizado com sucesso");
 			return "index.xhtml?faces-redirect=true";
 
-		} catch (Exception e) {
-			MessageUtil.addErrorMessage(e.getMessage());
+		} catch (BusinessException e) {
+			MessageUtil.addErrorMessage(e.getMessage(), e.getDetail());
 			return null;
 		}
 
+	}
+
+	public List<User> listAll() throws DatabaseException {
+		return service.findAll();
+	}
+
+	public String edit(Long id) {
+		User editUser = service.findById(id);
+		Map<String, Object> sessionMapObj = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+		sessionMapObj.put("editRecordObj", editUser);
+		return "edit.xhtml?faces-redirect=true";
 	}
 
 	public void delete(Long id) {

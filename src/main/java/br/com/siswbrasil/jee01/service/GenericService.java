@@ -4,19 +4,19 @@ import java.util.List;
 
 import br.com.siswbrasil.jee01.exception.DatabaseException;
 
-public interface GenericService<T> {
+public interface GenericService<T,ID> {
 
 	List<T> findAll() throws DatabaseException;
 
-	void create(T entity) throws DatabaseException, Throwable;
+	void create(T entity) throws Throwable;
 	
-	void update(T entity) throws DatabaseException;
+	void update(T entity) throws Throwable;
 
-	T findById(long id);
+	T findById(ID id);
 
 	void delete(T entity);
 
-	void deleteById(long id);
+	void deleteById(ID id);
 
 	long count();	
 

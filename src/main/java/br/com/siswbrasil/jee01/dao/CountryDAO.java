@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 import br.com.siswbrasil.jee01.model.Country;
 
 @Stateless
-public class CountryDAO extends GenericDAO<Country> {
+public class CountryDAO extends GenericDAO<Country,Long> {
 
 	@PersistenceContext(unitName = "default")
 	private EntityManager em;

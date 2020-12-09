@@ -50,5 +50,12 @@ public class MessageUtil implements Serializable{
 		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, detail);
 		FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 	}
+	
+	public static void addErrorMessageWhithField(String field,String msg, String detail) {
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+		
+		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, detail);		
+		FacesContext.getCurrentInstance().addMessage(field, facesMsg);
+	}	
 
 }

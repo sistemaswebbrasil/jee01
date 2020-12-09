@@ -48,13 +48,4 @@
 		<param-value>Development</param-value>
 	</context-param>
 
-	<filter>
-		<filter-name>FlashScopeFixerFilter</filter-name>
-		<filter-class>dk.sd.medarbejderdata.common.FlashScopeFixerFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>FlashScopeFixerFilter</filter-name>
-		<url-pattern>*.xhtml</url-pattern>
-	</filter-mapping>
-
 </web-app>

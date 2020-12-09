@@ -5,7 +5,7 @@
 
 <ui:define name="title">#{msg.create_user}</ui:define>
 	<ui:define name="content">
-		<h:form>			
+		<h:form id="form">			
 			<div class="p-grid">
 				<div class="p-col p-col-align-start">
 					<p:panel id="panel" header=" ">
@@ -15,11 +15,12 @@
 
 							<p:outputLabel for="name" value="#{msg.name}" />
 							<p:inputText id="name" value="#{userBean.user.name}" required="true" requiredMessage="#{msg.error_required_user_name}" />
-
 							
 							<p:outputLabel for="email" value="#{msg.email}" />
-							<p:inputText id="email" value="#{userBean.user.email}" />	
-							
+							<p:inputText id="email" value="#{userBean.user.email}"  required="true" >
+								<p:ajax event="keyup"  listener="#{userBean.emailUnique}"  process="@this,email" update="@form messages" />																						
+							</p:inputText>			
+							<p:message for="email" display="icon" />							
 
 						</p:panelGrid>
 					</p:panel>

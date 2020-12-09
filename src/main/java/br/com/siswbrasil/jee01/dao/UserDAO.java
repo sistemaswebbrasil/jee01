@@ -9,7 +9,7 @@ import javax.persistence.Query;
 import br.com.siswbrasil.jee01.model.User;
 
 @Stateless
-public class UserDAO extends GenericDAO<User> {
+public class UserDAO extends GenericDAO<User,Long> {
 
 	@PersistenceContext(unitName = "default")
 	private EntityManager em;

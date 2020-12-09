@@ -9,7 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 import br.com.siswbrasil.jee01.exception.DataBaseRuntimeException;
 
-public abstract class GenericDAO<T> {
+public abstract class GenericDAO<T,ID> {
 
 	private Class<T> entityClass;
 
