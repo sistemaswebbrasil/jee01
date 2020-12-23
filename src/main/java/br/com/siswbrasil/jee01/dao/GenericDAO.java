@@ -1,17 +1,13 @@
 package br.com.siswbrasil.jee01.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
-
-import br.com.siswbrasil.jee01.exception.DataBaseRuntimeException;
 
 public abstract class GenericDAO<T,ID> {
 
-	private Class<T> entityClass;
+	protected Class<T> entityClass;
 
 	public GenericDAO(Class<T> entityClass) {
 		this.entityClass = entityClass;
@@ -35,7 +31,9 @@ public abstract class GenericDAO<T,ID> {
 		return getEntityManager().find(entityClass, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<T> findAll() {
+		@SuppressWarnings("rawtypes")
 		CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
 		cq.select(cq.from(entityClass));
 		return getEntityManager().createQuery(cq).getResultList();

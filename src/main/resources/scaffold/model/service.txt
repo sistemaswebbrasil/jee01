@@ -1,0 +1,9 @@
+package ${service.package};
+
+import javax.ejb.Stateless;
+import ${entity.package}.${entity.class};
+
+@Stateless
+public class ${service.class} extends GenericServiceImpl<${entity.class},${entity.id.type}> {
+
+}

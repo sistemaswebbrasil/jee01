@@ -18,12 +18,12 @@
 							p-col-12 p-md-12 p-lg-11"
 							contentStyleClass="p-align-baseline ui-fluid">
 
-							<p:outputLabel value="#{bundle.CreateTaskLabel_title}"
+							<p:outputLabel value="#{lb['task.title']}"
 								for="title" />
 							<p:inputText id="title" value="#{taskBean.selected.title}"
-								title="#{bundle.CreateTaskTitle_title}" />
+								title="#{lb['task.title']}" />
 
-							<p:outputLabel value="#{bundle.CreateTaskLabel_description}"
+							<p:outputLabel value="#{lb['task.description']}"
 								for="description" />
 
 							<p:inputTextarea id="description" rows="6" cols="33"
@@ -35,9 +35,9 @@
 			</div>
 
 			<p:toolbar>
-				<f:facet name="right">
+				<f:facet name="right">  
 					<p:linkButton outcome="index" value="#{bundle.CreateTaskShowAllLink}" action="index.xhtml?faces-redirect=true" icon="pi pi-search" style="margin-right:20px;" />
-					<p:commandButton value="#{bundle.CreateTaskSaveLink}" action="#{taskBean.create}" process="@form"  update="@form" icon="pi pi-save" />
+					<p:commandButton value="#{bundle.CreateTaskSaveLink}" action="#{taskBean.create}" process="@form"  update="@all" icon="pi pi-save" />
 				</f:facet>
 			</p:toolbar>
 

@@ -2,12 +2,21 @@ package ${dao.package};
 
 import javax.ejb.Stateless;
 import ${entity.package}.${entity.class};
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Stateless
-public class ${dao.class} extends GenericDAO<${entity.class}> {
+public class ${dao.class} extends GenericDAO<${entity.class},${entity.id.type}> {
+
+	@PersistenceContext(unitName = "default")
+	private EntityManager em;
+	
+	@Override
+	protected EntityManager getEntityManager() {
+		return em;
+	}	
 
 	public ${dao.class}() {
 		super(${entity.class}.class);
 	}	
-	
 }
