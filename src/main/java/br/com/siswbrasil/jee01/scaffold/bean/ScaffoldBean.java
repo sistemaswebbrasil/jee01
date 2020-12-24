@@ -218,6 +218,9 @@ public class ScaffoldBean implements Serializable {
 				if (line.contains("${dao.class}")) {
 					line = line.replace("${dao.class}", daoClass);
 				}
+				if (line.contains("${service.class}")) {
+					line = line.replace("${service.class}", serviceClass);
+				}				
 
 				newLines.add(line);
 			}
@@ -239,6 +242,73 @@ public class ScaffoldBean implements Serializable {
 			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo DAO");
 		}
 
+	}
+	
+	public void generateBean() {
+		try {
+
+			if (selected.getProperties().isEmpty()) {
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
+						MessageUtil.getMsg("error.scaffold.not_found"));
+			}
+			String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
+			String beanParcialPath = propertiesUtil.get(SCAFFOLD_BEAN_PATH);
+			String modelParcialBeanPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
+
+			String beanPath = basePath.concat(beanParcialPath);
+			String modelBeanPath = basePath.concat(modelParcialBeanPath.concat("/bean.txt"));
+			String entityPackage = "";
+			String idType = null;
+			for (AvaliableProperties entityLine : selected.getProperties()) {
+				if (entityLine.getName() == "packageName") {
+					entityPackage = entityLine.getValue();
+				}
+				if (entityLine.getIsId().booleanValue() == true) {
+					idType = entityLine.getType();
+				}
+			}
+			String beanPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".bean");
+			String beanClass = selected.getName().concat("DAO");
+			String beanClassPath = String.format("%s/%s.%s", beanPath, beanClass, "java");
+			List<String> lines = readFile(modelBeanPath, false);
+			List<String> newLines = new ArrayList<String>();
+
+			for (String line : lines) {
+				if (line.contains("${bean.package}")) {
+					line = line.replace("${bean.package}", beanPackage);
+				}
+				if (line.contains("${entity.package}")) {
+					line = line.replace("${entity.package}", entityPackage);
+				}
+				if (line.contains("${entity.class}")) {
+					line = line.replace("${entity.class}", selected.getName());
+				}
+				if (line.contains("${entity.id.type}") && StringUtils.isEmpty(idType) == false) {
+					line = line.replace("${entity.id.type}", idType);
+				}
+				if (line.contains("${bean.class}")) {
+					line = line.replace("${bean.class}", beanClass);
+				}
+
+				newLines.add(line);
+			}
+
+			objectContent = "";
+			for (String line : newLines) {
+				objectContent += line + "\n";
+			}
+
+			try {
+				FileWriter fileWriter = new FileWriter(beanClassPath);
+				fileWriter.write(objectContent);
+				fileWriter.close();
+			} catch (IOException e) {
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+			}
+
+		} catch (Exception e) {
+			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
+		}
 	}
 
 	public void generateLabels() {

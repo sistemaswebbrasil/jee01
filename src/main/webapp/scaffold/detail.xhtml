@@ -80,6 +80,9 @@
 						<p:commandButton value="#{msg['scaffold.generate_service']}" action="#{scaffoldBean.generateService()}" icon="pi pi-clone" update="@form messages">
 							<p:confirm header="Confirmation" message="#{msg['scaffold.generate_service.confirm']}" icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
+						<p:commandButton value="#{msg['scaffold.generate_bean']}" action="#{scaffoldBean.generateBean()}" icon="pi pi-clone" update="@form messages">
+							<p:confirm header="Confirmation" message="#{msg['scaffold.generate_bean.confirm']}" icon="pi pi-exclamation-triangle" />
+						</p:commandButton>						
 					</div>
 
 					<div class="row">

@@ -33,6 +33,6 @@ public class Organization implements Serializable {
 	@NotNull
 	private String companyName;
 
-	private String radingName;
+	private String tradingName;
 
 }
