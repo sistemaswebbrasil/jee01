@@ -242,6 +242,7 @@ public class ScaffoldBean implements Serializable {
 	}
 
 	public void generateLabels() {
+		System.out.println(selected);
 		if (selected.getProperties().isEmpty()) {
 			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.scaffold.not_found"));
 		}
@@ -256,17 +257,37 @@ public class ScaffoldBean implements Serializable {
 		List<String> lines = readFile(labelPath, true);
 		List<String> newLines = new ArrayList<String>();
 		List<AvaliableProperties> properties = selected.getProperties();
-
 		for (String line : lines) {
 			newLines.add(line);
 		}
 
-		for (AvaliableProperties item : properties) {
+		for (AvaliableProperties item : properties) {			
 			if (!StringUtils.isEmpty(item.getValue())) {
 				continue;
 			}
 
 			String formattedName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, item.getName());
+			formattedName = formattedName.replace("-", " ");
+			formattedName = StringUtils.capitalize(formattedName);
+			String newLine = String.format("%s.%s=%s", selected.getName().toLowerCase(), item.getName(), formattedName);
+
+			Boolean fieldExist = false;
+			for (String line : lines) {
+				if (line.substring(0, line.indexOf("=")).equalsIgnoreCase(newLine.substring(0, newLine.indexOf("=")))) {
+					fieldExist = true;
+				}
+			}
+			if (fieldExist == false) {
+				newLines.add(newLine);
+			}
+		}
+		
+		for (AvaliableProperties item : properties) {			
+			if (StringUtils.isEmpty(item.getValue()) || item.getType().contains("package")) {
+				continue;
+			}
+
+			String formattedName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, item.getValue());
 			formattedName = formattedName.replace("-", " ");
 			formattedName = StringUtils.capitalize(formattedName);
 			String newLine = String.format("%s.%s=%s", selected.getName().toLowerCase(), item.getName(), formattedName);
@@ -276,11 +297,10 @@ public class ScaffoldBean implements Serializable {
 					fieldExist = true;
 				}
 			}
-			System.out.println(fieldExist);
 			if (fieldExist == false) {
 				newLines.add(newLine);
 			}
-		}
+		}		
 
 		newLines.sort((p1, p2) -> p1.compareTo(p2));
 
@@ -337,6 +357,31 @@ public class ScaffoldBean implements Serializable {
 				selectedIsId = false;
 			}
 		}
+		String entityCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName());		
+		AvaliableProperties property = selected.new AvaliableProperties("entityCamelCase", "entity",	false, entityCamelCase);
+		properties.add(property);
+		
+		String entityListCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "List";		
+		property = selected.new AvaliableProperties("entityListCamelCase", "entityList",	false, entityListCamelCase);
+		properties.add(property);
+		
+		String entityCreateCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Create";		
+		property = selected.new AvaliableProperties("entityCreateCamelCase", "entityCreate",	false, entityCreateCamelCase);
+		properties.add(property);
+		
+		String entityEditCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Edit";		
+		property = selected.new AvaliableProperties("entityEditCamelCase", "entityEdit",	false, entityEditCamelCase);
+		properties.add(property);
+		
+		String entityDetailCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Detail";		
+		property = selected.new AvaliableProperties("entityDetailCamelCase", "entityDetail",	false, entityDetailCamelCase);
+		properties.add(property);			
+		
+		String entityDeleteCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Delete";		
+		property = selected.new AvaliableProperties("entityDeleteCamelCase", "entityDelete",	false, entityDeleteCamelCase);
+		properties.add(property);	
+		
+		
 		selected.setProperties(properties);
 	}
 
