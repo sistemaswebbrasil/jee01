@@ -1,4 +1,4 @@
-package ${bean.package};
+package br.com.siswbrasil.jee01.bean;
 
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
@@ -9,30 +9,30 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import ${entity.package}.${entity.class};
-import ${service.package}.${service.class};
+import br.com.siswbrasil.jee01.model.Organization;
+import br.com.siswbrasil.jee01.service.OrganizationService;
 
 
 @Getter
 @Setter
 @Named
 @RequestScoped
-public class ${bean.class} implements Serializable {
+public class OrganizationBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private ${service.class} service;
+	private OrganizationService service;
 	
     @Inject
     private FacesContext facesContext;
     	
-	private ${entity.id.type} ${entity.id.var};
-	private ${entity.class} ${entity.var};
+	private Long organizationId;
+	private Organization organization;
     
     public void init() {    
-        if (${entity.id.var} == null) {
-            ${entity.var} = new ${entity.class}();
+        if (organizationId == null) {
+            organization = new Organization();
         } else {
 	        FacesMessage info = new FacesMessage( FacesMessage.SEVERITY_INFO, "Erro", "Registro não encontrado");
 	        facesContext.addMessage(null, info);
@@ -40,10 +40,10 @@ public class ${bean.class} implements Serializable {
     }
     
     public String save() throws Throwable {
-    	if (${entity.var}.getId() == null) {
-            service.create(${entity.var});
+    	if (organization.getId() == null) {
+            service.create(organization);
         } else {
-            service.update(${entity.var});
+            service.update(organization);
         }
         FacesMessage info = new FacesMessage( "Registro salvo com sucesso!!");
         facesContext.addMessage(null, info);

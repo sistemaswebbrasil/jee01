@@ -218,10 +218,6 @@ public class ScaffoldBean implements Serializable {
 				if (line.contains("${dao.class}")) {
 					line = line.replace("${dao.class}", daoClass);
 				}
-				if (line.contains("${service.class}")) {
-					line = line.replace("${service.class}", serviceClass);
-				}				
-
 				newLines.add(line);
 			}
 
@@ -246,6 +242,8 @@ public class ScaffoldBean implements Serializable {
 	
 	public void generateBean() {
 		try {
+			
+			System.out.println("Teste");
 
 			if (selected.getProperties().isEmpty()) {
 				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
@@ -254,24 +252,45 @@ public class ScaffoldBean implements Serializable {
 			String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
 			String beanParcialPath = propertiesUtil.get(SCAFFOLD_BEAN_PATH);
 			String modelParcialBeanPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
-
 			String beanPath = basePath.concat(beanParcialPath);
 			String modelBeanPath = basePath.concat(modelParcialBeanPath.concat("/bean.txt"));
+			
+			System.out.println("basePath "+basePath);
+			System.out.println("beanParcialPath "+beanParcialPath);
+			System.out.println("modelParcialBeanPath "+modelParcialBeanPath);
+			System.out.println("modelBeanPath "+modelBeanPath);			
+			
 			String entityPackage = "";
-			String idType = null;
+			String idType = "";
+			String entityCamelCase = "";
 			for (AvaliableProperties entityLine : selected.getProperties()) {
 				if (entityLine.getName() == "packageName") {
 					entityPackage = entityLine.getValue();
 				}
 				if (entityLine.getIsId().booleanValue() == true) {
-					idType = entityLine.getType();
+					idType = entityLine.getType();  
 				}
+				if (entityLine.getType() == "entityCamelCase") {
+					entityCamelCase = entityLine.getValue();
+				}
+				System.out.println("------------------------------");
+				System.out.println(entityLine);
+				
 			}
 			String beanPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".bean");
-			String beanClass = selected.getName().concat("DAO");
+			String beanClass = selected.getName().concat("Bean");
+			String servicePackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".service");
+			String serviceClass = selected.getName().concat("Service");
 			String beanClassPath = String.format("%s/%s.%s", beanPath, beanClass, "java");
+			
 			List<String> lines = readFile(modelBeanPath, false);
 			List<String> newLines = new ArrayList<String>();
+			
+			System.out.println("beanPackage "+beanPackage);
+			System.out.println("beanClass "+beanClass);
+			System.out.println("servicePackage "+servicePackage);
+			System.out.println("serviceClass "+serviceClass);
+			System.out.println("beanClassPath "+beanClassPath);
 
 			for (String line : lines) {
 				if (line.contains("${bean.package}")) {
@@ -289,7 +308,23 @@ public class ScaffoldBean implements Serializable {
 				if (line.contains("${bean.class}")) {
 					line = line.replace("${bean.class}", beanClass);
 				}
-
+				if (line.contains("${service.class}")) {
+					line = line.replace("${service.class}", serviceClass);
+				}
+				if (line.contains("${service.package}")) {
+					line = line.replace("${service.package}", servicePackage);
+				}
+				if (line.contains("${entity.var}")) {
+					line = line.replace("${entity.var}", entityCamelCase );
+				}
+				if (line.contains("${entity.id.var}")) {
+					line = line.replace("${entity.id.var}", entityCamelCase + "Id" );
+				}				
+				if (line.contains("${entity.id.type}")) {
+					line = line.replace("${entity.id.type}", idType );
+				}
+				//idType
+				//entity.var
 				newLines.add(line);
 			}
 
@@ -302,11 +337,15 @@ public class ScaffoldBean implements Serializable {
 				FileWriter fileWriter = new FileWriter(beanClassPath);
 				fileWriter.write(objectContent);
 				fileWriter.close();
+				
+				System.out.println(objectContent);
 			} catch (IOException e) {
+				e.printStackTrace();
 				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
 		}
 	}
