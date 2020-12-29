@@ -6,10 +6,12 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.siswbrasil.jee01.facade.TaskFacade;
 import br.com.siswbrasil.jee01.model.Task;
+import br.com.siswbrasil.jee01.service.TaskService;
 import br.com.siswbrasil.jee01.util.MessageUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,25 +24,25 @@ public class TaskBean implements Serializable {
 
 	private static final long serialVersionUID = -2190180383973531783L;
 
-	@EJB
-	private TaskFacade facade;
+	@Inject
+	private TaskService service;
 	
 	private List<Task> taskList = new ArrayList<Task>();
 	
 	private Task selected = new Task();  
 
 	public List<Task> listAll() {
-		return facade.findAll();
+		return service.findAll();
 	}
 
 	public String edit(Long id) {
-		selected = facade.find(id);
+		selected = service.findById(id);
 		return "edit";
 	}
 
-	public String update() {
+	public String update() throws Throwable {
 		try {
-			facade.edit(selected);
+			service.update(selected);
 			MessageUtil.addSuccessMessage("Atualizado com sucesso");
 			return "index.xhtml?faces-redirect=true";
 		} catch (Exception e) {
@@ -49,9 +51,9 @@ public class TaskBean implements Serializable {
 		}
 	}
 
-	public String create() {
+	public String create() throws Throwable {
 		try {
-			facade.create(selected);
+			service.create(selected);
 			MessageUtil.addSuccessMessage("Sucesso","Criado com sucesso");
 
 			selected = new Task();
@@ -63,8 +65,7 @@ public class TaskBean implements Serializable {
 	}
 	
 	public void delete(Long id) {
-		Task entity = facade.find(id);
-		facade.remove(entity);
+		service.deleteById(id);
 		MessageUtil.addSuccessMessage("Sucesso","Removido com sucesso");		
 	}	
 

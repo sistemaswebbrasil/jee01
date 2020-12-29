@@ -41,6 +41,7 @@ public class UserBean implements Serializable {
 	}
 
 	public String save() throws Throwable {
+		emailUnique();
 		try {
 			service.create(user);
 			user = new User();

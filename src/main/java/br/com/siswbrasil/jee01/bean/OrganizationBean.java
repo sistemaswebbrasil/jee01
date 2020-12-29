@@ -1,16 +1,17 @@
 package br.com.siswbrasil.jee01.bean;
 
 import java.io.Serializable;
+
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import lombok.Getter;
-import lombok.Setter;
 
 import br.com.siswbrasil.jee01.model.Organization;
 import br.com.siswbrasil.jee01.service.OrganizationService;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter
@@ -46,7 +47,7 @@ public class OrganizationBean implements Serializable {
             service.update(organization);
         }
         FacesMessage info = new FacesMessage( "Registro salvo com sucesso!!");
-        facesContext.addMessage(null, info);
+//        facesContext.addMessage(null, info);
         return "/index.xhtml?faces-redirect=true";
     }  
 

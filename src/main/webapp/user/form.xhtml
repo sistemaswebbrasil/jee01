@@ -30,7 +30,9 @@
 			<p:toolbar>
 				<f:facet name="right">					
 					<p:linkButton outcome="index" value="#{msg.list_user}" action="index.xhtml?faces-redirect=true" icon="pi pi-search" style="margin-right:20px;" />
-					<p:commandButton value="#{msg.save}" action="#{userBean.save}" update="@form messages" icon="pi pi-save" />					
+					<p:commandButton value="#{msg.save}" action="#{userBean.save}" update="@form messages" icon="pi pi-save"
+					disabled="#{facesContext.validationFailed}" 
+					/>					
 				</f:facet>
 			</p:toolbar>    			
 			

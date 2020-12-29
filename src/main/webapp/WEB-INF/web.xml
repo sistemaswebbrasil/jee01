@@ -13,6 +13,17 @@
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+<!-- 	<context-param> -->
+<!-- 	    <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name> -->
+<!-- 	    <param-value>${facelets.cache}</param-value> -->
+<!-- 	    <param-value>${scaffold.base.path}</param-value> -->
+<!-- 	</context-param>	 -->
+
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>${javax.faces.PROJECT_STAGE}</param-value>
+	</context-param>
 
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
@@ -43,9 +54,9 @@
 		<location>/error/500.xhtml</location>
 	</error-page>
 
-	<context-param>
-		<param-name>javax.faces.PROJECT_STAGE</param-name>
-		<param-value>Development</param-value>
-	</context-param>
+<!-- 	<context-param> -->
+<!-- 		<param-name>javax.faces.PROJECT_STAGE</param-name> -->
+<!-- 		<param-value>Development</param-value> -->
+<!-- 	</context-param> -->
 
 </web-app>

@@ -13,14 +13,13 @@ public class PropertiesUtil implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public String get(String param) {
-		Properties prop = this.loadPropertiesFile("config.properties");
+		Properties prop = this.loadPropertiesFile("application.properties");
 		return (String) prop.get(param);
 	}
 
 	public Properties loadPropertiesFile(String filePath) {
 
 		Properties prop = new Properties();
-
 		try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(filePath)) {
 			prop.load(resourceAsStream);
 		} catch (IOException e) {
