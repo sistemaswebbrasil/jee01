@@ -74,15 +74,22 @@
 						<p:commandButton value="#{msg['scaffold.generate_label']}" action="#{scaffoldBean.generateLabels()}" icon="pi pi-tags" update="@form">
 							<p:confirm header="Confirmation" message="#{msg['scaffold.generate_label.confirm']}" icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
-						<p:commandButton value="#{msg['scaffold.generate_dao']}" action="#{scaffoldBean.generateDao()}" icon="pi pi-clone" update="@form messages">
+						<p:commandButton value="#{msg['scaffold.generate_dao']}" action="#{scaffoldBean.generateDao()}" icon="pi pi-clone"
+							update="@form messages">
 							<p:confirm header="Confirmation" message="#{msg['scaffold.generate_dao.confirm']}" icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
-						<p:commandButton value="#{msg['scaffold.generate_service']}" action="#{scaffoldBean.generateService()}" icon="pi pi-clone" update="@form messages">
+						<p:commandButton value="#{msg['scaffold.generate_service']}" action="#{scaffoldBean.generateService()}" icon="pi pi-clone"
+							update="@form messages">
 							<p:confirm header="Confirmation" message="#{msg['scaffold.generate_service.confirm']}" icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
-						<p:commandButton value="#{msg['scaffold.generate_bean']}" action="#{scaffoldBean.generateBean()}" icon="pi pi-clone" update="@form messages">
+						<p:commandButton value="#{msg['scaffold.generate_bean']}" action="#{scaffoldBean.generateBean()}" icon="pi pi-clone"
+							update="@form messages">
 							<p:confirm header="Confirmation" message="#{msg['scaffold.generate_bean.confirm']}" icon="pi pi-exclamation-triangle" />
-						</p:commandButton>						
+						</p:commandButton>
+						<p:commandButton value="#{msg['scaffold.generate_view_form']}" action="#{scaffoldBean.generateViewForm()}" icon="pi pi-clone"
+							update="@form messages">
+							<p:confirm header="Confirmation" message="#{msg['scaffold.generate_view_form.confirm']}" icon="pi pi-exclamation-triangle" />
+						</p:commandButton>
 					</div>
 
 					<div class="row">

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.ExternalContext;
@@ -52,6 +53,10 @@ public class ScaffoldBean implements Serializable {
 
 	@Inject
 	private PropertiesUtil propertiesUtil;
+	
+	@Inject
+	private Logger LOG;	
+	
 	private String finalEntityPath;
 
 	@PostConstruct
@@ -322,6 +327,130 @@ public class ScaffoldBean implements Serializable {
 			e.printStackTrace();
 			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
 		}
+	}
+	
+	public void generateViewForm() {
+		try {
+			if (selected.getProperties().isEmpty()) {
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
+						MessageUtil.getMsg("error.scaffold.not_found"));
+			}
+			String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
+			String baseViewPath = propertiesUtil.get(SCAFFOLD_VIEW_PATH);			
+			//String beanClassPath = String.format("%s/%s.%s", beanPath, beanClass, "java");
+			
+			String baseViewFolderName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, selected.getName());		
+			
+			String baseViewFolderPath = baseViewPath + "/" + baseViewFolderName;
+			String baseViewFormPath = baseViewFolderPath + "/form.xhtml";
+			String modelParcialBeanPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
+			//String beanPath = basePath.concat(beanParcialPath);
+			String modelViewFormPath = basePath.concat(modelParcialBeanPath.concat("/viewForm.txt"));
+
+			String entityPackage = "";
+			String entityCreateLabel = "";
+			String entityListLabel = "";
+			String idType = "";
+			String entityCamelCase = "";
+			String entityEditLabel = "";
+			String entityDetailLabel= "";
+			String entityDeleteLabel= "";
+			LOG.info("---------------------DADOS---------------------");
+			LOG.info("basePath "+basePath);			
+			LOG.info("baseViewPath "+baseViewPath);
+			LOG.info("baseViewFolderName "+baseViewFolderName);
+			LOG.info("baseViewFolderPath "+baseViewFolderPath);			
+			LOG.info("modelParcialBeanPath "+modelParcialBeanPath);
+			LOG.info("modelViewFormPath "+modelViewFormPath);			
+			
+			for (AvaliableProperties entityLine : selected.getProperties()) {
+
+				if (entityLine.getType() == "entityCamelCase") {
+					entityCamelCase = entityLine.getValue();
+				}				
+				if (entityLine.getName() == "entityCreate") {
+					entityCreateLabel  = entityCamelCase +"."+ entityLine.getName();
+				}
+				if (entityLine.getName() == "entityList") {
+					entityListLabel  = entityCamelCase +"."+ entityLine.getName();
+				}
+				if (entityLine.getName() == "entityEdit") {
+					entityEditLabel  = entityCamelCase +"."+ entityLine.getName();
+				}
+				if (entityLine.getName() == "entityDetail") {
+					entityDetailLabel  = entityCamelCase +"."+ entityLine.getName();
+				}
+				if (entityLine.getName() == "entityDelete") {
+					entityDeleteLabel  = entityCamelCase +"."+ entityLine.getName();
+				}						
+
+				System.out.println("------------------------------");
+				System.out.println(entityLine);
+
+			}
+//			String beanPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".bean");
+			String beanClass = selected.getName().concat("Bean");
+			String beanClassView = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, beanClass);			
+
+			
+
+			List<String> lines = readFile(modelViewFormPath, false);
+			List<String> newLines = new ArrayList<String>();
+
+			for (String line : lines) {
+				if (line.contains("${view.beanForm}")) {
+					line = line.replace("${view.beanForm}", beanClassView);
+				}
+				if (line.contains("${view.beanForm}")) {
+					line = line.replace("${view.beanForm}", beanClassView);
+				}				
+				if (line.contains("${entity.var}")) {
+					line = line.replace("${entity.var}", entityCamelCase);
+				}				
+				if (line.contains("${entity.label.create}")) {
+					line = line.replace("${entity.label.create}", entityCreateLabel);
+				}
+				if (line.contains("${entity.label.list}")) {
+					line = line.replace("${entity.label.list}", entityListLabel);
+				}				
+				if (line.contains("${entity.label.edit}")) {
+					line = line.replace("${entity.label.edit}", entityEditLabel);
+				}				
+				if (line.contains("${entity.label.detail}")) {
+					line = line.replace("${entity.label.detail}", entityDetailLabel);
+				}				
+				if (line.contains("${entity.label.delete}")) {
+					line = line.replace("${entity.label.delete}", entityDeleteLabel);
+				}
+				newLines.add(line);
+			}
+
+			objectContent = "";
+			for (String line : newLines) {
+				objectContent += line + "\n";
+			}
+			//String baseViewFormPath = baseViewFolderPath.concat("/form.xhtml");
+			
+			
+			
+			File baseViewFolderPathDir = new File(baseViewFolderPath);
+			if (!baseViewFolderPathDir.exists()){
+				baseViewFolderPathDir.mkdirs();
+			}			
+			
+			try {
+				FileWriter fileWriter = new FileWriter(baseViewFormPath);
+				fileWriter.write(objectContent);
+				fileWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
+		}		
 	}
 
 	public void generateLabels() {
