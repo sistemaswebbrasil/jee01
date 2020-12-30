@@ -34,8 +34,7 @@ public class ${bean.class} implements Serializable {
         if (${entity.id.var} == null) {
             ${entity.var} = new ${entity.class}();
         } else {
-	        FacesMessage info = new FacesMessage( FacesMessage.SEVERITY_INFO, "Erro", "Registro não encontrado");
-	        facesContext.addMessage(null, info);
+			${entity.var} = service.findById(${entity.id.var});
         }
     }
     
@@ -48,6 +47,21 @@ public class ${bean.class} implements Serializable {
         FacesMessage info = new FacesMessage( "Registro salvo com sucesso!!");
         facesContext.addMessage(null, info);
         return "/index.xhtml?faces-redirect=true";
-    }  
+    }
+    
+	public void delete(${entity.id.type} ${entity.id.var}) {
+		try {
+			service.deleteById(${entity.id.var});
+			MessageUtil.addSuccessMessage("Excluído com sucesso");
+			
+	        FacesMessage info = new FacesMessage( "Excluído com sucesso!!");
+	        facesContext.addMessage(null, info);			
+
+		} catch (Exception e) {
+			FacesMessage info = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Não foi possível excluir o registro");
+			facesContext.addMessage(null, info);			
+			LOG.log(Level.SEVERE,"Erro", "Não foi possível excluir o registro",e);			
+		}
+	}
 
 }

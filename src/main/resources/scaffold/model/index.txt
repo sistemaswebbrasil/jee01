@@ -5,16 +5,16 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">	
 <ui:composition template="../template/master-page.xhtml">
-	<ui:define name="title">#{lb['organization.entityList']}</ui:define>
+	<ui:define name="title">#{lb['${entity.label.list}']}</ui:define>
 	<ui:define name="content">
 		<h:form>
 			<div class="x_panel">
 				<div class="x_title">
-					<h2>#{lb['organization.entityList']}</h2>
+					<h2>#{lb['${entity.label.list}']}</h2>
 					<div class="clearfix"></div>
 				</div>
 				<div class="x_content">
-					<p:dataTable var="item" value="#{organizationBean.listAll()}" reflow="true">
+					<p:dataTable var="item" value="#{${view.beanList}.listAll()}" reflow="true">
 						<p:column style="width:33px;text-align: center">								
 							<p:link outcome="form.xhtml" type="button" styleClass="btn btn-primary" >
 								<i class="fa fa-edit" />
@@ -22,36 +22,23 @@
 							</p:link>														
 						</p:column>
 						<p:column style="width:33px;text-align: center">							
-							<p:commandLink action="#{organizationBean.delete(item.id)}" type="button" styleClass="btn btn-danger" update="@form messages" title="#{msg.delete}">
+							<p:commandLink action="#{${view.beanList}.delete(item.id)}" type="button" styleClass="btn btn-danger" update="@form messages" title="#{msg.delete}">
 								<i class="fa fa-trash" />
 								<p:confirm header="#{msg.confirm}" message="#{msg.delete_confirm}" icon="pi pi-exclamation-triangle" /> 
 							</p:commandLink>
 						</p:column>
 						
-						
-						<p:column headerText="#{lb['organization.initials']}"
+						${partial.fields.begin}
+						<p:column headerText="#{lb['${entity.var}.${entity.field}']}"
 							style="text-align: center">
-							<h:outputText value="#{item.initials}" />
+							<h:outputText value="#{item.${entity.field}}" />
 						</p:column>
-						
-
-						<p:column headerText="#{lb['organization.companyName']}"
-							style="text-align: center">
-							<h:outputText value="#{item.companyName}" />
-						</p:column>
-						
-
-						<p:column headerText="#{lb['organization.tradingName']}"
-							style="text-align: center">
-							<h:outputText value="#{item.tradingName}" />
-						</p:column>
-						
-
+						${partial.fields.end}
 						
 					</p:dataTable>
 					<p:toolbar>
 						<f:facet name="right">
-							<p:commandButton value="#{lb['organization.entityCreate']}"
+							<p:commandButton value="#{lb['${entity.label.create}']}"
 								action="form.xhtml?faces-redirect=true" icon="pi pi-save" />
 						</f:facet>
 					</p:toolbar>

@@ -3,6 +3,7 @@ package br.com.siswbrasil.jee01.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -52,8 +53,9 @@ public class OrganizationBean implements Serializable {
 			LOG.info("ID não nulo");			
 			organization = service.findById(organizationId);
 			
-			//FacesMessage info = new FacesMessage(FacesMessage.SEVERITY_INFO, "Erro", "Registro não encontrado");
+			FacesMessage info = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Registro não encontrado");
 			//facesContext.addMessage(null, info);
+
 		}
 	}
 

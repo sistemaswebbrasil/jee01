@@ -452,23 +452,24 @@ public class ScaffoldBean implements Serializable {
 			
 			for (AvaliableProperties item : selected.getProperties()) {
 				
-				if (StringUtils.isEmpty(item.getValue()) && !item.getIsId()  ) {
-					
-					String tmp = templateFieldsFinal.replace("${entity.field}", item.getName());
-					tmp = tmp.replace("${entity.var}", entityCamelCase);
-					tmp = tmp.replace("${view.beanForm}", beanClassView);
-					
-					finalLines += tmp + "\n";
-					
+				if (StringUtils.isEmpty(item.getValue())) {
+					String tmp = "";
+					if (!item.getIsId()) {
+						tmp = templateFieldsFinal.replace("${entity.field}", item.getName());
+						tmp = tmp.replace("${entity.var}", entityCamelCase);
+						tmp = tmp.replace("${view.beanForm}", beanClassView);
+						tmp = tmp.replace("${optional.render}", "");
+						tmp = tmp.replace("${optional.hidden}", "");
+					}else {
+						tmp = templateFieldsFinal.replace("${entity.field}", item.getName());
+						tmp = tmp.replace("${entity.var}", entityCamelCase);
+						tmp = tmp.replace("${view.beanForm}", beanClassView);
+						tmp = tmp.replace("${optional.render}", String.format("rendered=\"#{not empty %s.%s.%s}\"", beanClassView,entityCamelCase,item.getName()));
+						tmp = tmp.replace("${optional.hidden}", String.format("<h:inputHidden value=\"#{%s.%s.%s}\" />", beanClassView,entityCamelCase,item.getName()));		
+					}
+					finalLines += tmp + "\n";					
 				}
-				/*
-				<p:outputLabel for="${entity.field}" value="#{lb['${entity.var}.${entity.field}']}" />
-				<p:inputText id="${entity.field}" value="#{${view.beanForm}.${entity.var}.${entity.field}}" />
-				 */
-			}
-			
-			
-			
+			}			
 			
 			objectContent = objectContent.replace(templateFields, finalLines);
 			
@@ -495,9 +496,159 @@ public class ScaffoldBean implements Serializable {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
+			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para a view de formulário");
 		}		
 	}
+	
+	public void generateViewList() { 
+	    try {
+	        if (selected.getProperties().isEmpty()) {
+	            MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
+	                    MessageUtil.getMsg("error.scaffold.not_found"));
+	        }
+	        String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
+	        String baseViewPath = propertiesUtil.get(SCAFFOLD_VIEW_PATH);			        
+	        String baseViewFolderName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, selected.getName());
+	        String baseViewFolderPath = baseViewPath + "/" + baseViewFolderName;
+	        String baseViewListPath = baseViewFolderPath + "/index.xhtml";
+	        String modelParcialBeanPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
+	        String modelViewListPath = basePath.concat(modelParcialBeanPath.concat("/index.txt"));
+	        String entityCreateLabel = "";
+	        String entityListLabel = "";
+	        String entityCamelCase = "";
+	        String entityEditLabel = "";
+	        String entityDetailLabel= "";
+	        String entityDeleteLabel= "";
+	        LOG.info("---------------------DADOS---------------------");
+	        LOG.info("basePath "+basePath);			
+	        LOG.info("baseViewPath "+baseViewPath);
+	        LOG.info("baseViewFolderName "+baseViewFolderName);
+	        LOG.info("baseViewFolderPath "+baseViewFolderPath);			
+	        LOG.info("modelParcialBeanPath "+modelParcialBeanPath);
+	        LOG.info("modelViewListPath "+modelViewListPath);			
+	        
+	        for (AvaliableProperties entityLine : selected.getProperties()) {
+
+	            if (entityLine.getType() == "entityCamelCase") {
+	                entityCamelCase = entityLine.getValue();
+	            }				
+	            if (entityLine.getName() == "entityCreate") {
+	                entityCreateLabel  = entityCamelCase +"."+ entityLine.getName();
+	            }
+	            if (entityLine.getName() == "entityList") {
+	                entityListLabel  = entityCamelCase +"."+ entityLine.getName();
+	            }
+	            if (entityLine.getName() == "entityEdit") {
+	                entityEditLabel  = entityCamelCase +"."+ entityLine.getName();
+	            }
+	            if (entityLine.getName() == "entityDetail") {
+	                entityDetailLabel  = entityCamelCase +"."+ entityLine.getName();
+	            }
+	            if (entityLine.getName() == "entityDelete") {
+	                entityDeleteLabel  = entityCamelCase +"."+ entityLine.getName();
+	            }						
+
+	            System.out.println("------------------------------");
+	            System.out.println(entityLine);
+
+	        }
+
+	        String beanClass = selected.getName().concat("Bean");
+	        String beanClassView = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, beanClass);
+	        List<String> lines = readFile(modelViewListPath, false);
+	        List<String> newLines = new ArrayList<String>();
+
+	        for (String line : lines) {
+	            if (line.contains("${view.beanList}")) {
+	                line = line.replace("${view.beanList}", beanClassView);
+	            }
+	            if (line.contains("${view.beanList}")) {
+	                line = line.replace("${view.beanList}", beanClassView);
+	            }				
+	            if (line.contains("${entity.var}")) {
+	                line = line.replace("${entity.var}", entityCamelCase);
+	            }				
+	            if (line.contains("${entity.label.create}")) {
+	                line = line.replace("${entity.label.create}", entityCreateLabel);
+	            }
+	            if (line.contains("${entity.label.list}")) {
+	                line = line.replace("${entity.label.list}", entityListLabel);
+	            }				
+	            if (line.contains("${entity.label.edit}")) {
+	                line = line.replace("${entity.label.edit}", entityEditLabel);
+	            }				
+	            if (line.contains("${entity.label.detail}")) {
+	                line = line.replace("${entity.label.detail}", entityDetailLabel);
+	            }				
+	            if (line.contains("${entity.label.delete}")) {
+	                line = line.replace("${entity.label.delete}", entityDeleteLabel);
+	            }
+	            newLines.add(line);
+	        }
+
+	        objectContent = "";
+	        for (String line : newLines) {
+	            objectContent += line + "\n";
+	        }
+	        
+	        LOG.info("*************************************************");
+	        //LOG.info(objectContent); 
+//				String teste = "";
+	        LOG.info("-------------------------------------------------");
+	        
+	        int beginFieldsTemplate = objectContent.indexOf("${partial.fields.begin}");
+	        int endFieldsTemplate = objectContent.indexOf("${partial.fields.end}") + 21;
+	        
+	        String templateFields = objectContent.substring(beginFieldsTemplate, endFieldsTemplate);
+	        String templateFieldsFinal = templateFields;
+	        templateFieldsFinal = templateFieldsFinal.replace("${partial.fields.begin}", "");
+	        templateFieldsFinal = templateFieldsFinal.replace("${partial.fields.end}", "");
+	        LOG.info(templateFields);
+	        String finalLines = "";
+	        
+	        
+	        for (AvaliableProperties item : selected.getProperties()) {
+	            
+	            if (StringUtils.isEmpty(item.getValue()) && !item.getIsId()  ) {
+	                
+	                String tmp = templateFieldsFinal.replace("${entity.field}", item.getName());
+	                tmp = tmp.replace("${entity.var}", entityCamelCase);
+	                tmp = tmp.replace("${view.beanList}", beanClassView);
+	                
+	                finalLines += tmp + "\n";
+	                
+	            }
+	            /*
+	            <p:outputLabel for="${entity.field}" value="#{lb['${entity.var}.${entity.field}']}" />
+	            <p:inputText id="${entity.field}" value="#{${view.beanList}.${entity.var}.${entity.field}}" />
+	             */
+	        }        
+	        objectContent = objectContent.replace(templateFields, finalLines);
+	        
+	        LOG.info("*************************************************");
+	        LOG.info(objectContent);
+	        
+	        File baseViewFolderPathDir = new File(baseViewFolderPath);
+	        if (!baseViewFolderPathDir.exists()){
+	            baseViewFolderPathDir.mkdirs();
+	        }			
+	        
+	        try {
+	            FileWriter fileWriter = new FileWriter(baseViewListPath);
+	            fileWriter.write(objectContent);
+	            fileWriter.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para a view de listagem");
+	    }		
+	}	
+	
+	
 
 	public void generateLabels() {
 		System.out.println(selected);

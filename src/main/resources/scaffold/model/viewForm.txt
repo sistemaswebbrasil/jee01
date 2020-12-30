@@ -2,7 +2,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
+
+<f:metadata>
+	<f:viewParam name="id" value="#{${view.beanForm}.id}">
+	</f:viewParam>
+	<f:viewAction action="#{${view.beanForm}.init()}" />
+</f:metadata>
+
+<ui:define name="title">
+	<ui:fragment rendered="#{empty ${view.beanForm}.${entity.var}.id}">#{lb['${entity.var}.entityCreate']}</ui:fragment>
+	<ui:fragment rendered="#{not empty ${view.beanForm}.${entity.var}.id}">#{lb['${entity.var}.entityEdit']}</ui:fragment>
+</ui:define>
+
 <ui:define name="title">#{lb['${entity.label.create}']}</ui:define>
+
 	<ui:define name="content">
 		<h:form id="form">			
 			<div class="p-grid">
@@ -13,8 +26,9 @@
 							contentStyleClass="p-align-baseline ">
 							
 							${partial.fields.begin}
-							<p:outputLabel for="${entity.field}" value="#{lb['${entity.var}.${entity.field}']}" />
-							<p:inputText id="${entity.field}" value="#{${view.beanForm}.${entity.var}.${entity.field}}" />
+							<p:outputLabel for="${entity.field}" value="#{lb['${entity.var}.${entity.field}']}" ${optional.render}/>
+							<p:inputText id="${entity.field}" value="#{${view.beanForm}.${entity.var}.${entity.field}}" ${optional.render} />
+							${optional.hidden}
 							${partial.fields.end}
 							
 						</p:panelGrid>

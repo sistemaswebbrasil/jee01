@@ -24,8 +24,7 @@
 							contentStyleClass="p-align-baseline ">
 
 							<p:outputLabel for="id" value="#{lb['organization.id']}" rendered="#{not empty organizationBean.organization.id}" />
-							<p:inputText id="id" value="#{organizationBean.organization.id}" disabled="true"
-								rendered="#{not empty organizationBean.organization.id}" />
+							<p:inputText id="id" value="#{organizationBean.organization.id}" disabled="true" rendered="#{not empty organizationBean.organization.id}" />
 							<h:inputHidden value="#{organizationBean.organization.id}" />
 
 							<p:outputLabel for="initials" value="#{lb['organization.initials']}" />
