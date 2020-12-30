@@ -1,14 +1,16 @@
 package ${bean.package};
 
 import java.io.Serializable;
+import java.util.List;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
+import ${exception.package}.DatabaseException;
+import ${util.package}.MessageUtil;
 import ${entity.package}.${entity.class};
 import ${service.package}.${service.class};
 
@@ -38,29 +40,27 @@ public class ${bean.class} implements Serializable {
         }
     }
     
+	public List<${entity.class}> listAll() throws DatabaseException {
+		return service.findAll();
+	}    
+    
     public String save() throws Throwable {
     	if (${entity.var}.getId() == null) {
             service.create(${entity.var});
         } else {
             service.update(${entity.var});
         }
-        FacesMessage info = new FacesMessage( "Registro salvo com sucesso!!");
-        facesContext.addMessage(null, info);
+        
+        MessageUtil.addSuccessMessage(MessageUtil.getMsg("success"), MessageUtil.getMsg("create_success"));        
         return "/index.xhtml?faces-redirect=true";
     }
     
 	public void delete(${entity.id.type} ${entity.id.var}) {
 		try {
 			service.deleteById(${entity.id.var});
-			MessageUtil.addSuccessMessage("Excluído com sucesso");
-			
-	        FacesMessage info = new FacesMessage( "Excluído com sucesso!!");
-	        facesContext.addMessage(null, info);			
-
+			MessageUtil.addSuccessMessage(MessageUtil.getMsg("success"), MessageUtil.getMsg("delete_success"));
 		} catch (Exception e) {
-			FacesMessage info = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Não foi possível excluir o registro");
-			facesContext.addMessage(null, info);			
-			LOG.log(Level.SEVERE,"Erro", "Não foi possível excluir o registro",e);			
+			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("delete_fail"));							
 		}
 	}
 

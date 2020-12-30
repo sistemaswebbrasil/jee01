@@ -271,6 +271,8 @@ public class ScaffoldBean implements Serializable {
 
 			}
 			String beanPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".bean");
+			String utilPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".util");
+			String exceptionPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".exception");
 			String beanClass = selected.getName().concat("Bean");
 			String servicePackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".service");
 			String serviceClass = selected.getName().concat("Service");
@@ -310,13 +312,21 @@ public class ScaffoldBean implements Serializable {
 				if (line.contains("${entity.id.type}")) {
 					line = line.replace("${entity.id.type}", idType);
 				}
-				newLines.add(line);
+				if (line.contains("${util.package}")) {
+					line = line.replace("${util.package}", utilPackage);
+				}
+				if (line.contains("${exception.package}")) {
+					line = line.replace("${exception.package}", exceptionPackage);
+				}						
+	
 			}
 
 			objectContent = "";
 			for (String line : newLines) {
 				objectContent += line + "\n";
 			}
+			
+			System.out.println("beanClassPath " + beanClassPath);
 
 			try {
 				FileWriter fileWriter = new FileWriter(beanClassPath);

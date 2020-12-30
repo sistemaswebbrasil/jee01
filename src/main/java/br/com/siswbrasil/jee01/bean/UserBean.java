@@ -25,6 +25,7 @@ import lombok.Setter;
 @Setter
 @Named
 @RequestScoped
+//Tem que desaparecer isto aqui
 public class UserBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
