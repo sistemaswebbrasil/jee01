@@ -8,6 +8,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 
+import br.com.siswbrasil.jee01.exception.BusinessException;
 import br.com.siswbrasil.jee01.model.Organization;
 import br.com.siswbrasil.jee01.model.Task;
 import br.com.siswbrasil.jee01.model.User;
@@ -28,29 +29,38 @@ public class Bootstrap {
 
 	@Inject
 	private TaskService taskService;
-	
+
 	@Inject
-	private PropertiesUtil propertiesUtil;	
-	
+	private PropertiesUtil propertiesUtil;
+
 	@Inject
 	private OrganizationService organizationService;
 
 	@PostConstruct
-	public void init() throws Throwable {
+	public void init() {
 		String env = propertiesUtil.get("env");
 		LOG.log(Level.INFO, "----------------------------------------");
-		LOG.log(Level.INFO, "1bootstraping application...");
+		LOG.log(Level.INFO, "Iniciando a aplicação");
 		LOG.log(Level.INFO, "Profile: " + env);
 		LOG.log(Level.INFO, "----------------------------------------");
-		
-		if (env.equalsIgnoreCase("dev")) {			
-			initialUsers();
-			initialTasks();
-			initOrganizations();
+
+		if (env.equalsIgnoreCase("dev")) {
+			LOG.log(Level.INFO, "Gerando dados iniciais de desenvolvimento ...");
+			try {
+				initialUsers();
+				initialTasks();
+				initOrganizations();
+			} catch (BusinessException e) {
+				LOG.log(Level.SEVERE,
+						"Falha ao gerar os dados iniciais de desenvolvimento , aparentemente erro nos dados enviados para o servidor",
+						e);
+			} catch (Throwable e) {
+				LOG.log(Level.SEVERE, "Falha ao gerar os dados iniciais de desenvolvimento ", e);
+			}
 		}
 	}
 
-	private void initialUsers() throws Throwable {
+	private void initialUsers() throws Throwable, BusinessException {
 		LOG.log(Level.INFO, "Initials user list");
 		User user1 = new User(null, "Adriano Faria Alves", "adriano.faria@gmail.com", "adriano.faria");
 		User user2 = new User(null, "Michele Cristina Teixeira Faria Alves", "micheletalves@gmail.com", "mixxa19");
@@ -59,19 +69,24 @@ public class Bootstrap {
 		userService.create(user2);
 		userService.create(user3);
 	}
-	
-	private void initialTasks() throws Throwable {
+
+	private void initialTasks() throws Throwable, BusinessException {
+
 		LOG.log(Level.INFO, "Initials task list");
 		Task task1 = new Task(null, "Estudar", "Reserva um pouco do tempo de folga para se atualizar.");
 		Task task2 = new Task(null, "Trabalhar", "Trabalhar um pouco para pagar as contas.");
 		Task task3 = new Task(null, "Dormir", "Dormir para descançar a cabeça.");
 		taskService.create(task1);
 		taskService.create(task2);
-		taskService.create(task3);		
+		taskService.create(task3);
 	}
-	
-	private void initOrganizations() throws Throwable {
-		Organization organization = new Organization(null, "Home", "Casa Minha", "");
-		organizationService.create(organization);
+
+	private void initOrganizations() throws Throwable, BusinessException {
+		Organization organization1 = new Organization(null, "MATRIZ", "Loja Matriz", "");
+		Organization organization2 = new Organization(null, "FILIAL 01", "Loja filial Centro", "");
+		Organization organization3 = new Organization(null, "FILIAL 02", "Loja filial Galeão", "");
+		organizationService.create(organization1);
+		organizationService.create(organization2);
+		organizationService.create(organization3);
 	}
 }

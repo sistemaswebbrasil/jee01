@@ -7,13 +7,6 @@ import br.com.siswbrasil.jee01.util.MessageUtil;
 public class CustomExceptions {
 
 	public static Throwable converterException(Throwable t) {
-		System.out.println("#############################################");
-		System.out.println("#############################################");
-		System.out.println("#############################################");
-		System.out.println("#############################################");
-		System.out.println("#############################################");
-		System.out.println("#############################################");
-
 		Throwable rootCause = com.google.common.base.Throwables.getRootCause(t);
 		if (rootCause instanceof SQLException) {
 			String sqlErrorMessage = rootCause.getMessage();
@@ -26,14 +19,6 @@ public class CustomExceptions {
 						MessageUtil.getMsg("error.sql.unknown.state"), t);
 			}
 		}
-		
-		System.out.println("#############################################");
-		System.out.println("#############################################");
-		System.out.println("#############################################");
-		System.out.println("#############################################");
-		System.out.println("#############################################");
-		System.out.println("#############################################");		
-
 		return new BusinessException(t.getMessage(), t.getLocalizedMessage(), t);
 	}
 

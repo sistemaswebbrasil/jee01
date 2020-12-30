@@ -98,6 +98,10 @@ public class ScaffoldBean implements Serializable {
 	private List<AvailableObject> scanFiles(String folder, String type) {
 		List<AvailableObject> entities = new ArrayList<AvailableObject>();
 		File actual = new File(folder);
+		LOG.info("Escaneando os arquivos");
+		LOG.info("folder "+folder);
+		LOG.info("type "+type);
+		LOG.info("entities "+entities);
 		for (File f : actual.listFiles()) {
 			AvailableObject object = new AvailableObject();
 			object.setId(UUID.randomUUID().toString());

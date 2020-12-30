@@ -4,15 +4,15 @@
 	version="2.0">
 
 	<persistence-unit name="default" transaction-type="JTA">
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>		
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>		
 <!-- 		<jta-data-source>java:jboss/datasources/PostgreSqlDevDS</jta-data-source> -->
 		<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>		
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 
 			<property name="hibernate.archive.autodetection" value="class" />
-			<property name="hibernate.show_sql" value="true" />
-			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hbm2ddl.auto" value="update" />
 
