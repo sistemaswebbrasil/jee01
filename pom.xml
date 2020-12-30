@@ -154,6 +154,7 @@
 				<filtering>true</filtering>
 				<includes>
 					<include>*.properties</include>
+					<include>*.class</include>
 				</includes>
 			</resource>
 		</resources>

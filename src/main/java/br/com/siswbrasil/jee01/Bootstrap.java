@@ -34,7 +34,7 @@ public class Bootstrap {
 	public void init() throws Throwable {
 		String env = propertiesUtil.get("env");
 		LOG.log(Level.INFO, "----------------------------------------");
-		LOG.log(Level.INFO, "bootstraping application...");
+		LOG.log(Level.INFO, "1bootstraping application...");
 		LOG.log(Level.INFO, "Profile: " + env);
 		LOG.log(Level.INFO, "----------------------------------------");
 		

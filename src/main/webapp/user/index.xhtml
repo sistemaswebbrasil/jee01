@@ -1,53 +1,52 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">	
 <ui:composition template="../template/master-page.xhtml">
-
 	<ui:define name="title">#{msg.list_user}</ui:define>
-
-
 	<ui:define name="content">
 		<h:form>
-
-			<div class="p-grid">
-				<div class="p-col p-col-align-start">
-					<p:panel id="panel" header=" ">
-
-						<p:dataTable var="item" value="#{userBean.listAll()}"  reflow="true">
-						
-							<p:column style="width:33px;text-align: center">
-								<p:commandButton action="#{userBean.edit(item.id)}" icon="pi pi-search" />
-							</p:column>						
-
-							 <p:column style="width:33px;text-align: center">
-								<p:commandButton action="#{userBean.delete(item.id)}" update="@form messages"  icon="pi pi-trash" />
-							</p:column>						
-						
-							<p:column headerText="#{msg.id}" style="width:33px;text-align: center">
-								<h:outputText value="#{item.id}" />
-							</p:column>
-
-							<p:column headerText="#{msg.name}">
-								<h:outputText value="#{item.name}" />
-							</p:column>
-							
-							<p:column headerText="#{msg.email}">
-								<h:outputText value="#{item.email}" />
-							</p:column>							
-							
-						</p:dataTable>
-					</p:panel>
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>#{msg.list_user}</h2>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content">
+					<p:dataTable var="item" value="#{userBean.listAll()}" reflow="true">
+						<p:column style="width:33px;text-align: center">							
+							<p:commandLink action="#{userBean.edit(item.id)}" type="button" styleClass="btn btn-primary" update="@form messages" title="#{msg.edit}">
+								<i class="fa fa-edit" />
+								<p:confirm header="#{msg.confirm}" message="#{msg.delete_confirm}" icon="pi pi-exclamation-triangle" /> 
+							</p:commandLink>							
+						</p:column>
+						<p:column style="width:33px;text-align: center">							
+							<p:commandLink action="#{userBean.delete(item.id)}" type="button" styleClass="btn btn-danger" update="@form messages" title="#{msg.delete}">
+								<i class="fa fa-trash" />
+								<p:confirm header="#{msg.confirm}" message="#{msg.delete_confirm}" icon="pi pi-exclamation-triangle" /> 
+							</p:commandLink>
+						</p:column>
+						<p:column headerText="#{msg.id}"
+							style="width:33px;text-align: center">
+							<h:outputText value="#{item.id}" />
+						</p:column>
+						<p:column headerText="#{msg.name}">
+							<h:outputText value="#{item.name}" />
+						</p:column>  
+						<p:column headerText="#{msg.email}">
+							<h:outputText value="#{item.email}" />
+						</p:column>
+					</p:dataTable>
+					<p:toolbar>
+						<f:facet name="right">
+							<p:commandButton value="#{msg.create_user}"
+								action="form.xhtml?faces-redirect=true" icon="pi pi-save" />
+						</f:facet>
+					</p:toolbar>
 				</div>
 			</div>
-
-			<p:toolbar>
-				<f:facet name="right">
-					<p:commandButton value="#{msg.create_user}" action="form.xhtml?faces-redirect=true" icon="pi pi-save" />					
-				</f:facet>
-			</p:toolbar>
-
 		</h:form>
-
 	</ui:define>
 </ui:composition>
 </html>
