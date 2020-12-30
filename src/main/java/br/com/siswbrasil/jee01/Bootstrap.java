@@ -8,8 +8,10 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 
+import br.com.siswbrasil.jee01.model.Organization;
 import br.com.siswbrasil.jee01.model.Task;
 import br.com.siswbrasil.jee01.model.User;
+import br.com.siswbrasil.jee01.service.OrganizationService;
 import br.com.siswbrasil.jee01.service.TaskService;
 import br.com.siswbrasil.jee01.service.UserService;
 import br.com.siswbrasil.jee01.util.PropertiesUtil;
@@ -29,6 +31,9 @@ public class Bootstrap {
 	
 	@Inject
 	private PropertiesUtil propertiesUtil;	
+	
+	@Inject
+	private OrganizationService organizationService;
 
 	@PostConstruct
 	public void init() throws Throwable {
@@ -41,6 +46,7 @@ public class Bootstrap {
 		if (env.equalsIgnoreCase("dev")) {			
 			initialUsers();
 			initialTasks();
+			initOrganizations();
 		}
 	}
 
@@ -61,7 +67,11 @@ public class Bootstrap {
 		Task task3 = new Task(null, "Dormir", "Dormir para descançar a cabeça.");
 		taskService.create(task1);
 		taskService.create(task2);
-		taskService.create(task3);
-		
+		taskService.create(task3);		
+	}
+	
+	private void initOrganizations() throws Throwable {
+		Organization organization = new Organization(null, "Home", "Casa Minha", "");
+		organizationService.create(organization);
 	}
 }

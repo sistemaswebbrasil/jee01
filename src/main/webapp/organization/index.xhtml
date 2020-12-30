@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="../template/master-page.xhtml">
+
+	<ui:define name="title">#{lb['organization.entityList']}</ui:define>
+
+
+	<ui:define name="content">
+		<h:form>
+
+			<div class="p-grid">
+				<div class="p-col p-col-align-start">
+					<p:panel id="panel" header=" ">
+
+						<p:dataTable var="item" value="#{organizationBean.listAll()}" reflow="true">
+
+							<p:column style="width:33px;text-align: center">
+
+
+								
+								<p:link outcome="form.xhtml" value="Edit">
+								    <f:param name="id" value="#{item.id}" />
+								</p:link>								
+
+
+							</p:column>
+
+							<!-- 							 <p:column style="width:33px;text-align: center"> -->
+							<!-- 								<p:commandButton action="#{organizationBean.delete(item.id)}" update="@form messages"  icon="pi pi-trash" /> -->
+							<!-- 							</p:column>						 -->
+
+							<p:column headerText="#{lb['organization.id']}" style="width:33px;text-align: center">
+								<h:outputText value="#{item.id}" />
+							</p:column>
+
+							<p:column headerText="#{lb['organization.initials']}">
+								<h:outputText value="#{item.initials}" />
+							</p:column>
+
+							<p:column headerText="#{lb['organization.companyName']}">
+								<h:outputText value="#{item.companyName}" />
+							</p:column>
+
+							<p:column headerText="#{lb['organization.tradingName']}">
+								<h:outputText value="#{item.tradingName}" />
+							</p:column>
+
+						</p:dataTable>
+					</p:panel>
+				</div>
+			</div>
+
+			<p:toolbar>
+				<f:facet name="right">
+					<p:commandButton value="#{lb['organization.entityCreate']}" action="form.xhtml?faces-redirect=true" icon="pi pi-save" />
+				</f:facet>
+			</p:toolbar>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

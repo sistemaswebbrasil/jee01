@@ -10,11 +10,15 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "Organizations")
 public class Organization implements Serializable {
@@ -33,6 +37,7 @@ public class Organization implements Serializable {
 	@NotNull
 	private String companyName;
 
+	@NotNull
 	private String tradingName;
 
 }

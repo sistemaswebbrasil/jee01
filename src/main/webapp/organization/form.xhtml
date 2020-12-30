@@ -2,26 +2,52 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
-<ui:define name="title">#{lb['organization.entityCreate']}</ui:define>
+
+	<f:metadata>
+		<f:viewParam name="id" value="#{organizationBean.organizationId}">
+		</f:viewParam>
+		<f:viewAction action="#{organizationBean.init()}" />
+	</f:metadata>
+
+	<ui:define name="title">
+		<ui:fragment rendered="#{empty organizationBean.organization.id}">#{lb['organization.entityCreate']}</ui:fragment>
+		<ui:fragment rendered="#{not empty organizationBean.organization.id}">#{lb['organization.entityEdit']}</ui:fragment>
+	</ui:define>
+
 	<ui:define name="content">
-		<h:form id="form">			
+		<h:form id="form">
 			<div class="p-grid">
 				<div class="p-col p-col-align-start">
 					<p:panel id="panel" header=" ">
 						<p:panelGrid columns="4" layout="flex"
 							columnClasses="p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3"
 							contentStyleClass="p-align-baseline ">
+
+							<p:outputLabel for="id" value="#{lb['organization.id']}" rendered="#{not empty organizationBean.organization.id}" />
+							<p:inputText id="id" value="#{organizationBean.organization.id}" disabled="true"
+								rendered="#{not empty organizationBean.organization.id}" />
+							<h:inputHidden value="#{organizationBean.organization.id}" />
+
+							<p:outputLabel for="initials" value="#{lb['organization.initials']}" />
+							<p:inputText id="initials" value="#{organizationBean.organization.initials}" />
+
+							<p:outputLabel value="#{lb['organization.companyName']}" />
+							<p:inputText value="#{organizationBean.organization.companyName}" />
+
+							<p:outputLabel for="tradingName" value="#{lb['organization.tradingName']}" />
+							<p:inputText id="tradingName" value="#{organizationBean.organization.tradingName}" />
+
 						</p:panelGrid>
 					</p:panel>
 				</div>
-			</div>			
+			</div>
 			<p:toolbar>
-				<f:facet name="right">					
-					<p:linkButton href="index.xhtml" value="#{lb['organization.entityList']}" action="index.xhtml?faces-redirect=true" icon="pi pi-search" style="margin-right:20px;" />
-					<p:commandButton value="#{msg.save}" action="#{organizationBean.save}" update="@form messages" icon="pi pi-save" 
-					/>					
+				<f:facet name="right">
+					<p:linkButton href="index.xhtml" value="#{lb['organization.entityList']}" action="index.xhtml?faces-redirect=true" icon="pi pi-search"
+						style="margin-right:20px;" />
+					<p:commandButton value="#{msg.save}" action="#{organizationBean.save}" update="@form messages" icon="pi pi-save" />
 				</f:facet>
-			</p:toolbar>			
+			</p:toolbar>
 		</h:form>
 	</ui:define>
 </ui:composition>
