@@ -1,5 +1,11 @@
 package br.com.siswbrasil.jee01.bean;
 
+import br.com.siswbrasil.jee01.exception.BusinessException;
+import br.com.siswbrasil.jee01.exception.DatabaseException;
+import br.com.siswbrasil.jee01.model.User;
+import br.com.siswbrasil.jee01.service.UserService;
+import br.com.siswbrasil.jee01.util.MessageUtil;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.siswbrasil.jee01.exception.BusinessException;
-import br.com.siswbrasil.jee01.exception.DatabaseException;
-import br.com.siswbrasil.jee01.model.User;
-import br.com.siswbrasil.jee01.service.UserService;
-import br.com.siswbrasil.jee01.util.MessageUtil;
+
 import lombok.Getter;
 import lombok.Setter;
 

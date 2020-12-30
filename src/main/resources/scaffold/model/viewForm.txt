@@ -11,6 +11,12 @@
 						<p:panelGrid columns="4" layout="flex"
 							columnClasses="p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3"
 							contentStyleClass="p-align-baseline ">
+							
+							${partial.fields.begin}
+							<p:outputLabel for="${entity.field}" value="#{lb['${entity.var}.${entity.field}']}" />
+							<p:inputText id="${entity.field}" value="#{${view.beanForm}.${entity.var}.${entity.field}}" />
+							${partial.fields.end}
+							
 						</p:panelGrid>
 					</p:panel>
 				</div>

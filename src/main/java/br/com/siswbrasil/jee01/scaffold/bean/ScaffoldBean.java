@@ -429,6 +429,48 @@ public class ScaffoldBean implements Serializable {
 			for (String line : newLines) {
 				objectContent += line + "\n";
 			}
+			
+			LOG.info("*************************************************");
+			//LOG.info(objectContent); 
+//			String teste = "";
+			LOG.info("-------------------------------------------------");
+			
+			int beginFieldsTemplate = objectContent.indexOf("${partial.fields.begin}");
+			int endFieldsTemplate = objectContent.indexOf("${partial.fields.end}") + 21;
+			
+			String templateFields = objectContent.substring(beginFieldsTemplate, endFieldsTemplate);
+			String templateFieldsFinal = templateFields;
+			templateFieldsFinal = templateFieldsFinal.replace("${partial.fields.begin}", "");
+			templateFieldsFinal = templateFieldsFinal.replace("${partial.fields.end}", "");
+			LOG.info(templateFields);
+			String finalLines = "";
+			
+			
+			for (AvaliableProperties item : selected.getProperties()) {
+				
+				if (StringUtils.isEmpty(item.getValue()) && !item.getIsId()  ) {
+					
+					String tmp = templateFieldsFinal.replace("${entity.field}", item.getName());
+					tmp = tmp.replace("${entity.var}", entityCamelCase);
+					tmp = tmp.replace("${view.beanForm}", beanClassView);
+					
+					finalLines += tmp + "\n";
+					
+				}
+				/*
+				<p:outputLabel for="${entity.field}" value="#{lb['${entity.var}.${entity.field}']}" />
+				<p:inputText id="${entity.field}" value="#{${view.beanForm}.${entity.var}.${entity.field}}" />
+				 */
+			}
+			
+			
+			
+			
+			objectContent = objectContent.replace(templateFields, finalLines);
+			
+			LOG.info("*************************************************");
+			LOG.info(objectContent);
+			
 			//String baseViewFormPath = baseViewFolderPath.concat("/form.xhtml");
 			
 			
