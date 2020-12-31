@@ -4,18 +4,17 @@
 <ui:composition template="../template/master-page.xhtml">
 
 <f:metadata>
-	<f:viewParam name="id" value="#{${view.beanForm}.id}">
+	<f:viewParam name="id" value="#{${view.beanForm}.${entity.id.var}}">
 	</f:viewParam>
 	<f:viewAction action="#{${view.beanForm}.init()}" />
 </f:metadata>
 
 <ui:define name="title">
-	<ui:fragment rendered="#{empty ${view.beanForm}.${entity.var}.id}">#{lb['${entity.var}.entityCreate']}</ui:fragment>
-	<ui:fragment rendered="#{not empty ${view.beanForm}.${entity.var}.id}">#{lb['${entity.var}.entityEdit']}</ui:fragment>
+	<ui:fragment rendered="#{empty ${view.beanForm}.${entity.id.var}}">#{lb['${entity.var}.entityCreate']}</ui:fragment>
+	<ui:fragment rendered="#{not empty ${view.beanForm}.${entity.id.var}}">#{lb['${entity.var}.entityEdit']}</ui:fragment>
 </ui:define>
 
 <ui:define name="title">#{lb['${entity.label.create}']}</ui:define>
-
 	<ui:define name="content">
 		<h:form id="form">			
 			<div class="p-grid">
@@ -37,7 +36,7 @@
 			</div>			
 			<p:toolbar>
 				<f:facet name="right">					
-					<p:linkButton href="index.xhtml" value="#{lb['${entity.label.list}']}" action="index.xhtml?faces-redirect=true" icon="pi pi-search" style="margin-right:20px;" />
+					<p:linkButton href="index.xhtml" value="#{lb['${entity.label.list}']}" icon="pi pi-search" style="margin-right:20px;" />
 					<p:commandButton value="#{msg.save}" action="#{${view.beanForm}.save}" update="@form messages" icon="pi pi-save" 
 					/>					
 				</f:facet>

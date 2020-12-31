@@ -98,6 +98,10 @@ public class ScaffoldBean implements Serializable {
 	private List<AvailableObject> scanFiles(String folder, String type) {
 		List<AvailableObject> entities = new ArrayList<AvailableObject>();
 		File actual = new File(folder);
+		if (!actual.exists()) {
+			MessageUtil.addErrorMessage("Falha ao ler diretório", String.format("O diretório %s não existe,favor configurar o seu amiente \"appication.{env}.properties\" de acordo com a sua máquina de desenvolvimento! ", folder));
+			return null;
+		}
 		LOG.info("Escaneando os arquivos");
 		LOG.info("folder "+folder);
 		LOG.info("type "+type);
@@ -318,16 +322,14 @@ public class ScaffoldBean implements Serializable {
 				if (line.contains("${exception.package}")) {
 					line = line.replace("${exception.package}", exceptionPackage);
 				}						
-	
+				newLines.add(line);
 			}
 
 			objectContent = "";
 			for (String line : newLines) {
 				objectContent += line + "\n";
 			}
-			
-			System.out.println("beanClassPath " + beanClassPath);
-
+			System.out.println("Teste1");
 			try {
 				FileWriter fileWriter = new FileWriter(beanClassPath);
 				fileWriter.write(objectContent);
@@ -396,7 +398,8 @@ public class ScaffoldBean implements Serializable {
 				}
 				if (entityLine.getName() == "entityDelete") {
 					entityDeleteLabel  = entityCamelCase +"."+ entityLine.getName();
-				}						
+				}	
+				
 
 				System.out.println("------------------------------");
 				System.out.println(entityLine);
@@ -436,6 +439,9 @@ public class ScaffoldBean implements Serializable {
 				if (line.contains("${entity.label.delete}")) {
 					line = line.replace("${entity.label.delete}", entityDeleteLabel);
 				}
+				if (line.contains("${entity.id.var}")) {
+					line = line.replace("${entity.id.var}", entityCamelCase + "Id");
+				}				
 				newLines.add(line);
 			}
 

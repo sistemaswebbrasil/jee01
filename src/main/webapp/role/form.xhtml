@@ -4,18 +4,17 @@
 <ui:composition template="../template/master-page.xhtml">
 
 <f:metadata>
-	<f:viewParam name="id" value="#{roleBean.id}">
+	<f:viewParam name="id" value="#{roleBean.roleId}">
 	</f:viewParam>
 	<f:viewAction action="#{roleBean.init()}" />
 </f:metadata>
 
 <ui:define name="title">
-	<ui:fragment rendered="#{empty roleBean.role.id}">#{lb['role.entityCreate']}</ui:fragment>
-	<ui:fragment rendered="#{not empty roleBean.role.id}">#{lb['role.entityEdit']}</ui:fragment>
+	<ui:fragment rendered="#{empty roleBean.roleId}">#{lb['role.entityCreate']}</ui:fragment>
+	<ui:fragment rendered="#{not empty roleBean.roleId}">#{lb['role.entityEdit']}</ui:fragment>
 </ui:define>
 
 <ui:define name="title">#{lb['role.entityCreate']}</ui:define>
-
 	<ui:define name="content">
 		<h:form id="form">			
 			<div class="p-grid">
@@ -48,7 +47,7 @@
 			</div>			
 			<p:toolbar>
 				<f:facet name="right">					
-					<p:linkButton href="index.xhtml" value="#{lb['role.entityList']}" action="index.xhtml?faces-redirect=true" icon="pi pi-search" style="margin-right:20px;" />
+					<p:linkButton href="index.xhtml" value="#{lb['role.entityList']}" icon="pi pi-search" style="margin-right:20px;" />
 					<p:commandButton value="#{msg.save}" action="#{roleBean.save}" update="@form messages" icon="pi pi-save" 
 					/>					
 				</f:facet>
