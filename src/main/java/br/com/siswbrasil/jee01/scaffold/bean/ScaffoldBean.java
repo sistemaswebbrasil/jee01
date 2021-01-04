@@ -46,6 +46,8 @@ public class ScaffoldBean implements Serializable {
 	public static final String SCAFFOLD_VIEW_PATH = "scaffold.view.path";
 	public static final String SCAFFOLD_LABEL_PATH = "scaffold.labels_pt_BR.path";
 	public static final String SCAFFOLD_GENERATE_MODELS_PATH = "scaffold.generate_models.path";
+	public static final String SCAFFOLD_MENU_FILE_PATH = "scaffold.menu_file.path";
+	public static final String SCAFFOLD_MENU_MARK_ITEM = "scaffold.menu_mark_item.value";
 
 	private List<AvailableObject> entities = new ArrayList<AvailableObject>();
 	private AvailableObject selected = new AvailableObject();
@@ -516,7 +518,7 @@ public class ScaffoldBean implements Serializable {
 		}		
 	}
 	
-	public void generateViewList() { 
+	public void generateViewList() {
 	    try {
 	        if (selected.getProperties().isEmpty()) {
 	            MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
@@ -662,7 +664,146 @@ public class ScaffoldBean implements Serializable {
 	        e.printStackTrace();
 	        MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para a view de listagem");
 	    }		
+	}
+	
+	public void generateMenuItem() {
+	    try {
+	        if (selected.getProperties().isEmpty()) {
+	            MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
+	                    MessageUtil.getMsg("error.scaffold.not_found"));
+	        }
+	        objectContent = null;
+	        System.out.println("#########################");
+	        System.out.println(SCAFFOLD_MENU_FILE_PATH);
+	        System.out.println("#########################");
+			String menuItemPath = propertiesUtil.get(SCAFFOLD_MENU_FILE_PATH);
+			System.out.println(menuItemPath);
+//			if (menuItemPath != null && !menuItemPath.isEmpty()) {
+//				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),MessageUtil.getMsg("scaffold.menu_item_config.not_found"));
+//			}			
+			String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
+			String markerMenu = propertiesUtil.get(SCAFFOLD_MENU_MARK_ITEM);
+			String modelParcialBeanPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
+			String modelItemMenuPath = basePath.concat(modelParcialBeanPath.concat("/itemMenu.txt"));	  
+	        String baseViewPath = propertiesUtil.get(SCAFFOLD_VIEW_PATH);			        
+	        String baseViewFolderName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, selected.getName());
+	        String baseViewFolderPath = baseViewPath + "/" + baseViewFolderName;
+	        //String baseViewListPath = baseViewFolderPath + "/index.xhtml";
+	        //String modelItemMenuPath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
+	        String entityCreateLabel = "";
+	        String entityListLabel = "";
+	        String entityCamelCase = "";
+	        String entityEditLabel = "";
+	        String entityDetailLabel= "";
+	        String entityDeleteLabel= "";
+	        LOG.info("---------------------DADOS---------------------");
+	        LOG.info("basePath "+basePath);			
+	        LOG.info("baseViewPath "+baseViewPath);
+	        LOG.info("baseViewFolderName "+baseViewFolderName);
+	        LOG.info("baseViewFolderPath "+baseViewFolderPath);			
+	        LOG.info("modelParcialBeanPath "+modelParcialBeanPath);
+//	        LOG.info("modelViewListPath "+modelViewListPath);	
+	        LOG.info("menuItemPath " + menuItemPath);
+	        LOG.info("modelItemMenuPath "+ modelItemMenuPath);
+	        
+	        for (AvaliableProperties entityLine : selected.getProperties()) {
+	            if (entityLine.getType() == "entityCamelCase") {
+	                entityCamelCase = entityLine.getValue();
+	            }				
+	            if (entityLine.getName() == "entityCreate") {
+	                entityCreateLabel  = entityCamelCase +"."+ entityLine.getName();
+	            }
+	            if (entityLine.getName() == "entityList") {
+	                entityListLabel  = entityCamelCase +"."+ entityLine.getName();
+	            }
+	        }
+
+	        //String beanClass = selected.getName().concat("Bean");
+	        //String beanClassView = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, beanClass);
+	        List<String> lines = readFile(modelItemMenuPath, false);
+	        List<String> newLines = new ArrayList<String>();
+	        
+	        //System.out.println(lines);
+
+	        for (String line : lines) {				
+	            if (line.contains("${entity.var}")) {
+	                line = line.replace("${entity.var}", entityCamelCase);
+	            }				
+	            if (line.contains("${entity.label.create}")) {
+	                line = line.replace("${entity.label.create}", entityCreateLabel);
+	            }
+	            if (line.contains("${entity.label.list}")) {
+	                line = line.replace("${entity.label.list}", entityListLabel);
+	            }
+	            newLines.add(line);
+	        }
+	        System.out.println("-----------------------------");
+	        System.out.println("markerMenu "+markerMenu);
+	        System.out.println("-----------------------------");
+	        String objectContentNewItem = markerMenu + "\n";
+	        for (String line : newLines) {
+	        	objectContentNewItem += line + "\n";
+	        }
+	        
+	        List<String> lines1 = readFile(menuItemPath, false);
+	        List<String> newLines1 = new ArrayList<String>();
+	        boolean menuItemExist = false;
+	        for (String line : lines1) {
+	        	if (line.contains(String.format("<li id=\"item-menu-scaffold-%s\">", entityCamelCase))==true) {
+	        		menuItemExist = true;
+	        	}
+	        	newLines1.add(line);
+	        }
+//			objectContent = "";
+//			for (String line : newLines) {
+//				objectContent += line + "\n";
+//			}        
+//	        
+//			String objectContent1 = "";
+//			for (String line : newLines1) {
+//				objectContent += line + "\n";
+//			}
+	        String objectFinalMenuContent = "";
+	        if(menuItemExist == false) {
+	        	System.out.println("ai!---------------------------------------------");
+	        	System.out.println(objectContentNewItem);
+	        	System.out.println("oi?---------------------------------------------");
+				for (String line : newLines1) {
+					objectFinalMenuContent += line + "\n";
+				}	
+				objectContent = objectFinalMenuContent.replace("<ul class=\"nav side-menu\">", objectContentNewItem);
+	        	System.out.println("E aí?---------------------------------------------");
+	        	System.out.println(objectFinalMenuContent);
+	        }
+	        
+	        
+	        
+
+
+			
+			
+			
+			System.out.println("Agora que já tenho o modelo pronto , tenho que sobrescrever no arquivo de menu");
+			
+			System.out.println(objectContent);
+			System.out.println();
+			System.out.println("menuItemPath "+menuItemPath);
+			
+			
+			try {
+				FileWriter fileWriter = new FileWriter(menuItemPath);
+				fileWriter.write(objectContent);
+				fileWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+			}
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para os itens de menu");
+	    }		
 	}	
+	
 	
 	
 

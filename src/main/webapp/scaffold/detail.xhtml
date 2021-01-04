@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
 
 	<f:metadata>
@@ -18,10 +21,12 @@
 				</h2>
 				<ul class="nav navbar-right panel_toolbox">
 					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-expanded="false"><i
 							class="fa fa-wrench"></i></a>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="#">Settings 1</a> <a class="dropdown-item" href="#">Settings 2</a>
+							<a class="dropdown-item" href="#">Settings 1</a> <a
+								class="dropdown-item" href="#">Settings 2</a>
 						</div></li>
 					<li><a class="close-link"><i class="fa fa-close"></i></a></li>
 				</ul>
@@ -32,22 +37,26 @@
 				<h:form>
 					<div class="form-row">
 						<div class="form-group col-md-4">
-							<label for="name">#{msg.name}</label> <input type="text" class="form-control" id="name" placeholder="#{msg.name}"
+							<label for="name">#{msg.name}</label> <input type="text"
+								class="form-control" id="name" placeholder="#{msg.name}"
 								value="#{scaffoldBean.selected.name}" readonly="readonly" />
 						</div>
 						<div class="form-group col-md-4">
-							<label for="type">#{msg.type}</label> <input type="text" class="form-control" id="type" placeholder="#{msg.type}"
+							<label for="type">#{msg.type}</label> <input type="text"
+								class="form-control" id="type" placeholder="#{msg.type}"
 								value="#{scaffoldBean.selected.type}" readonly="readonly" />
 						</div>
 						<div class="form-group col-md-4">
-							<label for="path">#{msg.path}</label> <input type="text" class="form-control" id="path" placeholder="#{msg.path}"
+							<label for="path">#{msg.path}</label> <input type="text"
+								class="form-control" id="path" placeholder="#{msg.path}"
 								value="#{scaffoldBean.selected.path}" readonly="readonly" />
 						</div>
 					</div>
 
 
 
-					<p:dataTable var="item" value="#{scaffoldBean.selected.properties}" rowStyleClass="#{item.isId == true ? 'old' : null }">
+					<p:dataTable var="item" value="#{scaffoldBean.selected.properties}"
+						rowStyleClass="#{item.isId == true ? 'old' : null }">
 						<p:column headerText="#{msg.name}">
 							<h:outputText value="#{item.name}" />
 						</p:column>
@@ -70,38 +79,65 @@
 					<br />
 
 					<div class="col-md-12   form-group">
-						<p:commandButton value="#{msg['scaffold.read_object']}" action="#{scaffoldBean.readProperties()}" icon="pi pi-search" update="@form" />
-						<p:commandButton value="#{msg['scaffold.generate_label']}" action="#{scaffoldBean.generateLabels()}" icon="pi pi-tags" update="@form">
-							<p:confirm header="Confirmation" message="#{msg['scaffold.generate_label.confirm']}" icon="pi pi-exclamation-triangle" />
+						<p:commandButton value="#{msg['scaffold.read_object']}"
+							action="#{scaffoldBean.readProperties()}" icon="pi pi-search"
+							update="@form" />
+						<p:commandButton value="#{msg['scaffold.generate_label']}"
+							action="#{scaffoldBean.generateLabels()}" icon="pi pi-tags"
+							update="@form">
+							<p:confirm header="Confirmation"
+								message="#{msg['scaffold.generate_label.confirm']}"
+								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
-						<p:commandButton value="#{msg['scaffold.generate_dao']}" action="#{scaffoldBean.generateDao()}" icon="pi pi-clone"
+						<p:commandButton value="#{msg['scaffold.generate_dao']}"
+							action="#{scaffoldBean.generateDao()}" icon="pi pi-clone"
 							update="@form messages">
-							<p:confirm header="Confirmation" message="#{msg['scaffold.generate_dao.confirm']}" icon="pi pi-exclamation-triangle" />
+							<p:confirm header="Confirmation"
+								message="#{msg['scaffold.generate_dao.confirm']}"
+								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
-						<p:commandButton value="#{msg['scaffold.generate_service']}" action="#{scaffoldBean.generateService()}" icon="pi pi-clone"
+						<p:commandButton value="#{msg['scaffold.generate_service']}"
+							action="#{scaffoldBean.generateService()}" icon="pi pi-clone"
 							update="@form messages">
-							<p:confirm header="Confirmation" message="#{msg['scaffold.generate_service.confirm']}" icon="pi pi-exclamation-triangle" />
+							<p:confirm header="Confirmation"
+								message="#{msg['scaffold.generate_service.confirm']}"
+								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
-						<p:commandButton value="#{msg['scaffold.generate_bean']}" action="#{scaffoldBean.generateBean()}" icon="pi pi-clone"
+						<p:commandButton value="#{msg['scaffold.generate_bean']}"
+							action="#{scaffoldBean.generateBean()}" icon="pi pi-clone"
 							update="@form messages">
-							<p:confirm header="Confirmation" message="#{msg['scaffold.generate_bean.confirm']}" icon="pi pi-exclamation-triangle" />
+							<p:confirm header="Confirmation"
+								message="#{msg['scaffold.generate_bean.confirm']}"
+								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
-						<p:commandButton value="#{msg['scaffold.generate_view_form']}" action="#{scaffoldBean.generateViewForm()}" icon="pi pi-clone"
+						<p:commandButton value="#{msg['scaffold.generate_view_form']}"
+							action="#{scaffoldBean.generateViewForm()}" icon="pi pi-clone"
 							update="@form messages">
-							<p:confirm header="Confirmation" message="#{msg['scaffold.generate_view_form.confirm']}" icon="pi pi-exclamation-triangle" />
+							<p:confirm header="Confirmation"
+								message="#{msg['scaffold.generate_view_form.confirm']}"
+								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
-						<p:commandButton value="#{msg['scaffold.generate_view_list']}" action="#{scaffoldBean.generateViewList()}" icon="pi pi-clone"
+						<p:commandButton value="#{msg['scaffold.generate_view_list']}"
+							action="#{scaffoldBean.generateViewList()}" icon="pi pi-clone"
 							update="@form messages">
-							<p:confirm header="Confirmation" message="#{msg['scaffold.generate_view_list.confirm']}" icon="pi pi-exclamation-triangle" />
+							<p:confirm header="Confirmation"
+								message="#{msg['scaffold.generate_view_list.confirm']}"
+								icon="pi pi-exclamation-triangle" />
+						</p:commandButton>
+						<p:commandButton value="#{msg['scaffold.generate_view_item_menu']}"
+							action="#{scaffoldBean.generateMenuItem()}" icon="pi pi-clone"
+							update="@form messages">
+							<p:confirm header="Confirmation"
+								message="#{msg['scaffold.generate_view_item_menu.confirm']}"
+								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>						
+		
+					</div>
+					<div class="col-md-12   form-group">
+							<p:inputTextarea styleClass="form-control" rows="10" cols="120"
+								value="#{scaffoldBean.objectContent}" readonly="true" />
 					</div>
 
-					<div class="row">
-						<div class="col-md-12   form-group">
-							<br /> <br />
-							<p:inputTextarea styleClass="form-control" rows="10" cols="120" value="#{scaffoldBean.objectContent}" readonly="true" />
-						</div>
-					</div>
 
 				</h:form>
 			</div>

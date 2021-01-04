@@ -3,38 +3,55 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
 
-<ui:define name="title">#{msg.create}</ui:define>
+<f:metadata>
+	<f:viewParam name="id" value="#{countryBean.countryId}">
+	</f:viewParam>
+	<f:viewAction action="#{countryBean.init()}" />
+</f:metadata>
+
+<ui:define name="title">
+	<ui:fragment rendered="#{empty countryBean.countryId}">#{lb['country.entityCreate']}</ui:fragment>
+	<ui:fragment rendered="#{not empty countryBean.countryId}">#{lb['country.entityEdit']}</ui:fragment>
+</ui:define>
+
+<ui:define name="title">#{lb['country.entityCreate']}</ui:define>
 	<ui:define name="content">
-		<h:form>
-			
+		<h:form id="form">			
 			<div class="p-grid">
 				<div class="p-col p-col-align-start">
 					<p:panel id="panel" header=" ">
 						<p:panelGrid columns="4" layout="flex"
 							columnClasses="p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3"
 							contentStyleClass="p-align-baseline ">
-
-							<p:outputLabel for="iddCode" value="#{lb['country.iddCode']}" />
-							<p:inputText id="iddCode" value="#{countryBean.country.iddCode}" required="true" />
 							
+							
+							<p:outputLabel for="iddCode" value="#{lb['country.iddCode']}" rendered="#{not empty countryBean.country.iddCode}"/>
+							<p:inputText id="iddCode" value="#{countryBean.country.iddCode}" rendered="#{not empty countryBean.country.iddCode}" />
+							<h:inputHidden value="#{countryBean.country.iddCode}" />
+							
+
 							<p:outputLabel for="name" value="#{lb['country.name']}" />
-							<p:inputText id="name" value="#{countryBean.country.name}" required="true" />							
+							<p:inputText id="name" value="#{countryBean.country.name}"  />
 							
-							<p:outputLabel for="continent" value="#{lb['country.continent']}" />
-							<p:inputText id="continent" value="#{countryBean.country.continent}" required="true" />
 							
 
+							<p:outputLabel for="continent" value="#{lb['country.continent']}" />
+							<p:inputText id="continent" value="#{countryBean.country.continent}"  />
+							
+							
+
+							
 						</p:panelGrid>
 					</p:panel>
 				</div>
-			</div> 
-			 
+			</div>			
 			<p:toolbar>
 				<f:facet name="right">					
-					<p:commandButton value="#{msg.save}" action="#{countryBean.save()}" update="@form messages" icon="pi pi-save" />					
+					<p:linkButton href="index.xhtml" value="#{lb['country.entityList']}" icon="pi pi-search" style="margin-right:20px;" />
+					<p:commandButton value="#{msg.save}" action="#{countryBean.save}" update="@form messages" icon="pi pi-save" 
+					/>					
 				</f:facet>
-			</p:toolbar>		
-			
+			</p:toolbar>			
 		</h:form>
 	</ui:define>
 </ui:composition>

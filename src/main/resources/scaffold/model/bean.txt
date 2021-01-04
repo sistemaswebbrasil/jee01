@@ -1,5 +1,6 @@
 package ${bean.package};
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
@@ -34,7 +35,7 @@ public class ${bean.class} implements Serializable {
 	private ${entity.class} ${entity.var};
     
     @PostConstruct
-    public void init() {    
+    public void init() throws IOException {    
         if (${entity.id.var} == null) {
             ${entity.var} = new ${entity.class}();
         } else {

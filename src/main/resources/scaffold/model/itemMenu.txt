@@ -1,0 +1,7 @@
+<li id="item-menu-scaffold-${entity.var}"><a><i class="pi pi-calendar"></i>&nbsp;<h:outputText value="#{lb['${entity.var}.entity']}" /> <span class="fa"><i class="pi pi-chevron-down"></i></span></a>
+	<ul class="nav child_menu">
+		<li><a href="${facesContext.externalContext.requestContextPath}/${entity.var}/"> <h:outputText value="#{lb['${entity.label.list}']}" /></a></li>
+		<li><a href="${facesContext.externalContext.requestContextPath}/${entity.var}/form.xhtml"><h:outputText value="#{lb['${entity.label.create}']}" />
+		</a></li>
+	</ul>
+</li>

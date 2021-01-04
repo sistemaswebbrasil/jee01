@@ -40,12 +40,10 @@ public class RoleBean implements Serializable {
             role = new Role();
         } else {
 			role = service.findById(roleId);
-			System.out.println("--------------------------");
-			System.out.println(role);
 			if (role == null) {
 				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("register_not_found"));
 				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-			}
+			}			
         }
     }
     
