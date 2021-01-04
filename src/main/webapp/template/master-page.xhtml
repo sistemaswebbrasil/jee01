@@ -1,67 +1,82 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><ui:insert name="title">#{msg['project.name']}</ui:insert></title>
-	<h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+	<h:outputStylesheet name="primeicons/primeicons.css"
+		library="primefaces" />
 	<h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-	<h:outputStylesheet library="gentelella" name="css/custom.min.css" />
-	<h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
-	<h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
+	<h:outputStylesheet library="adminlte" name="css/adminlte.min.css" />
+	<h:outputStylesheet library="webjars"
+		name="font-awesome/5.12.0/css/all.min-jsf.css" />
+	<h:outputStylesheet library="webjars"
+		name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
 	<h:outputStylesheet library="css" name="custom.css" />
 </h:head>
 
-<body class="nav-md">
-	<div class="container body">
-	
-		<div class="main_container">
-		
-			<div class="col-md-3 left_col">
-				<div class="left_col scroll-view">
-					<div class="navbar nav_title" style="border: 0;">
-						<a href="${facesContext.externalContext.requestContextPath}/" class="site_title"><i class="fa fa-paw"></i> <span>#{msg['project.name']}</span></a>
-					</div>
+<body class="hold-transition sidebar-mini">
+	<div class="wrapper">
 
-					<div class="clearfix"></div>
+		<nav
+			class="main-header navbar navbar-expand navbar-white navbar-light">
+			<!-- Left navbar links -->
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link" data-widget="pushmenu"
+					href="#" role="button"><i class="fas fa-bars"></i></a></li>
+				<li class="nav-item d-none d-sm-inline-block"><a
+					href="${facesContext.externalContext.requestContextPath}/"
+					class="nav-link">Home</a></li>
+			</ul>
+			<ul class="navbar-nav ml-auto"></ul>
+		</nav>
 
-
-					<div class="profile clearfix">
-						<div class="profile_pic">
-							<h:graphicImage library="img" name="/img.jpg" alt="..." styleClass="img-circle profile_img" />
-						</div>
-						<div class="profile_info">
-							<span><h:outputText value="#{msg['user.welcome']}" />,</span>
-							<h2>
-								<h:outputText value="#{msg['user.name']}" />
-							</h2>
-						</div>
-					</div>
-					<br />
-					<ui:include src="/template/sidebar-menu.xhtml" />
-				</div>
-			</div>
-
-			<ui:include src="/template/top-menu.xhtml" />
-
-			<div class="right_col" role="main">
-				<div class="">
-
-
-					<div id="content">
-						<ui:include src="commons.xhtml" />
-						<ui:insert name="content" />
-					</div>
-				</div>
-			</div>
+		<aside class="main-sidebar sidebar-dark-primary elevation-4">
+			<!-- Brand Logo -->
+			<a href="${facesContext.externalContext.requestContextPath}/"
+				class="brand-link"> <h:graphicImage library="img" name="/AdminLTELogo.png" alt="..." styleClass="brand-image img-circle elevation-3" style="opacity: .8" />
 				
-			<ui:include src="/template/footer.xhtml" />
-		</div>		
-	</div>	
-	<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
-	<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />
-	<h:outputScript library="popper" name="popper.min.js" target="head" />
-	<h:outputScript library="bootstrap" name="/js/bootstrap.min.js" />
-	<h:outputScript library="gentelella" name="/js/custom.js" />
+				
+				
+				<span class="brand-text font-weight-light">#{msg['project.name']}</span>
+			</a>
+
+			<!-- Sidebar -->
+			<div class="sidebar">
+				<!-- Sidebar user (optional) -->
+				<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+					<div class="image">
+
+							<h:graphicImage library="img" name="/user-icon.png" alt="..." styleClass="img-circle elevation-2" />
+					</div>
+					<div class="info">
+						<a href="#" class="d-block">#{msg['project.name']}</a>
+					</div>
+				</div>
+
+
+				<ui:include src="/template/sidebar-menu.xhtml" />
+
+			</div>
+
+		</aside>
+		</div>
+		<div class="content-wrapper">
+			<ui:include src="commons.xhtml" />
+			<ui:insert name="content" />
+		</div>
+
+		<ui:include src="/template/footer.xhtml" />
+		
+		<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+		<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />
+		<h:outputScript library="popper" name="popper.min.js" target="head" />
+		<h:outputScript library="bootstrap" name="/js/bootstrap.min.js" />
+		<h:outputScript library="adminlte" name="/js/adminlte.min.js" />
+		<script src="../../dist/js/adminlte.min.js"></script>
+	
 </body>
 </html>
