@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-public class MessageUtil implements Serializable{
+public class MessageUtil implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -50,12 +50,12 @@ public class MessageUtil implements Serializable{
 		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, detail);
 		FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 	}
-	
-	public static void addErrorMessageWhithField(String field,String msg, String detail) {
+
+	public static void addErrorMessageWhithField(String field, String msg, String detail) {
 		FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-		
-		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, detail);		
+
+		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, detail);
 		FacesContext.getCurrentInstance().addMessage(field, facesMsg);
-	}	
+	}
 
 }
