@@ -16,11 +16,20 @@
 
 <ui:define name="title">#{lb['organization.entityCreate']}</ui:define>
 	<ui:define name="content">
-		<h:form id="form">			
-			<div class="p-grid">
-				<div class="p-col p-col-align-start">
-					<p:panel id="panel" header=" ">
-						<p:panelGrid columns="4" layout="flex"
+		<div class="container-fluid">			
+			<div class="row">
+				<div class="col-md-12">
+
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">
+								#{msg['scaffold.entity.detail']}<small>#{scaffoldBean.selected.name}</small>
+							</h3>
+						</div>
+						<div class="card-body">	
+							<h:form id="form">
+	
+							<p:panelGrid columns="4" layout="flex"
 							columnClasses="p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3"
 							contentStyleClass="p-align-baseline ">
 							
@@ -44,19 +53,16 @@
 							<p:inputText id="tradingName" value="#{organizationBean.organization.tradingName}"  />
 							
 							
-
 							
 						</p:panelGrid>
-					</p:panel>
-				</div>
-			</div>			
-			<p:toolbar>
-				<f:facet name="right">					
-					<p:linkButton href="index.xhtml" value="#{lb['organization.entityList']}" icon="pi pi-search" style="margin-right:20px;" />
-					<p:commandButton value="#{msg.save}" action="#{organizationBean.save}" update="@form messages" icon="pi pi-save" 
-					/>					
-				</f:facet>
-			</p:toolbar>			
+			            <div class="card-footer">                            
+							<p:linkButton href="index.xhtml" value="#{lb['organization.entityList']}" icon="pi pi-search" style="margin-right:20px;" />
+							<p:commandButton value="#{msg.save}" action="#{organizationBean.save}" update="@form messages" icon="pi pi-save" />	                            
+                        </div>
+					</div>
+				</div>	
+		</div>
+			</div>
 		</h:form>
 	</ui:define>
 </ui:composition>

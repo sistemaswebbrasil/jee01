@@ -7,28 +7,49 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <body>
-	<ui:composition>	
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                #{msg['scaffold.project']}
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="${facesContext.externalContext.requestContextPath}/scaffold/" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>#{msg['list_scaffold']}</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
+	<ui:composition>
+		<nav class="mt-2">
+		<ul class="nav nav-pills nav-sidebar flex-column"
+			data-widget="treeview" role="menu" data-accordion="false">
+			<li class="nav-item has-treeview"
+				id="item-menu-scaffold-organization"><a href="#"
+				class="nav-link"> <i class="nav-icon fas fa-book"></i>
+					<p>
+						#{lb['organization.entity']}<i class="right fas fa-angle-left"></i>
+					</p>
+			</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item"><a
+						href="${facesContext.externalContext.requestContextPath}/organization/"
+						class="nav-link"> <i class="nav-icon fas fa-table"></i>
+							<p>
+								<h:outputText value="#{lb['organization.entityList']}" />
+							</p>
+					</a></li>
+					<li class="nav-item"><a
+						href="${facesContext.externalContext.requestContextPath}/organization/form.xhtml"
+						class="nav-link"> <i class="fas fa-edit nav-icon"></i>
+							<p>
+								<h:outputText value="#{lb['organization.entityCreate']}" />
+							</p>
+					</a></li>
+				</ul></li>
+
+			<li class="nav-item has-treeview"><a href="#" class="nav-link">
+					<i class="nav-icon fas fa-tachometer-alt"></i>
+					<p>
+						#{msg['scaffold.project']} <i class="right fas fa-angle-left"></i>
+					</p>
+			</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item"><a
+						href="${facesContext.externalContext.requestContextPath}/scaffold/"
+						class="nav-link"> <i class="far fa-circle nav-icon"></i>
+							<p>#{msg['list_scaffold']}</p>
+					</a></li>
+				</ul></li>
+		</ul>
+		</nav>
 	</ui:composition>
 </body>
 </html>

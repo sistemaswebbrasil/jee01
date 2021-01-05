@@ -37,10 +37,9 @@
 		<aside class="main-sidebar sidebar-dark-primary elevation-4">
 			<!-- Brand Logo -->
 			<a href="${facesContext.externalContext.requestContextPath}/"
-				class="brand-link"> <h:graphicImage library="img" name="/AdminLTELogo.png" alt="..." styleClass="brand-image img-circle elevation-3" style="opacity: .8" />
-				
-				
-				
+				class="brand-link"> <h:graphicImage library="img"
+					name="/AdminLTELogo.png" alt="..."
+					styleClass="brand-image img-circle elevation-3" style="opacity: .8" />
 				<span class="brand-text font-weight-light">#{msg['project.name']}</span>
 			</a>
 
@@ -49,34 +48,30 @@
 				<!-- Sidebar user (optional) -->
 				<div class="user-panel mt-3 pb-3 mb-3 d-flex">
 					<div class="image">
-
-							<h:graphicImage library="img" name="/user-icon.png" alt="..." styleClass="img-circle elevation-2" />
+						<h:graphicImage library="img" name="/user-icon.png" alt="..."
+							styleClass="img-circle elevation-2" />
 					</div>
 					<div class="info">
 						<a href="#" class="d-block">#{msg['project.name']}</a>
 					</div>
 				</div>
-
-
 				<ui:include src="/template/sidebar-menu.xhtml" />
-
 			</div>
-
 		</aside>
-		</div>
-		<div class="content-wrapper">
-			<ui:include src="commons.xhtml" />
-			<ui:insert name="content" />
-		</div>
-
-		<ui:include src="/template/footer.xhtml" />
-		
-		<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
-		<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />
-		<h:outputScript library="popper" name="popper.min.js" target="head" />
-		<h:outputScript library="bootstrap" name="/js/bootstrap.min.js" />
-		<h:outputScript library="adminlte" name="/js/adminlte.min.js" />
-		<script src="../../dist/js/adminlte.min.js"></script>
 	
+	<div class="content-wrapper">
+		<br />
+		<ui:include src="commons.xhtml" />
+		<ui:insert name="content" />
+	</div>
+	<ui:include src="/template/footer.xhtml" />
+	</div>
+	<h:outputScript library="primefaces" name="jquery/jquery.js"
+		target="head" />
+	<h:outputScript library="primefaces" name="jquery/jquery-plugins.js"
+		target="head" />
+	<h:outputScript library="popper" name="popper.min.js" target="head" />
+	<h:outputScript library="bootstrap" name="/js/bootstrap.min.js" />
+	<h:outputScript library="adminlte" name="/js/adminlte.min.js" />
 </body>
 </html>

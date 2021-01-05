@@ -8,12 +8,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -101,6 +103,7 @@ public class ScaffoldBean implements Serializable {
 		List<AvailableObject> entities = new ArrayList<AvailableObject>();
 		File actual = new File(folder);
 		if (!actual.exists()) {
+			MessageUtil.clearMessages();
 			MessageUtil.addErrorMessage("Falha ao ler diretório", String.format(
 					"O diretório %s não existe,favor configurar o seu amiente \"appication.{env}.properties\" de acordo com a sua máquina de desenvolvimento! ",
 					folder));
@@ -750,7 +753,7 @@ public class ScaffoldBean implements Serializable {
 			List<String> newLines1 = new ArrayList<String>();
 			boolean menuItemExist = false;
 			for (String line : lines1) {
-				if (line.contains(String.format("<li id=\"item-menu-scaffold-%s\">", entityCamelCase)) == true) {
+				if (line.contains(String.format("<li class=\"nav-item has-treeview\" id=\"item-menu-scaffold-%s\">", entityCamelCase)) == true) {
 					menuItemExist = true;
 				}
 				newLines1.add(line);
@@ -772,7 +775,7 @@ public class ScaffoldBean implements Serializable {
 				for (String line : newLines1) {
 					objectFinalMenuContent += line + "\n";
 				}
-				objectContent = objectFinalMenuContent.replace("<ul class=\"nav side-menu\">", objectContentNewItem);
+				objectContent = objectFinalMenuContent.replace(markerMenu, objectContentNewItem);
 				System.out.println("E aí?---------------------------------------------");
 				System.out.println(objectFinalMenuContent);
 			}

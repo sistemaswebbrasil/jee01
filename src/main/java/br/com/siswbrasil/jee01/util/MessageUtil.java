@@ -1,6 +1,9 @@
 package br.com.siswbrasil.jee01.util;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -21,7 +24,7 @@ public class MessageUtil implements Serializable {
 		} catch (Exception e) {
 		}
 		return msg;
-	}
+	}   
 
 	public static void addSuccessMessage(String msg) {
 		FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
@@ -57,5 +60,14 @@ public class MessageUtil implements Serializable {
 		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, detail);
 		FacesContext.getCurrentInstance().addMessage(field, facesMsg);
 	}
+	
+	public static void clearMessages() {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		List<FacesMessage> messages = new ArrayList<FacesMessage>();
+		for (Iterator<FacesMessage> i = facesContext.getMessages(null); i.hasNext();) {
+			messages.add(i.next());
+			i.remove();
+		}
+	}	
 
 }

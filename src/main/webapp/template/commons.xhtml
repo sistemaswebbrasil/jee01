@@ -1,34 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets"
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html">
 <body>
 	<ui:composition>
 
-		<p:messages id="messages" showDetail="true" closable="true"  />
+
+		<div class="col-md-12">
+<!-- 			<p:messages id="messages" showDetail="true" closable="true" -->
+<!-- 				rendered="#{ facesContext.validationFailed or not empty facesContext.messageList}" /> -->
+
+			<p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+		</div>
+
+
+		<!-- 		<div class="col-md-12" > -->
+		<!-- 			<ui:repeat var="message" value="#{facesContext.messageList}" id="messages"> -->
+		<!-- 				<div class="card bg-gradient-danger" > -->
+		<!-- 					<div class="card-header"> -->
+		<!-- 						<h3 class="card-title">#{message.summary}</h3> -->
+
+		<!-- 						<div class="card-tools"> -->
+		<!-- 							<button type="button" class="btn btn-tool" -->
+		<!-- 								data-card-widget="remove"> -->
+		<!-- 								<i class="fas fa-times"></i> -->
+		<!-- 							</button> -->
+		<!-- 						</div> -->
+		<!-- 						/.card-tools -->
+		<!-- 					</div> -->
+		<!-- 					/.card-header -->
+		<!-- 					<div class="card-body">#{message.detail}</div> -->
+		<!-- 				</div> -->
+		<!-- 			</ui:repeat> -->
+		<!-- 		</div> -->
+
+
 		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 			<h:form>
-				<p:commandButton value="#{msg.yes}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-				<p:commandButton value="#{msg.no}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+				<p:commandButton value="#{msg.yes}" type="button"
+					styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				<p:commandButton value="#{msg.no}" type="button"
+					styleClass="ui-confirmdialog-no" icon="pi pi-times" />
 			</h:form>
 		</p:confirmDialog>
 
-		<p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
-		<p:ajaxExceptionHandler type="java.lang.NullPointerException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />		
-		<p:ajaxExceptionHandler type="br.com.siswbrasil.jee01.exception.DatabaseException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
-		<p:ajaxExceptionHandler type="java.lang.Exception" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
+		<p:ajaxExceptionHandler
+			type="javax.faces.application.ViewExpiredException"
+			update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
+		<p:ajaxExceptionHandler type="java.lang.NullPointerException"
+			update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
+		<p:ajaxExceptionHandler
+			type="br.com.siswbrasil.jee01.exception.DatabaseException"
+			update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
+		<p:ajaxExceptionHandler type="java.lang.Exception"
+			update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
 
-		<p:dialog id="exceptionDialog" header="Exception '#{pfExceptionHandler.type}' occured!" widgetVar="exceptionDialog" height="500px"
-			width="80%">
+		<p:dialog id="exceptionDialog"
+			header="Exception '#{pfExceptionHandler.type}' occured!"
+			widgetVar="exceptionDialog" height="500px" width="80%">
         	Message: #{pfExceptionHandler.message} <br />
         	
         	StackTrace:        	
 			<h:form>
-				<p:inputTextarea value="#{pfExceptionHandler.formattedStackTrace}" escape="false" style="width:100%;" autoResize="true" readonly="true" />
+				<p:inputTextarea value="#{pfExceptionHandler.formattedStackTrace}"
+					escape="false" style="width:100%;" autoResize="true"
+					readonly="true" />
 			</h:form>
 
 
 			<br />
-			<p:button onclick="document.location.href = document.location.href;" value="Reload!"
+			<p:button onclick="document.location.href = document.location.href;"
+				value="Reload!"
 				rendered="#{pfExceptionHandler.type == 'javax.faces.application.ViewExpiredException'}" />
 		</p:dialog>
 
