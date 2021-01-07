@@ -6,37 +6,15 @@
 <body>
 	<ui:composition>
 
-
-		<div class="col-md-12">
-<!-- 			<p:messages id="messages" showDetail="true" closable="true" -->
-<!-- 				rendered="#{ facesContext.validationFailed or not empty facesContext.messageList}" /> -->
-
-			<p:messages id="messages" showDetail="true" closable="true" globalOnly="true">
-				<p:autoUpdate />
-			</p:messages>
-		</div>
-
-
-		<!-- 		<div class="col-md-12" > -->
-		<!-- 			<ui:repeat var="message" value="#{facesContext.messageList}" id="messages"> -->
-		<!-- 				<div class="card bg-gradient-danger" > -->
-		<!-- 					<div class="card-header"> -->
-		<!-- 						<h3 class="card-title">#{message.summary}</h3> -->
-
-		<!-- 						<div class="card-tools"> -->
-		<!-- 							<button type="button" class="btn btn-tool" -->
-		<!-- 								data-card-widget="remove"> -->
-		<!-- 								<i class="fas fa-times"></i> -->
-		<!-- 							</button> -->
-		<!-- 						</div> -->
-		<!-- 						/.card-tools -->
-		<!-- 					</div> -->
-		<!-- 					/.card-header -->
-		<!-- 					<div class="card-body">#{message.detail}</div> -->
-		<!-- 				</div> -->
-		<!-- 			</ui:repeat> -->
-		<!-- 		</div> -->
-
+		<ui:fragment
+			rendered="#{not empty facesContext.validationFailed or not empty facesContext.messageList}">
+			<div class="col-md-12">
+				<h:messages id="messages" layout="vertical" globalOnly="true"
+					styleClass="list-unstyled" showSummary="true" showDetail="false"
+					errorClass="alert alert-danger" infoClass="alert alert-info"
+					warnClass="alert alert-warning" />
+			</div>
+		</ui:fragment>
 
 		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 			<h:form>
@@ -61,16 +39,13 @@
 		<p:dialog id="exceptionDialog"
 			header="Exception '#{pfExceptionHandler.type}' occured!"
 			widgetVar="exceptionDialog" height="500px" width="80%">
-        	Message: #{pfExceptionHandler.message} <br />
-        	
+        	Message: #{pfExceptionHandler.message} <br />        	
         	StackTrace:        	
 			<h:form>
 				<p:inputTextarea value="#{pfExceptionHandler.formattedStackTrace}"
 					escape="false" style="width:100%;" autoResize="true"
 					readonly="true" />
 			</h:form>
-
-
 			<br />
 			<p:button onclick="document.location.href = document.location.href;"
 				value="Reload!"

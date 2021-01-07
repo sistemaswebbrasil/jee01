@@ -22,129 +22,147 @@
 
     <ui:define name="title">#{lb['organization.entityCreate']}</ui:define>
     <ui:define name="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                #{msg['scaffold.entity.detail']}<small>#{scaffoldBean.selected.name}</small>
-                            </h3>
-                        </div>
-                        <div class="card-body">
-                            <h:form id="form" role="form" class="form">
-                            	<div class="row">
-
-                                                                        
+    
+		<section class="content-header">
+	      <div class="container-fluid">
+	        <div class="row mb-2">
+	          <div class="col-sm-6">
+	            <h1>#{lb['organization.entityCreate']}</h1>
+	          </div>
+	          <div class="col-sm-6">
+	            <ol class="breadcrumb float-sm-right">
+	              <li class="breadcrumb-item"><a href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+	              <li class="breadcrumb-item active">#{lb['organization.entityCreate']}</li>
+	            </ol>
+	          </div>
+	        </div>
+	      </div>
+	    </section>    
+    	<section class="content">
+	        <div class="container-fluid">
+	            <div class="row">
+	                <div class="col-md-12">
+	
+	                    <div class="card">
+	                        <div class="card-header">
+	                            <h3 class="card-title">                                
+	                                #{lb['organization.entityCreate']}
+	                            </h3>
+	                        </div>
+	                        <div class="card-body">
+	                            <h:form id="form" role="form" class="form">
+	                            	<div class="row">
+	
+	                                                                        
+	                                    
+	                                    <ui:fragment rendered="#{not empty organizationBean.organization.id}">									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="id">#{lb['organization.id']}</label> 
+													<input
+														type="text" jsf:id="id"
+														class="form-control #{not empty facesContext.getMessageList('form:id')?'is-invalid':''}"
+														jsf:value="#{organizationBean.organization.id}"
+														jsf:label="#{lb['organization.id']}"													
+														disabled="true"				
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="id" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+										</ui:fragment>									    
+	                                    <h:inputHidden value="#{organizationBean.organization.id}" />                                    
+	                                    
                                     
-                                    <ui:fragment rendered="#{not empty organizationBean.organization.id}">									
-										<div class="col-lg-3 col-md-4 col-sm-6">
-											<div class="form-group">
-												<label jsf:for="id">#{lb['organization.id']}</label> 
-												<input
-													type="text" jsf:id="id"
-													class="form-control #{not empty facesContext.getMessageList('form:id')?'is-invalid':''}"
-													jsf:value="#{organizationBean.organization.id}"
-													jsf:label="#{lb['organization.id']}"													
-													disabled="true"				
-												/>												 
-												<small class="invalid-feedback"> 
-													<h:message for="id" showDetail="false" showSummary="true"/>
-												</small>
-											</div>
-										</div>  
-									</ui:fragment>									    
-                                    <h:inputHidden value="#{organizationBean.organization.id}" />                                    
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="initials">#{lb['organization.initials']}</label> 
+													<input
+														type="text" jsf:id="initials"
+														class="form-control #{not empty facesContext.getMessageList('form:initials')?'is-invalid':''}"
+														jsf:value="#{organizationBean.organization.initials}"
+														jsf:label="#{lb['organization.initials']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="initials" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
                                     
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="companyName">#{lb['organization.companyName']}</label> 
+													<input
+														type="text" jsf:id="companyName"
+														class="form-control #{not empty facesContext.getMessageList('form:companyName')?'is-invalid':''}"
+														jsf:value="#{organizationBean.organization.companyName}"
+														jsf:label="#{lb['organization.companyName']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="companyName" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
                                     
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="tradingName">#{lb['organization.tradingName']}</label> 
+													<input
+														type="text" jsf:id="tradingName"
+														class="form-control #{not empty facesContext.getMessageList('form:tradingName')?'is-invalid':''}"
+														jsf:value="#{organizationBean.organization.tradingName}"
+														jsf:label="#{lb['organization.tradingName']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="tradingName" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
                                     
-                                    									
-										<div class="col-lg-3 col-md-4 col-sm-6">
-											<div class="form-group">
-												<label jsf:for="initials">#{lb['organization.initials']}</label> 
-												<input
-													type="text" jsf:id="initials"
-													class="form-control #{not empty facesContext.getMessageList('form:initials')?'is-invalid':''}"
-													jsf:value="#{organizationBean.organization.initials}"
-													jsf:label="#{lb['organization.initials']}"													
-																	
-												/>												 
-												<small class="invalid-feedback"> 
-													<h:message for="initials" showDetail="false" showSummary="true"/>
-												</small>
-											</div>
-										</div>  
-																		    
-                                                                        
-                                    
-                                    
-                                    
-                                    									
-										<div class="col-lg-3 col-md-4 col-sm-6">
-											<div class="form-group">
-												<label jsf:for="companyName">#{lb['organization.companyName']}</label> 
-												<input
-													type="text" jsf:id="companyName"
-													class="form-control #{not empty facesContext.getMessageList('form:companyName')?'is-invalid':''}"
-													jsf:value="#{organizationBean.organization.companyName}"
-													jsf:label="#{lb['organization.companyName']}"													
-																	
-												/>												 
-												<small class="invalid-feedback"> 
-													<h:message for="companyName" showDetail="false" showSummary="true"/>
-												</small>
-											</div>
-										</div>  
-																		    
-                                                                        
-                                    
-                                    
-                                    
-                                    									
-										<div class="col-lg-3 col-md-4 col-sm-6">
-											<div class="form-group">
-												<label jsf:for="tradingName">#{lb['organization.tradingName']}</label> 
-												<input
-													type="text" jsf:id="tradingName"
-													class="form-control #{not empty facesContext.getMessageList('form:tradingName')?'is-invalid':''}"
-													jsf:value="#{organizationBean.organization.tradingName}"
-													jsf:label="#{lb['organization.tradingName']}"													
-																	
-												/>												 
-												<small class="invalid-feedback"> 
-													<h:message for="tradingName" showDetail="false" showSummary="true"/>
-												</small>
-											</div>
-										</div>  
-																		    
-                                                                        
-                                    
-                                    
-                                </div>
-                                
-                                <div class="card-footer">
-                                    <div class="margin float-right">
-                                        <div class="btn-group">
-                                            <p:commandLink action="index.xhtml?faces-redirect=true" value="#{lb['organization.entityList']}" immediate="true" 
-                                                styleClass="btn btn-primary float-right">
-                                                <span class="fas fa-table"></span>
-                                            </p:commandLink>
-                                        </div>
-                                        <div class="btn-group">
-                                            <p:commandLink value="#{msg.save} " action="#{organizationBean.save}"
-                                                update="@form" styleClass="btn btn-primary float-right">
-                                                <span class="fas fa-edit"></span>
-                                            </p:commandLink>
-                                        </div>
-                                    </div>
-                                </div>
-                            </h:form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+	                                </div>
+	                                
+	                                <div class="card-footer">
+	                                    <div class="margin float-right">
+	                                        <div class="btn-group">
+	                                            <p:commandLink action="index.xhtml?faces-redirect=true" value="#{lb['organization.entityList']}" immediate="true" 
+	                                                styleClass="btn btn-primary float-right">
+	                                                <span class="fas fa-table"></span>
+	                                            </p:commandLink>
+	                                        </div>
+	                                        <div class="btn-group">
+	                                            <p:commandLink value="#{msg.save} " action="#{organizationBean.save}"
+	                                                update="@form" styleClass="btn btn-primary float-right">
+	                                                <span class="fas fa-edit"></span>
+	                                            </p:commandLink>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </h:form>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+        </section>   
     </ui:define>
 </ui:composition>
 </html>

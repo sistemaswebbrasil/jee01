@@ -6,16 +6,25 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
 	<ui:define name="title">#{msg['error.internal_server_error']}</ui:define>
-	<ui:define name="content">
-
+	<ui:define name="content">	
+		<section class="content-header">
+	      <div class="container-fluid">
+	        <div class="row mb-2">
+	          <div class="col-sm-6">
+	            <h1>#{msg['error.page500']}</h1>
+	          </div>
+	          <div class="col-sm-6">
+	            <ol class="breadcrumb float-sm-right">
+	              <li class="breadcrumb-item"><a href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+	              <li class="breadcrumb-item active">#{msg['error.page500']}</li>
+	            </ol>
+	          </div>
+	        </div>
+	      </div>
+	    </section>
 		<h:form>
 			<section class="content">
-
-
-
-
 				<div class="container-fluid">
-
 					<div class="row">
 						<div class="error-page">
 							<h2 class="headline text-danger">500</h2>
@@ -38,7 +47,6 @@
 								<div class="card-body">#{pfExceptionHandler.message}</div>
 							</div>
 						</div>
-
 					</div>
 					<div class="row">
 						<div class="col-md-12">
@@ -50,7 +58,6 @@
 				</div>
 			</section>
 		</h:form>
-
 	</ui:define>
 </ui:composition>
 </html>
