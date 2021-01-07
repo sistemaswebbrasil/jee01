@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="../template/master-page.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{addressBean.addressId}">
+        </f:viewParam>
+        <f:viewAction action="#{addressBean.init()}" />
+    </f:metadata>
+
+    <ui:define name="title">
+        <ui:fragment rendered="#{empty addressBean.addressId}">#{lb['address.entityCreate']}
+        </ui:fragment>
+        <ui:fragment rendered="#{not empty addressBean.addressId}">#{lb['address.entityEdit']}
+        </ui:fragment>
+    </ui:define>
+
+    <ui:define name="title">#{lb['address.entityCreate']}</ui:define>
+    <ui:define name="content">
+    
+		<section class="content-header">
+	      <div class="container-fluid">
+	        <div class="row mb-2">
+	          <div class="col-sm-6">
+	            <h1>#{lb['address.entityCreate']}</h1>
+	          </div>
+	          <div class="col-sm-6">
+	            <ol class="breadcrumb float-sm-right">
+	              <li class="breadcrumb-item"><a href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+	              <li class="breadcrumb-item active">#{lb['address.entityCreate']}</li>
+	            </ol>
+	          </div>
+	        </div>
+	      </div>
+	    </section>    
+    	<section class="content">
+	        <div class="container-fluid">
+	            <div class="row">
+	                <div class="col-md-12">
+	
+	                    <div class="card">
+	                        <div class="card-header">
+	                            <h3 class="card-title">                                
+	                                #{lb['address.entityCreate']}
+	                            </h3>
+	                        </div>
+	                        <div class="card-body">
+	                            <h:form id="form" role="form" class="form">
+	                            	<div class="row">
+	
+	                                                                        
+	                                    
+	                                    <ui:fragment rendered="#{not empty addressBean.address.id}">									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="id">#{lb['address.id']}</label> 
+													<input
+														type="text" jsf:id="id"
+														class="form-control #{not empty facesContext.getMessageList('form:id')?'is-invalid':''}"
+														jsf:value="#{addressBean.address.id}"
+														jsf:label="#{lb['address.id']}"													
+														disabled="true"				
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="id" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+										</ui:fragment>									    
+	                                    <h:inputHidden value="#{addressBean.address.id}" />                                    
+	                                    
+                                    
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="street">#{lb['address.street']}</label> 
+													<input
+														type="text" jsf:id="street"
+														class="form-control #{not empty facesContext.getMessageList('form:street')?'is-invalid':''}"
+														jsf:value="#{addressBean.address.street}"
+														jsf:label="#{lb['address.street']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="street" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
+                                    
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="number">#{lb['address.number']}</label> 
+													<input
+														type="text" jsf:id="number"
+														class="form-control #{not empty facesContext.getMessageList('form:number')?'is-invalid':''}"
+														jsf:value="#{addressBean.address.number}"
+														jsf:label="#{lb['address.number']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="number" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
+                                    
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="complement">#{lb['address.complement']}</label> 
+													<input
+														type="text" jsf:id="complement"
+														class="form-control #{not empty facesContext.getMessageList('form:complement')?'is-invalid':''}"
+														jsf:value="#{addressBean.address.complement}"
+														jsf:label="#{lb['address.complement']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="complement" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
+                                    
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="neighbourhood">#{lb['address.neighbourhood']}</label> 
+													<input
+														type="text" jsf:id="neighbourhood"
+														class="form-control #{not empty facesContext.getMessageList('form:neighbourhood')?'is-invalid':''}"
+														jsf:value="#{addressBean.address.neighbourhood}"
+														jsf:label="#{lb['address.neighbourhood']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="neighbourhood" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
+                                    
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="zipCode">#{lb['address.zipCode']}</label> 
+													<input
+														type="text" jsf:id="zipCode"
+														class="form-control #{not empty facesContext.getMessageList('form:zipCode')?'is-invalid':''}"
+														jsf:value="#{addressBean.address.zipCode}"
+														jsf:label="#{lb['address.zipCode']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="zipCode" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
+                                    
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="city">#{lb['address.city']}</label> 
+													<input
+														type="text" jsf:id="city"
+														class="form-control #{not empty facesContext.getMessageList('form:city')?'is-invalid':''}"
+														jsf:value="#{addressBean.address.city}"
+														jsf:label="#{lb['address.city']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="city" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
+                                    
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="state">#{lb['address.state']}</label> 
+													<input
+														type="text" jsf:id="state"
+														class="form-control #{not empty facesContext.getMessageList('form:state')?'is-invalid':''}"
+														jsf:value="#{addressBean.address.state}"
+														jsf:label="#{lb['address.state']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="state" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
+                                    
+	                                </div>
+	                                
+	                                <div class="card-footer">
+	                                    <div class="margin float-right">
+	                                        <div class="btn-group">
+	                                            <p:commandLink action="index.xhtml?faces-redirect=true" value="#{lb['address.entityList']}" immediate="true" 
+	                                                styleClass="btn btn-primary float-right">
+	                                                <span class="fas fa-table"></span>
+	                                            </p:commandLink>
+	                                        </div>
+	                                        <div class="btn-group">
+	                                            <p:commandLink value="#{msg.save} " action="#{addressBean.save}"
+	                                                update="@form" styleClass="btn btn-primary float-right">
+	                                                <span class="fas fa-edit"></span>
+	                                            </p:commandLink>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </h:form>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+        </section>   
+    </ui:define>
+</ui:composition>
+</html>

@@ -13,58 +13,58 @@ import javax.annotation.PostConstruct;
 
 import br.com.siswbrasil.jee01.exception.DatabaseException;
 import br.com.siswbrasil.jee01.util.MessageUtil;
-import br.com.siswbrasil.jee01.model.User;
-import br.com.siswbrasil.jee01.service.UserService;
+import br.com.siswbrasil.jee01.model.Address;
+import br.com.siswbrasil.jee01.service.AddressService;
 
 
 @Getter
 @Setter
 @Named
 @RequestScoped
-public class UserBean implements Serializable {
+public class AddressBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private UserService service;
+	private AddressService service;
 	
     @Inject
     private FacesContext facesContext;
     	
-	private Long userId;
-	private User user;
+	private Long addressId;
+	private Address address;
     
     @PostConstruct
     public void init() throws IOException {    
-        if (userId == null) {
-            user = new User();
+        if (addressId == null) {
+            address = new Address();
         } else {
-			user = service.findById(userId);
-			if (user == null) {
+			address = service.findById(addressId);
+			if (address == null) {
 				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("register_not_found"));
 				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			}			
         }
     }
     
-	public List<User> listAll() throws DatabaseException {
+	public List<Address> listAll() throws DatabaseException {
 		return service.findAll();
 	}    
     
     public String save() throws Throwable {
-    	if (user.getId() == null) {
-            service.create(user);
+    	if (address.getId() == null) {
+            service.create(address);
         } else {
-            service.update(user);
+            service.update(address);
         }
         
         MessageUtil.addSuccessMessage(MessageUtil.getMsg("success"), MessageUtil.getMsg("create_success"));        
         return "index.xhtml?faces-redirect=true";
     }
     
-	public void delete(Long userId) {
+	public void delete(Long addressId) {
 		try {
-			service.deleteById(userId);
+			service.deleteById(addressId);
 			MessageUtil.addSuccessMessage(MessageUtil.getMsg("success"), MessageUtil.getMsg("delete_success"));
 		} catch (Exception e) {
 			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("delete_fail"));							

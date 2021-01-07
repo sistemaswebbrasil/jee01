@@ -10,6 +10,30 @@
 	<ui:composition>
 		<nav class="mt-2">
 		<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+<li class="nav-item has-treeview" id="item-menu-scaffold-address">
+	<a href="#" class="nav-link"> <i class="nav-icon fas fa-book"></i>
+		<p>
+			#{lb['address.entity']}<i class="right fas fa-angle-left"></i>
+		</p>
+</a>
+	<ul class="nav nav-treeview">
+		<li class="nav-item"><a  
+			href="${facesContext.externalContext.requestContextPath}/address/"
+			class="nav-link"> <i class="fas fa-table nav-icon"></i>
+				<p>
+					<h:outputText value="#{lb['address.entityList']}" />
+				</p>
+		</a></li>
+		<li class="nav-item"><a
+			href="${facesContext.externalContext.requestContextPath}/address/form.xhtml"
+			class="nav-link"> <i class="fas fa-edit nav-icon"></i>
+				<p>
+					<h:outputText value="#{lb['address.entityCreate']}" />
+				</p>
+		</a></li>
+	</ul>
+</li>
+
 <li class="nav-item has-treeview" id="item-menu-scaffold-role">
 	<a href="#" class="nav-link"> <i class="nav-icon fas fa-book"></i>
 		<p>
