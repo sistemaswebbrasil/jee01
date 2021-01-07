@@ -1,52 +1,73 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">	
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
-	<ui:define name="title">#{msg.list_user}</ui:define>
-	<ui:define name="content">
-		<h:form>
-			<div class="x_panel">
-				<div class="x_title">
-					<h2>#{msg.list_user}</h2>
-					<div class="clearfix"></div>
-				</div>
-				<div class="x_content">
-					<p:dataTable var="item" value="#{userBean.listAll()}" reflow="true">
-						<p:column style="width:33px;text-align: center">							
-							<p:commandLink action="#{userBean.edit(item.id)}" type="button" styleClass="btn btn-primary" update="@form messages" title="#{msg.edit}">
-								<i class="fa fa-edit" />
-								<p:confirm header="#{msg.confirm}" message="#{msg.delete_confirm}" icon="pi pi-exclamation-triangle" /> 
-							</p:commandLink>							
-						</p:column>
-						<p:column style="width:33px;text-align: center">							
-							<p:commandLink action="#{userBean.delete(item.id)}" type="button" styleClass="btn btn-danger" update="@form messages" title="#{msg.delete}">
-								<i class="fa fa-trash" />
-								<p:confirm header="#{msg.confirm}" message="#{msg.delete_confirm}" icon="pi pi-exclamation-triangle" /> 
-							</p:commandLink>
-						</p:column>
-						<p:column headerText="#{msg.id}"
-							style="width:33px;text-align: center">
-							<h:outputText value="#{item.id}" />
-						</p:column>
-						<p:column headerText="#{msg.name}">
-							<h:outputText value="#{item.name}" />
-						</p:column>  
-						<p:column headerText="#{msg.email}">
-							<h:outputText value="#{item.email}" />
-						</p:column>
-					</p:dataTable>
-					<p:toolbar>
-						<f:facet name="right">
-							<p:commandButton value="#{msg.create_user}"
-								action="form.xhtml?faces-redirect=true" icon="pi pi-save" />
-						</f:facet>
-					</p:toolbar>
-				</div>
-			</div>
-		</h:form>
-	</ui:define>
+    <ui:define name="title">#{lb['user.entityList']}</ui:define>
+    <ui:define name="content">
+        <h:form>
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">#{lb['user.entityList']}</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p:dataTable var="item" value="#{userBean.listAll()}" reflow="true">
+                                        <p:column style="width:33px;text-align: center">
+                                            <p:link outcome="form.xhtml" type="button"
+                                                styleClass="btn btn-primary btn-sm" title="#{msg.edit}">
+                                                <i class="fa fa-edit" />
+                                                <f:param name="id" value="#{item.id}" />
+                                            </p:link>
+                                        </p:column>
+                                        <p:column style="width:33px;text-align: center">
+                                            <p:commandLink action="#{userBean.delete(item.id)}" type="button"
+                                                styleClass="btn btn-danger btn-sm" update="@form messages"
+                                                title="#{msg.delete}">
+                                                <i class="fa fa-trash" />
+                                                <p:confirm header="#{msg.confirm}" message="#{msg.delete_confirm}"
+                                                    icon="pi pi-exclamation-triangle" />
+                                            </p:commandLink>
+                                        </p:column>
+
+                                        
+                                        <p:column headerText="#{lb['user.name']}"
+                                            style="text-align: center">
+                                            <h:outputText value="#{item.name}" />
+                                        </p:column>
+                                        
+
+                                        <p:column headerText="#{lb['user.email']}"
+                                            style="text-align: center">
+                                            <h:outputText value="#{item.email}" />
+                                        </p:column>
+                                        
+
+                                        <p:column headerText="#{lb['user.loginName']}"
+                                            style="text-align: center">
+                                            <h:outputText value="#{item.loginName}" />
+                                        </p:column>
+                                        
+
+
+                                    </p:dataTable>
+                                    <div class="card-footer">
+                                        <h:commandLink action="form.xhtml?faces-redirect=true" type="button"
+                                            styleClass="btn btn-primary float-right">
+                                            <span class="fas fa-edit" aria-hidden="true"></span>
+                                            #{lb['organization.entityCreate']}
+                                        </h:commandLink>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </h:form>
+    </ui:define>
 </ui:composition>
+
 </html>

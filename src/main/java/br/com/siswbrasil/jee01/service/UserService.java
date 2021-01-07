@@ -7,13 +7,21 @@ import br.com.siswbrasil.jee01.dao.UserDAO;
 import br.com.siswbrasil.jee01.model.User;
 
 @Stateless
-public class UserService extends GenericServiceImpl<User,Long> {
-	
-	@Inject
-	protected UserDAO dao;	
+public class UserService extends GenericServiceImpl<User, Long> {
 
-	public boolean emailUnique(String email) {
-		return dao.isUniqueEmail(email);
+	@Inject
+	protected UserDAO dao;
+
+	public User findByEmail(String email) {
+		return dao.findByEmail(email);
+	}
+
+	public boolean emailUnique(User userForm) {
+		User user = findByEmail(userForm.getEmail());
+		if (user != null) {			
+			return user.getId().equals(userForm.getId());
+		}
+		return true;
 	}
 
 }

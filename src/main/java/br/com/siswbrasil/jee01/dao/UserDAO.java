@@ -1,15 +1,14 @@
 package br.com.siswbrasil.jee01.dao;
 
 import javax.ejb.Stateless;
+import br.com.siswbrasil.jee01.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import br.com.siswbrasil.jee01.model.User;
-
 @Stateless
-public class UserDAO extends GenericDAO<User,Long> {
+public class UserDAO extends GenericDAO<User, Long> {
 
 	@PersistenceContext(unitName = "default")
 	private EntityManager em;
@@ -23,14 +22,12 @@ public class UserDAO extends GenericDAO<User,Long> {
 		super(User.class);
 	}
 
-	public boolean isUniqueEmail(String email) {
-		try {
-			Query query = getEntityManager().createQuery("SELECT u FROM User u WHERE u.email=:email");
-			query.setParameter("email", email).getSingleResult();
-			return false;
+	public User findByEmail(String email) {
+		try {		
+			Query query = getEntityManager().createQuery("SELECT u FROM User u WHERE u.email=:email");			
+			return (User) query.setParameter("email", email).getSingleResult();
 		} catch (NoResultException e) {
-			return true;
+			return null;
 		}
 	}
-
 }

@@ -1,108 +1,92 @@
 package br.com.siswbrasil.jee01.bean;
 
-import br.com.siswbrasil.jee01.exception.BusinessException;
-import br.com.siswbrasil.jee01.exception.DatabaseException;
-import br.com.siswbrasil.jee01.model.User;
-import br.com.siswbrasil.jee01.service.UserService;
-import br.com.siswbrasil.jee01.util.MessageUtil;
-
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-
 import lombok.Getter;
 import lombok.Setter;
+import javax.annotation.PostConstruct;
+
+import br.com.siswbrasil.jee01.exception.DatabaseException;
+import br.com.siswbrasil.jee01.util.MessageUtil;
+import br.com.siswbrasil.jee01.model.User;
+import br.com.siswbrasil.jee01.service.UserService;
+
 
 @Getter
 @Setter
 @Named
 @RequestScoped
-//Tem que desaparecer isto aqui
 public class UserBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Inject
 	private UserService service;
-
-	private User user = new User();
-	private List<User> userList = new ArrayList<User>();
-
-	@PostConstruct
-	public void init() {
-		user.setEmail("teste@teste.com");
-		user.setLoginName("teste");
-		user.setName("teste");
-	}
-
-	public String save() throws Throwable {
-		emailUnique();
-		try {
-			service.create(user);
-			user = new User();
-			MessageUtil.addSuccessMessage("Criado com sucesso");
-			return "index.xhtml?faces-redirect=true";
-		} catch (BusinessException e) {
-			MessageUtil.addErrorMessage(e.getMessage(), e.getDetail());
-			return null;
-		}
-	}
 	
-	public void emailUnique() {
-		if (!service.emailUnique(user.getEmail())) {
-			MessageUtil.addErrorMessageWhithField("form.email","Email já utilizado","Favor selecionar outro email , pois este já está em uso");			
-		}
-	}
-
-	public String update(User editUser) throws Throwable {
-		try {
-			User user = new User();
-
-			user.setId(editUser.getId());
-			user.setName(editUser.getName());
-			user.setEmail(editUser.getEmail());
-
-			service.update(editUser);
-
-			MessageUtil.addSuccessMessage("Atualizado com sucesso");
-			return "index.xhtml?faces-redirect=true";
-
-		} catch (BusinessException e) {
-			MessageUtil.addErrorMessage(e.getMessage(), e.getDetail());
-			return null;
-		}
-
-	}
-
+    @Inject
+    private FacesContext facesContext;
+    	
+	private Long userId;
+	private User user;
+    
+    @PostConstruct
+    public void init() throws IOException {    
+        if (userId == null) {
+            user = new User();
+        } else {
+			user = service.findById(userId);
+			if (user == null) {
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("register_not_found"));
+				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+			}			
+        }
+    }
+    
 	public List<User> listAll() throws DatabaseException {
 		return service.findAll();
-	}
-
-	public String edit(Long id) {
-		User editUser = service.findById(id);
-		Map<String, Object> sessionMapObj = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-		sessionMapObj.put("editRecordObj", editUser);
-		return "edit.xhtml?faces-redirect=true";
-	}
-
-	public void delete(Long id) {
+	} 
+	
+//	private boolean emailUnique() {		
+//		if (service.findByEmail(user.getEmail()) != null ) {
+//			MessageUtil.addErrorMessage("Email já utilizado","Favor selecionar outro email , pois este já está em uso");
+//			return false;
+//		}
+//		return true;
+//	}
+    
+    public String save() throws Throwable {
+    	if (user.getId() == null) {
+			if(service.emailUnique(user)) {
+				service.create(user);			    
+			}else {
+				MessageUtil.addErrorMessage("Email já utilizado","Favor selecionar outro email , pois este já está em uso");
+				return null;
+			}
+        } else {
+        	if(service.emailUnique(user)) {
+        		service.update(user);
+        	}else {
+        		MessageUtil.addErrorMessage("Email já utilizado","Favor selecionar outro email , pois este já está em uso");
+        		return null;
+        	}
+        }
+    	
+    	MessageUtil.addSuccessMessage(MessageUtil.getMsg("success"), MessageUtil.getMsg("create_success"));
+    	return "index.xhtml?faces-redirect=true";
+    }
+    
+	public void delete(Long userId) {
 		try {
-			service.deleteById(id);
-			this.listAll();
-			MessageUtil.addSuccessMessage("Excluído com sucesso");
-
+			service.deleteById(userId);
+			MessageUtil.addSuccessMessage(MessageUtil.getMsg("success"), MessageUtil.getMsg("delete_success"));
 		} catch (Exception e) {
-			MessageUtil.addErrorMessage(e.getMessage());
+			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("delete_fail"));							
 		}
-
 	}
 
 }

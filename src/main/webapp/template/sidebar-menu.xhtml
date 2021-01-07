@@ -9,8 +9,55 @@
 <body>
 	<ui:composition>
 		<nav class="mt-2">
-		<ul class="nav nav-pills nav-sidebar flex-column"
-			data-widget="treeview" role="menu" data-accordion="false">
+		<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+<li class="nav-item has-treeview" id="item-menu-scaffold-role">
+	<a href="#" class="nav-link"> <i class="nav-icon fas fa-book"></i>
+		<p>
+			#{lb['role.entity']}<i class="right fas fa-angle-left"></i>
+		</p>
+</a>
+	<ul class="nav nav-treeview">
+		<li class="nav-item"><a  
+			href="${facesContext.externalContext.requestContextPath}/role/"
+			class="nav-link"> <i class="fas fa-table nav-icon"></i>
+				<p>
+					<h:outputText value="#{lb['role.entityList']}" />
+				</p>
+		</a></li>
+		<li class="nav-item"><a
+			href="${facesContext.externalContext.requestContextPath}/role/form.xhtml"
+			class="nav-link"> <i class="fas fa-edit nav-icon"></i>
+				<p>
+					<h:outputText value="#{lb['role.entityCreate']}" />
+				</p>
+		</a></li>
+	</ul>
+</li>
+
+<li class="nav-item has-treeview" id="item-menu-scaffold-user">
+	<a href="#" class="nav-link"> <i class="nav-icon fas fa-book"></i>
+		<p>
+			#{lb['user.entity']}<i class="right fas fa-angle-left"></i>
+		</p>
+</a>
+	<ul class="nav nav-treeview">
+		<li class="nav-item"><a  
+			href="${facesContext.externalContext.requestContextPath}/user/"
+			class="nav-link"> <i class="fas fa-table nav-icon"></i>
+				<p>
+					<h:outputText value="#{lb['user.entityList']}" />
+				</p>
+		</a></li>
+		<li class="nav-item"><a
+			href="${facesContext.externalContext.requestContextPath}/user/form.xhtml"
+			class="nav-link"> <i class="fas fa-edit nav-icon"></i>
+				<p>
+					<h:outputText value="#{lb['user.entityCreate']}" />
+				</p>
+		</a></li>
+	</ul>
+</li>
+
 			<li class="nav-item has-treeview"
 				id="item-menu-scaffold-organization"><a href="#"
 				class="nav-link"> <i class="nav-icon fas fa-book"></i>

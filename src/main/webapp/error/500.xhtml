@@ -1,29 +1,50 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
 	<ui:define name="content">
-		<div class="x_panel">
-			<div class="x_title">
-				<h1>#{msg['error.internal_server_error']}</h1>
 
-				<div class="clearfix"></div>
-			</div>
-			<div class="x_content">
-				<br />
-				<div class="alert alert-danger alert-dismissible " role="alert">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-					<h2>#{msg['error.internal_server_error.detail']}</h2>
-					<br/>
-					<h:outputText value="#{pfExceptionHandler.message}" />					
+
+		<ui:define name="title">#{lb['user.entityCreate']}</ui:define>
+		<ui:define name="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title">
+									#{msg['error.internal_server_error']}</h3>
+							</div>
+							<div class="card-body">
+								<h:form id="form" role="form" class="form">
+									<div class="row">
+										<div class="alert alert-danger alert-dismissible "
+											role="alert">
+											<button type="button" class="close" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<h2>#{msg['error.internal_server_error.detail']}</h2>
+											<br />
+											<h:outputText value="#{pfExceptionHandler.message}" />
+										</div>
+										<h:form>
+											<p:inputTextarea
+												value="#{pfExceptionHandler.formattedStackTrace}"
+												escape="false" style="width:100%;" autoResize="true"
+												readonly="true" />
+										</h:form>
+									</div>
+								</h:form>
+							</div>
+						</div>
+					</div>
 				</div>
-				<h:form>
-					<p:inputTextarea value="#{pfExceptionHandler.formattedStackTrace}" escape="false" style="width:100%;" autoResize="true" readonly="true"/>
-				</h:form>				
 			</div>
-		</div>
+		</ui:define>
 	</ui:define>
 </ui:composition>
 </html>

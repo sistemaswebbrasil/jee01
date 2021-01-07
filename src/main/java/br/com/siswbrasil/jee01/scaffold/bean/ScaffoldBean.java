@@ -478,16 +478,18 @@ public class ScaffoldBean implements Serializable {
 						tmp = templateFieldsFinal.replace("${entity.field}", item.getName());
 						tmp = tmp.replace("${entity.var}", entityCamelCase);
 						tmp = tmp.replace("${view.beanForm}", beanClassView);
-						tmp = tmp.replace("${optional.render}", "");
+						tmp = tmp.replace("${optional.render.begin}", "");
+						tmp = tmp.replace("${optional.render.end}", "");						
 						tmp = tmp.replace("${optional.hidden}", "");
+						tmp = tmp.replace("${optional.disable}", "");
 					} else {
 						tmp = templateFieldsFinal.replace("${entity.field}", item.getName());
 						tmp = tmp.replace("${entity.var}", entityCamelCase);
 						tmp = tmp.replace("${view.beanForm}", beanClassView);
-						tmp = tmp.replace("${optional.render}", String.format("rendered=\"#{not empty %s.%s.%s}\"",
-								beanClassView, entityCamelCase, item.getName()));
-						tmp = tmp.replace("${optional.hidden}", String.format("<h:inputHidden value=\"#{%s.%s.%s}\" />",
-								beanClassView, entityCamelCase, item.getName()));
+						tmp = tmp.replace("${optional.render.begin}", String.format("<ui:fragment rendered=\"#{not empty %s.%s.%s}\">",beanClassView, entityCamelCase, item.getName()));
+						tmp = tmp.replace("${optional.render.end}", "</ui:fragment>");
+						tmp = tmp.replace("${optional.hidden}", String.format("<h:inputHidden value=\"#{%s.%s.%s}\" />",beanClassView, entityCamelCase, item.getName()));
+						tmp = tmp.replace("${optional.disable}", "disabled=\"true\"");						
 					}
 					finalLines += tmp + "\n";
 				}
@@ -807,7 +809,10 @@ public class ScaffoldBean implements Serializable {
 		}
 
 		String labelPath = propertiesUtil.get(SCAFFOLD_LABEL_PATH);
-		if (labelPath != null && !labelPath.isEmpty()) {
+		System.out.println("######################");
+		System.out.println(labelPath);
+		System.out.println("######################");
+		if (StringUtils.isEmpty(labelPath)) {
 			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
 					MessageUtil.getMsg("scaffold.labels_config.not_found"));
 		}

@@ -7,14 +7,14 @@
 	<ul class="nav nav-treeview">
 		<li class="nav-item"><a  
 			href="${facesContext.externalContext.requestContextPath}/${entity.var}/"
-			class="nav-link"> <i class="far fa-table nav-icon"></i>
+			class="nav-link"> <i class="fas fa-table nav-icon"></i>
 				<p>
 					<h:outputText value="#{lb['${entity.label.list}']}" />
 				</p>
 		</a></li>
 		<li class="nav-item"><a
 			href="${facesContext.externalContext.requestContextPath}/${entity.var}/form.xhtml"
-			class="nav-link"> <i class="far fa-edit nav-icon"></i>
+			class="nav-link"> <i class="fas fa-edit nav-icon"></i>
 				<p>
 					<h:outputText value="#{lb['${entity.label.create}']}" />
 				</p>

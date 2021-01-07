@@ -1,42 +1,150 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
 
-<ui:define name="title">#{msg.create_user}</ui:define>
-	<ui:define name="content">
-		<h:form id="form">			
-			<div class="p-grid">
-				<div class="p-col p-col-align-start">
-					<p:panel id="panel" header=" ">
-						<p:panelGrid columns="4" layout="flex"
-							columnClasses="p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-3"
-							contentStyleClass="p-align-baseline ">
+    <f:metadata>
+        <f:viewParam name="id" value="#{userBean.userId}">
+        </f:viewParam>
+        <f:viewAction action="#{userBean.init()}" />
+    </f:metadata>
 
-							<p:outputLabel for="name" value="#{msg.name}" />
-							<p:inputText id="name" value="#{userBean.user.name}" required="true" requiredMessage="#{msg.error_required_user_name}" />
-							
-							<p:outputLabel for="email" value="#{msg.email}" />
-							<p:inputText id="email" value="#{userBean.user.email}"  required="true" >
-								<p:ajax event="keyup"  listener="#{userBean.emailUnique}"  process="@this,email" update="@form messages" />																						
-							</p:inputText>			
-							<p:message for="email" display="icon" />							
+    <ui:define name="title">
+        <ui:fragment rendered="#{empty userBean.userId}">#{lb['user.entityCreate']}
+        </ui:fragment>
+        <ui:fragment rendered="#{not empty userBean.userId}">#{lb['user.entityEdit']}
+        </ui:fragment>
+    </ui:define>
 
-						</p:panelGrid>
-					</p:panel>
-				</div>
-			</div>
-			
-			<p:toolbar>
-				<f:facet name="right">					
-					<p:linkButton outcome="index" value="#{msg.list_user}" action="index.xhtml?faces-redirect=true" icon="pi pi-search" style="margin-right:20px;" />
-					<p:commandButton value="#{msg.save}" action="#{userBean.save}" update="@form messages" icon="pi pi-save"
-					disabled="#{facesContext.validationFailed}" 
-					/>					
-				</f:facet>
-			</p:toolbar>    			
-			
-		</h:form>
-	</ui:define>
+    <ui:define name="title">#{lb['user.entityCreate']}</ui:define>
+    <ui:define name="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">                                
+                                #{lb['user.entityCreate']}
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <h:form id="form" role="form" class="form">
+                            	<div class="row">
+
+                                                                        
+                                    
+                                    <ui:fragment rendered="#{not empty userBean.user.id}">									
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="id">#{lb['user.id']}</label> 
+												<input
+													type="text" jsf:id="id"
+													class="form-control #{not empty facesContext.getMessageList('form:id')?'is-invalid':''}"
+													jsf:value="#{userBean.user.id}"
+													jsf:label="#{lb['user.id']}"													
+													disabled="true"				
+												/>												 
+												<small class="invalid-feedback"> 
+													<h:message for="id" showDetail="false" showSummary="true"/>
+												</small>
+											</div>
+										</div>  
+									</ui:fragment>									    
+                                    <h:inputHidden value="#{userBean.user.id}" />                                    
+                                    
+                                    
+                                    
+                                    									
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="name">#{lb['user.name']}</label> 
+												<input
+													type="text" jsf:id="name"
+													class="form-control #{not empty facesContext.getMessageList('form:name')?'is-invalid':''}"
+													jsf:value="#{userBean.user.name}"
+													jsf:label="#{lb['user.name']}"													
+																	
+												/>												 
+												<small class="invalid-feedback"> 
+													<h:message for="name" showDetail="false" showSummary="true"/>
+												</small>
+											</div>
+										</div>  
+																		    
+                                                                        
+                                    
+                                    
+                                    
+                                    									
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="email">#{lb['user.email']}</label> 
+												<input
+													type="text" jsf:id="email"
+													class="form-control #{not empty facesContext.getMessageList('form:email')?'is-invalid':''}"
+													jsf:value="#{userBean.user.email}"
+													jsf:label="#{lb['user.email']}"													
+																	
+												/>												 
+												<small class="invalid-feedback"> 
+													<h:message for="email" showDetail="false" showSummary="true"/>
+												</small>
+											</div>
+										</div>  
+																		    
+                                                                        
+                                    
+                                    
+                                    
+                                    									
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="loginName">#{lb['user.loginName']}</label> 
+												<input
+													type="text" jsf:id="loginName"
+													class="form-control #{not empty facesContext.getMessageList('form:loginName')?'is-invalid':''}"
+													jsf:value="#{userBean.user.loginName}"
+													jsf:label="#{lb['user.loginName']}"													
+																	
+												/>												 
+												<small class="invalid-feedback"> 
+													<h:message for="loginName" showDetail="false" showSummary="true"/>
+												</small>
+											</div>
+										</div>  
+																		    
+                                                                        
+                                    
+                                    
+                                </div>
+                                
+                                <div class="card-footer">
+                                    <div class="margin float-right">
+                                        <div class="btn-group">
+                                            <p:commandLink action="index.xhtml?faces-redirect=true" value="#{lb['user.entityList']}" immediate="true" 
+                                                styleClass="btn btn-primary float-right">
+                                                <span class="fas fa-table"></span>
+                                            </p:commandLink>
+                                        </div>
+                                        <div class="btn-group">
+                                            <p:commandLink value="#{msg.save} " action="#{userBean.save}"
+                                                update="@form" styleClass="btn btn-primary float-right">
+                                                <span class="fas fa-edit"></span>
+                                            </p:commandLink>
+                                        </div>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
 </ui:composition>
 </html>
