@@ -1,9 +1,8 @@
-package br.com.siswbrasil.jee01.util.teste;
+package br.com.siswbrasil.jee01.exceptionhandler;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -29,6 +28,8 @@ import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.view.ViewDeclarationLanguage;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.primefaces.application.exceptionhandler.ExceptionInfo;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
@@ -38,8 +39,8 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 
-import br.com.siswbrasil.jee01.exception.DatabaseException;
-import br.com.siswbrasil.jee01.util.MessageUtil;
+import com.google.common.escape.Escaper;
+import com.google.common.escape.Escapers;
 
 public class CustomPrimeExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -247,7 +248,15 @@ public class CustomPrimeExceptionHandler extends ExceptionHandlerWrapper {
 		try (StringWriter sw = new StringWriter()) {
 			PrintWriter pw = new PrintWriter(sw);
 			rootCause.printStackTrace(pw);
-			info.setFormattedStackTrace(EscapeUtils.forXml(sw.toString()));
+			/**
+			 *Linha original no PrimeExceptionHandler 
+			 *info.setFormattedStackTrace(EscapeUtils.forXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
+			 */			
+			String formatedPrint = EscapeUtils.forXml(sw.toString());			
+			formatedPrint = formatedPrint.replace("&#34;", "\"");
+			formatedPrint = formatedPrint.replace("&lt;", "<");
+			formatedPrint = formatedPrint.replace("&gt;", ">");
+			info.setFormattedStackTrace(formatedPrint);
 			pw.close();
 		}
 

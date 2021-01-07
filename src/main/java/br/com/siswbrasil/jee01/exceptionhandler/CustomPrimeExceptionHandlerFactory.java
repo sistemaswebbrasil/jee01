@@ -1,4 +1,4 @@
-package br.com.siswbrasil.jee01.util.teste;
+package br.com.siswbrasil.jee01.exceptionhandler;
 
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerFactory;
