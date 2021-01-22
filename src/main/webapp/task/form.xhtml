@@ -61,7 +61,7 @@
 													<label jsf:for="id">#{lb['task.id']}</label> 
 													<input
 														type="text" jsf:id="id"
-														class="form-control #{not empty facesContext.getMessageList('form:id')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:id')?'is-invalid':''})"
 														jsf:value="#{taskBean.task.id}"
 														jsf:label="#{lb['task.id']}"													
 														disabled="true"				
@@ -82,7 +82,7 @@
 													<label jsf:for="title">#{lb['task.title']}</label> 
 													<input
 														type="text" jsf:id="title"
-														class="form-control #{not empty facesContext.getMessageList('form:title')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:title')?'is-invalid':''})"
 														jsf:value="#{taskBean.task.title}"
 														jsf:label="#{lb['task.title']}"													
 																		
@@ -103,7 +103,7 @@
 													<label jsf:for="description">#{lb['task.description']}</label> 
 													<input
 														type="text" jsf:id="description"
-														class="form-control #{not empty facesContext.getMessageList('form:description')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:description')?'is-invalid':''})"
 														jsf:value="#{taskBean.task.description}"
 														jsf:label="#{lb['task.description']}"													
 																		

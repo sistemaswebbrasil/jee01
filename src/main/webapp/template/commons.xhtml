@@ -6,15 +6,13 @@
 <body>
 	<ui:composition>
 
-		<ui:fragment
-			rendered="#{not empty facesContext.validationFailed or not empty facesContext.messageList}">
-			<div class="col-md-12">
-				<h:messages id="messages" layout="vertical" globalOnly="true"
-					styleClass="list-unstyled" showSummary="true" showDetail="false"
-					errorClass="alert alert-danger" infoClass="alert alert-info"
-					warnClass="alert alert-warning" />
-			</div>
-		</ui:fragment>
+		<div class="col-md-12">
+			<h:messages id="messages" layout="vertical" globalOnly="true"
+				styleClass="list-unstyled" showSummary="true" showDetail="false"
+				errorClass="alert alert-danger" infoClass="alert alert-info"
+				warnClass="alert alert-warning" />
+		</div>
+
 
 		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 			<h:form>

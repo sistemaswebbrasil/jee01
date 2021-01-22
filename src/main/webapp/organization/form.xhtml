@@ -61,11 +61,11 @@
 													<label jsf:for="id">#{lb['organization.id']}</label> 
 													<input
 														type="text" jsf:id="id"
-														class="form-control #{not empty facesContext.getMessageList('form:id')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:id'))?'is-invalid':''}"
 														jsf:value="#{organizationBean.organization.id}"
 														jsf:label="#{lb['organization.id']}"													
 														disabled="true"				
-													/>												 
+													/>		 										 
 													<small class="invalid-feedback"> 
 														<h:message for="id" showDetail="false" showSummary="true"/>
 													</small>
@@ -82,7 +82,7 @@
 													<label jsf:for="initials">#{lb['organization.initials']}</label> 
 													<input
 														type="text" jsf:id="initials"
-														class="form-control #{not empty facesContext.getMessageList('form:initials')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:initials'))?'is-invalid':''}"
 														jsf:value="#{organizationBean.organization.initials}"
 														jsf:label="#{lb['organization.initials']}"													
 																		
@@ -103,7 +103,7 @@
 													<label jsf:for="companyName">#{lb['organization.companyName']}</label> 
 													<input
 														type="text" jsf:id="companyName"
-														class="form-control #{not empty facesContext.getMessageList('form:companyName')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:companyName'))?'is-invalid':''}"
 														jsf:value="#{organizationBean.organization.companyName}"
 														jsf:label="#{lb['organization.companyName']}"													
 																		
@@ -124,7 +124,7 @@
 													<label jsf:for="tradingName">#{lb['organization.tradingName']}</label> 
 													<input
 														type="text" jsf:id="tradingName"
-														class="form-control #{not empty facesContext.getMessageList('form:tradingName')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:tradingName'))?'is-invalid':''}"
 														jsf:value="#{organizationBean.organization.tradingName}"
 														jsf:label="#{lb['organization.tradingName']}"													
 																		

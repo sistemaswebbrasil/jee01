@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.faces.view.ViewScoped;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
@@ -74,6 +73,7 @@ public class PurchaseOrderDataModel extends LazyDataModel<PurchaseOrderDto> {
 		PageDto page = resp.readEntity(new GenericType<PageDto>() {});	
 
 		
+		@SuppressWarnings("unchecked")
 		List<PurchaseOrderDto> list = (List<PurchaseOrderDto>)(Object)    page.getContent();
 		super.setRowCount(page.getTotalElements());
 		return list;

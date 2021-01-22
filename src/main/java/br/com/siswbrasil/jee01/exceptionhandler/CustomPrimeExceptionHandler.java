@@ -28,8 +28,6 @@ import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.view.ViewDeclarationLanguage;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringEscapeUtils;
 import org.primefaces.application.exceptionhandler.ExceptionInfo;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
@@ -38,9 +36,6 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
-
-import com.google.common.escape.Escaper;
-import com.google.common.escape.Escapers;
 
 public class CustomPrimeExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -288,7 +283,7 @@ public class CustomPrimeExceptionHandler extends ExceptionHandlerWrapper {
 
 		// lookup by inheritance hierarchy
 		if (handler == null) {
-			Class throwableClass = rootCause.getClass();
+			Class<?> throwableClass = rootCause.getClass();
 			while (handler == null && throwableClass.getSuperclass() != Object.class) {
 				throwableClass = throwableClass.getSuperclass();
 				handler = handlers.get(throwableClass.getName());
@@ -384,7 +379,7 @@ public class CustomPrimeExceptionHandler extends ExceptionHandlerWrapper {
 
 		// lookup by inheritance hierarchy
 		if (errorPage == null) {
-			Class throwableClass = rootCause.getClass();
+			Class<?> throwableClass = rootCause.getClass();
 			while (errorPage == null && throwableClass.getSuperclass() != Object.class) {
 				throwableClass = throwableClass.getSuperclass();
 				errorPage = errorPages.get(throwableClass.getName());

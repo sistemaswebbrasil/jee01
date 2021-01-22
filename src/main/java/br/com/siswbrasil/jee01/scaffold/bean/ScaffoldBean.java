@@ -8,14 +8,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -371,10 +369,9 @@ public class ScaffoldBean implements Serializable {
 			// String beanPath = basePath.concat(beanParcialPath);
 			String modelViewFormPath = basePath.concat(modelParcialBeanPath.concat("/viewForm.txt"));
 
-			String entityPackage = "";
+
 			String entityCreateLabel = "";
-			String entityListLabel = "";
-			String idType = "";
+			String entityListLabel = "";			
 			String entityCamelCase = "";
 			String entityEditLabel = "";
 			String entityDetailLabel = "";
@@ -698,9 +695,6 @@ public class ScaffoldBean implements Serializable {
 			String entityCreateLabel = "";
 			String entityListLabel = "";
 			String entityCamelCase = "";
-			String entityEditLabel = "";
-			String entityDetailLabel = "";
-			String entityDeleteLabel = "";
 			LOG.info("---------------------DADOS---------------------");
 			LOG.info("basePath " + basePath);
 			LOG.info("baseViewPath " + baseViewPath);

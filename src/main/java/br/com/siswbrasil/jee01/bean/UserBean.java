@@ -53,13 +53,23 @@ public class UserBean implements Serializable {
     
     public String save() throws Throwable {
     	if (user.getId() == null) {
-            service.create(user);
+			if(service.emailUnique(user)) {
+				service.create(user);			    
+			}else {
+				MessageUtil.addErrorMessage("Email já utilizado","Favor selecionar outro email , pois este já está em uso");
+				return null;
+			}
         } else {
-            service.update(user);
+        	if(service.emailUnique(user)) {
+        		service.update(user);
+        	}else {
+        		MessageUtil.addErrorMessage("Email já utilizado","Favor selecionar outro email , pois este já está em uso");
+        		return null;
+        	}
         }
-        
-        MessageUtil.addSuccessMessage(MessageUtil.getMsg("success"), MessageUtil.getMsg("create_success"));        
-        return "index.xhtml?faces-redirect=true";
+    	
+    	MessageUtil.addSuccessMessage(MessageUtil.getMsg("success"), MessageUtil.getMsg("create_success"));
+    	return "index.xhtml?faces-redirect=true";
     }
     
 	public void delete(Long userId) {

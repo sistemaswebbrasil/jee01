@@ -61,7 +61,7 @@
 													<label jsf:for="id">#{lb['role.id']}</label> 
 													<input
 														type="text" jsf:id="id"
-														class="form-control #{not empty facesContext.getMessageList('form:id')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:id'))?'is-invalid':''}"
 														jsf:value="#{roleBean.role.id}"
 														jsf:label="#{lb['role.id']}"													
 														disabled="true"				
@@ -82,7 +82,7 @@
 													<label jsf:for="name">#{lb['role.name']}</label> 
 													<input
 														type="text" jsf:id="name"
-														class="form-control #{not empty facesContext.getMessageList('form:name')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:name'))?'is-invalid':''}"
 														jsf:value="#{roleBean.role.name}"
 														jsf:label="#{lb['role.name']}"													
 																		
@@ -103,7 +103,7 @@
 													<label jsf:for="description">#{lb['role.description']}</label> 
 													<input
 														type="text" jsf:id="description"
-														class="form-control #{not empty facesContext.getMessageList('form:description')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:description'))?'is-invalid':''}"
 														jsf:value="#{roleBean.role.description}"
 														jsf:label="#{lb['role.description']}"													
 																		

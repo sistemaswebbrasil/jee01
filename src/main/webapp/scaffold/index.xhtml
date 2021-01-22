@@ -5,37 +5,67 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
+
 	<ui:define name="title">#{msg['scaffold.project']}</ui:define>
+
 	<ui:define name="content">
+
+
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>#{msg['scaffold.project']}</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a
+								href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+							<li class="breadcrumb-item active">#{msg['scaffold.project']}</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</section>
 		<section class="content">
+			<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-12">
+
 						<div class="card">
 							<div class="card-header">
 								<h3 class="card-title">#{msg['scaffold.project']}</h3>
 							</div>
 							<div class="card-body">
-								<p:dataTable var="item" value="#{scaffoldBean.entities}">
-									<p:column headerText="#{msg['object.name']}" width="25%">
-										<h:outputText value="#{item.name}" />
-									</p:column>
-									<p:column headerText="#{msg['object.type']}" width="25%">
-										<h:outputText value="#{item.type}" />
-									</p:column>
-									<p:column headerText="#{msg['object.path']}" width="50%">
-										<h:outputText value="#{item.path}" />
-									</p:column>
-									<p:column style="width:32px;text-align: center">
-										<h:form>
-											<h:link outcome="detail" title="#{msg.detail}">
-												<i class="fa fa-fw fa-search" />
-												<f:param name="name" value="#{item.name}" />
-												<f:param name="type" value="#{item.type}" />
-											</h:link>
-										</h:form>
-									</p:column>
-								</p:dataTable>
+								<h:form id="form" role="form" class="form">
+
+
+									<p:dataTable var="item" value="#{scaffoldBean.entities}">
+										<p:column headerText="#{msg['object.name']}" width="25%">
+											<h:outputText value="#{item.name}" />
+										</p:column>
+										<p:column headerText="#{msg['object.type']}" width="25%">
+											<h:outputText value="#{item.type}" />
+										</p:column>
+										<p:column headerText="#{msg['object.path']}" width="50%">
+											<h:outputText value="#{item.path}" />
+										</p:column>
+
+										<p:column style="width:32px;text-align: center">
+											<h:form>
+												<h:link outcome="detail" title="#{msg.detail}">
+													<i class="fa fa-fw fa-search" />
+													<f:param name="name" value="#{item.name}" />
+													<f:param name="type" value="#{item.type}" />
+												</h:link>
+											</h:form>
+										</p:column>
+
+									</p:dataTable>
+
+
+								</h:form>
 							</div>
 						</div>
 					</div>
@@ -44,4 +74,5 @@
 		</section>
 	</ui:define>
 </ui:composition>
+
 </html>

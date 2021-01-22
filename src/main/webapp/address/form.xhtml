@@ -14,7 +14,7 @@
     </f:metadata>
 
     <ui:define name="title">
-        <ui:fragment rendered="#{empty addressBean.addressId}">#{lb['address.entityCreate']}
+        <ui:fragment rendered="#{empty (addressBean.addressId})">#{lb['address.entityCreate']}
         </ui:fragment>
         <ui:fragment rendered="#{not empty addressBean.addressId}">#{lb['address.entityEdit']}
         </ui:fragment>
@@ -61,7 +61,7 @@
 													<label jsf:for="id">#{lb['address.id']}</label> 
 													<input
 														type="text" jsf:id="id"
-														class="form-control #{not empty facesContext.getMessageList('form:id')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:id'))?'is-invalid':''}"
 														jsf:value="#{addressBean.address.id}"
 														jsf:label="#{lb['address.id']}"													
 														disabled="true"				
@@ -82,7 +82,7 @@
 													<label jsf:for="street">#{lb['address.street']}</label> 
 													<input
 														type="text" jsf:id="street"
-														class="form-control #{not empty facesContext.getMessageList('form:street')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:street'))?'is-invalid':''}"
 														jsf:value="#{addressBean.address.street}"
 														jsf:label="#{lb['address.street']}"													
 																		
@@ -103,7 +103,7 @@
 													<label jsf:for="number">#{lb['address.number']}</label> 
 													<input
 														type="text" jsf:id="number"
-														class="form-control #{not empty facesContext.getMessageList('form:number')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:number'))?'is-invalid':''}"
 														jsf:value="#{addressBean.address.number}"
 														jsf:label="#{lb['address.number']}"													
 																		
@@ -124,7 +124,7 @@
 													<label jsf:for="complement">#{lb['address.complement']}</label> 
 													<input
 														type="text" jsf:id="complement"
-														class="form-control #{not empty facesContext.getMessageList('form:complement')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:complement'))?'is-invalid':''}"
 														jsf:value="#{addressBean.address.complement}"
 														jsf:label="#{lb['address.complement']}"													
 																		
@@ -145,7 +145,7 @@
 													<label jsf:for="neighbourhood">#{lb['address.neighbourhood']}</label> 
 													<input
 														type="text" jsf:id="neighbourhood"
-														class="form-control #{not empty facesContext.getMessageList('form:neighbourhood')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:neighbourhood'))?'is-invalid':''}"
 														jsf:value="#{addressBean.address.neighbourhood}"
 														jsf:label="#{lb['address.neighbourhood']}"													
 																		
@@ -166,7 +166,7 @@
 													<label jsf:for="zipCode">#{lb['address.zipCode']}</label> 
 													<input
 														type="text" jsf:id="zipCode"
-														class="form-control #{not empty facesContext.getMessageList('form:zipCode')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:zipCode'))?'is-invalid':''}"
 														jsf:value="#{addressBean.address.zipCode}"
 														jsf:label="#{lb['address.zipCode']}"													
 																		
@@ -187,7 +187,7 @@
 													<label jsf:for="city">#{lb['address.city']}</label> 
 													<input
 														type="text" jsf:id="city"
-														class="form-control #{not empty facesContext.getMessageList('form:city')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:city'))?'is-invalid':''}"
 														jsf:value="#{addressBean.address.city}"
 														jsf:label="#{lb['address.city']}"													
 																		
@@ -208,7 +208,7 @@
 													<label jsf:for="state">#{lb['address.state']}</label> 
 													<input
 														type="text" jsf:id="state"
-														class="form-control #{not empty facesContext.getMessageList('form:state')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:state'))?'is-invalid':''}"
 														jsf:value="#{addressBean.address.state}"
 														jsf:label="#{lb['address.state']}"													
 																		

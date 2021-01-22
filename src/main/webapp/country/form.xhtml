@@ -41,7 +41,7 @@
 										<div class="form-group">
 											<label jsf:for="iddCode">#{lb['country.iddCode']}</label> <input
 												type="text" jsf:id="iddCode"
-												class="form-control #{not empty facesContext.getMessageList('form:iddCode')?'is-invalid':''}"
+												class="form-control #{not empty (facesContext.getMessageList('form:iddCode')?'is-invalid':''})"
 												jsf:value="#{countryBean.country.iddCode}"
 												jsf:label="#{lb['country.iddCode']}"
 												disabled="#{countryBean.country.iddCode}" />
@@ -59,7 +59,7 @@
 										<div class="form-group">
 											<label jsf:for="name">#{lb['country.name']}</label> <input
 												type="text" jsf:id="name"
-												class="form-control #{not empty facesContext.getMessageList('form:name')?'is-invalid':''}"
+												class="form-control #{not empty (facesContext.getMessageList('form:name')?'is-invalid':''})"
 												jsf:value="#{countryBean.country.name}"
 												jsf:label="#{lb['country.name']}" />
 											<small class="invalid-feedback"> <h:message
@@ -77,7 +77,7 @@
 										<div class="form-group">
 											<label jsf:for="continent">#{lb['country.continent']}</label>
 											<input type="text" jsf:id="continent"
-												class="form-control #{not empty facesContext.getMessageList('form:continent')?'is-invalid':''}"
+												class="form-control #{not empty (facesContext.getMessageList('form:continent')?'is-invalid':''})"
 												jsf:value="#{countryBean.country.continent}"
 												jsf:label="#{lb['country.continent']}" />
 											<small class="invalid-feedback"> <h:message
