@@ -14,24 +14,33 @@
     </f:metadata>
 
     <ui:define name="title">
-        <ui:fragment rendered="#{empty ${view.beanForm}.${entity.id.var}}">#{lb['${entity.var}.entityCreate']}
+        <ui:fragment rendered="#{empty (${view.beanForm}.${entity.id.var})}">
+        	#{lb['${entity.var}.entityCreate']}
         </ui:fragment>
-        <ui:fragment rendered="#{not empty ${view.beanForm}.${entity.id.var}}">#{lb['${entity.var}.entityEdit']}
+        <ui:fragment rendered="#{not empty (${view.beanForm}.${entity.id.var})}">
+        	#{lb['${entity.var}.entityEdit']}
         </ui:fragment>
     </ui:define>
 
-    <ui:define name="title">#{lb['${entity.label.create}']}</ui:define>
     <ui:define name="content">
     
 		<section class="content-header">
 	      <div class="container-fluid">
 	        <div class="row mb-2">
 	          <div class="col-sm-6">
-	            <h1>#{lb['${entity.label.create}']}</h1>
+	            <h1>
+			        <ui:fragment rendered="#{empty (${view.beanForm}.${entity.id.var})}">
+			        	#{lb['${entity.var}.entityCreate']}
+			        </ui:fragment>
+			        <ui:fragment rendered="#{not empty (${view.beanForm}.${entity.id.var})}">
+			        	#{lb['${entity.var}.entityEdit']}
+			        </ui:fragment>	            
+	            </h1>
 	          </div>
 	          <div class="col-sm-6">
 	            <ol class="breadcrumb float-sm-right">
 	              <li class="breadcrumb-item"><a href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+	              <li class="breadcrumb-item"><h:link outcome="index" value="#{lb['${entity.label.list}']}" immediate="true" /></li>
 	              <li class="breadcrumb-item active">#{lb['${entity.label.create}']}</li>
 	            </ol>
 	          </div>
@@ -61,7 +70,7 @@
 													<label jsf:for="${entity.field}">#{lb['${entity.var}.${entity.field}']}</label> 
 													<input
 														type="text" jsf:id="${entity.field}"
-														class="form-control #{not empty facesContext.getMessageList('form:${entity.field}')?'is-invalid':''}"
+														class="form-control #{not empty (facesContext.getMessageList('form:${entity.field}'))?'is-invalid':''}"
 														jsf:value="#{${view.beanForm}.${entity.var}.${entity.field}}"
 														jsf:label="#{lb['${entity.var}.${entity.field}']}"													
 														${optional.disable}				

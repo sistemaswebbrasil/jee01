@@ -15,6 +15,7 @@ import br.com.siswbrasil.jee01.exception.DatabaseException;
 import br.com.siswbrasil.jee01.util.MessageUtil;
 import br.com.siswbrasil.jee01.model.Organization;
 import br.com.siswbrasil.jee01.service.OrganizationService;
+import br.com.siswbrasil.jee01.datamodel.OrganizationDataModel;
 
 
 @Getter
@@ -30,6 +31,9 @@ public class OrganizationBean implements Serializable {
 	
     @Inject
     private FacesContext facesContext;
+    
+    @Inject
+    private OrganizationDataModel dataModel;    
     	
 	private Long organizationId;
 	private Organization organization;
@@ -45,11 +49,7 @@ public class OrganizationBean implements Serializable {
 				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			}			
         }
-    }
-    
-	public List<Organization> listAll() throws DatabaseException {
-		return service.findAll();
-	}    
+    }  
     
     public String save() throws Throwable {
     	if (organization.getId() == null) {

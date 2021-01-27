@@ -31,7 +31,18 @@
                                     <h3 class="card-title">#{lb['organization.entityList']}</h3>
                                 </div>
                                 <div class="card-body">
-                                    <p:dataTable var="item" value="#{organizationBean.listAll()}" reflow="true">
+                                    <p:dataTable 
+                                    	var="item" 
+                                    	value="#{organizationBean.dataModel}"                                    
+										widgetVar="filterTable" 
+										styleClass="table" 
+										lazy="true" 
+										rows="20" 
+										paginator="true" 
+										paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+										currentPageReportTemplate="{startRecord}-{endRecord} #{msg.of} {totalRecords} #{msg.records}"
+										rowsPerPageTemplate="20,50,100,500" 
+										reflow="true">
                                         <p:column style="width:33px;text-align: center">
                                             <p:link outcome="form.xhtml" type="button"
                                                 styleClass="btn btn-primary btn-sm" title="#{msg.edit}">
@@ -50,20 +61,17 @@
                                         </p:column>
 
                                         
-                                        <p:column headerText="#{lb['organization.initials']}"
-                                            style="text-align: center">
+                                        <p:column headerText="#{lb['organization.initials']}" sortBy="#{item.initials}" filterBy="#{item.initials}">
                                             <h:outputText value="#{item.initials}" />
                                         </p:column>
                                         
 
-                                        <p:column headerText="#{lb['organization.companyName']}"
-                                            style="text-align: center">
+                                        <p:column headerText="#{lb['organization.companyName']}" sortBy="#{item.companyName}" filterBy="#{item.companyName}">
                                             <h:outputText value="#{item.companyName}" />
                                         </p:column>
                                         
 
-                                        <p:column headerText="#{lb['organization.tradingName']}"
-                                            style="text-align: center">
+                                        <p:column headerText="#{lb['organization.tradingName']}" sortBy="#{item.tradingName}" filterBy="#{item.tradingName}">
                                             <h:outputText value="#{item.tradingName}" />
                                         </p:column>
                                         

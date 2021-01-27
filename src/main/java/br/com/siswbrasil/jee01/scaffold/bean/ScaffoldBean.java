@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -43,6 +44,7 @@ public class ScaffoldBean implements Serializable {
 	public static final String SCAFFOLD_DAO_PATH = "scaffold.dao.path";
 	public static final String SCAFFOLD_SERVICE_PATH = "scaffold.service.path";
 	public static final String SCAFFOLD_BEAN_PATH = "scaffold.bean.path";
+	public static final String SCAFFOLD_DATA_MODEL_PATH = "scaffold.data.model.path";
 	public static final String SCAFFOLD_VIEW_PATH = "scaffold.view.path";
 	public static final String SCAFFOLD_LABEL_PATH = "scaffold.labels_pt_BR.path";
 	public static final String SCAFFOLD_GENERATE_MODELS_PATH = "scaffold.generate_models.path";
@@ -349,6 +351,222 @@ public class ScaffoldBean implements Serializable {
 			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
 		}
 	}
+	
+	public void generateBeanLazy() {
+		try {
+			if (selected.getProperties().isEmpty()) {
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
+						MessageUtil.getMsg("error.scaffold.not_found"));
+			}
+			String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
+			String beanParcialPath = propertiesUtil.get(SCAFFOLD_BEAN_PATH);
+			String modelParcialBeanPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
+			String beanPath = basePath.concat(beanParcialPath);
+			String modelBeanPath = basePath.concat(modelParcialBeanPath.concat("/beanLazy.txt"));
+
+			String entityPackage = "";
+			String idType = "";
+			String entityCamelCase = "";
+			for (AvaliableProperties entityLine : selected.getProperties()) {
+				if (entityLine.getName() == "packageName") {
+					entityPackage = entityLine.getValue();
+				}
+				if (entityLine.getIsId().booleanValue() == true) {
+					idType = entityLine.getType();
+				}
+				if (entityLine.getType() == "entityCamelCase") {
+					entityCamelCase = entityLine.getValue();
+				}
+			}
+			String beanPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".bean");
+			String dataModelPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".datamodel");
+			String utilPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".util");
+			String exceptionPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".exception");
+			String dataModelClass = selected.getName().concat("DataModel");
+			String beanClass = selected.getName().concat("Bean");
+			String servicePackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".service");
+			String serviceClass = selected.getName().concat("Service");
+			String beanClassPath = String.format("%s/%s.%s", beanPath, beanClass, "java");
+
+			List<String> lines = readFile(modelBeanPath, false);
+			List<String> newLines = new ArrayList<String>();
+
+			for (String line : lines) {
+				if (line.contains("${bean.package}")) {
+					line = line.replace("${bean.package}", beanPackage);
+				}
+				if (line.contains("${entity.package}")) {
+					line = line.replace("${entity.package}", entityPackage);
+				}				
+				if (line.contains("${entity.class}")) {
+					line = line.replace("${entity.class}", selected.getName());
+				}
+				if (line.contains("${datamodel.package}")) {
+					line = line.replace("${datamodel.package}", String.format("%s.%s", dataModelPackage,dataModelClass));
+				}
+				if (line.contains("${datamodel.class}")) {
+					line = line.replace("${datamodel.class}", selected.getName().concat("DataModel"));
+				}				
+				if (line.contains("${entity.id.type}") && StringUtils.isEmpty(idType) == false) {
+					line = line.replace("${entity.id.type}", idType);
+				}
+				if (line.contains("${bean.class}")) {
+					line = line.replace("${bean.class}", beanClass);
+				}
+				if (line.contains("${service.class}")) {
+					line = line.replace("${service.class}", serviceClass);
+				}
+				if (line.contains("${service.package}")) {
+					line = line.replace("${service.package}", servicePackage);
+				}
+				if (line.contains("${entity.var}")) {
+					line = line.replace("${entity.var}", entityCamelCase);
+				}
+				if (line.contains("${entity.id.var}")) {
+					line = line.replace("${entity.id.var}", entityCamelCase + "Id");
+				}
+				if (line.contains("${entity.id.type}")) {
+					line = line.replace("${entity.id.type}", idType);
+				}
+				if (line.contains("${util.package}")) {
+					line = line.replace("${util.package}", utilPackage);
+				}
+				if (line.contains("${exception.package}")) {
+					line = line.replace("${exception.package}", exceptionPackage);
+				}
+				newLines.add(line);
+			}
+
+			objectContent = "";
+			for (String line : newLines) {
+				objectContent += line + "\n";
+			}
+			try {
+				FileWriter fileWriter = new FileWriter(beanClassPath);
+				fileWriter.write(objectContent);
+				fileWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
+		}		
+		
+	}
+	
+	public void generateDataModel() {
+		try {
+			if (selected.getProperties().isEmpty()) {
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
+						MessageUtil.getMsg("error.scaffold.not_found"));
+			}
+			String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
+			String dataModelParcialPath = propertiesUtil.get(SCAFFOLD_DATA_MODEL_PATH);
+			String modelParcialBeanPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
+			String dataModelPath = basePath.concat(dataModelParcialPath);
+			String modelDataModelPath = basePath.concat(modelParcialBeanPath.concat("/dataModel.txt"));
+			String entityPackage = "";
+			String idType = "";
+			String entityCamelCase = "";
+			for (AvaliableProperties entityLine : selected.getProperties()) {
+				if (entityLine.getName() == "packageName") {
+					entityPackage = entityLine.getValue();
+				}
+				if (entityLine.getIsId().booleanValue() == true) {
+					idType = entityLine.getType();
+				}
+				if (entityLine.getType() == "entityCamelCase") {
+					entityCamelCase = entityLine.getValue();
+				}
+				System.out.println("------------------------------");
+				System.out.println(entityLine);
+
+			}
+			String beanPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".bean");
+			String dataModelPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".datamodel");
+			String utilPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".util");
+			String exceptionPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".exception");
+			String dataModelClass = selected.getName().concat("DataModel");
+			String daoPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".dao");
+			String daoClass = selected.getName().concat("DAO");
+			String dataModelClassPath = String.format("%s/%s.%s", dataModelPath, dataModelClass, "java");
+
+			List<String> lines = readFile(modelDataModelPath, false);
+			List<String> newLines = new ArrayList<String>();
+
+			for (String line : lines) {
+				if (line.contains("${bean.package}")) {
+					line = line.replace("${bean.package}", beanPackage);
+				}
+				if (line.contains("${entity.package}")) {
+					line = line.replace("${entity.package}",  String.format("%s.%s", entityPackage,selected.getName()));
+				}				
+				if (line.contains("${entity.class}")) {
+					line = line.replace("${entity.class}", selected.getName());
+				}
+				if (line.contains("${datamodel.package}")) {
+					line = line.replace("${datamodel.package}", dataModelPackage);
+				}
+				if (line.contains("${datamodel.class}")) {
+					line = line.replace("${datamodel.class}", dataModelClass);
+				}
+				if (line.contains("${dao.class}")) {
+					line = line.replace("${dao.class}", daoClass);
+				}
+				if (line.contains("${dao.package}")) {
+					line = line.replace("${dao.package}", String.format("%s.%s", daoPackage,daoClass) );
+				}
+				if (line.contains("${entity.var}")) {
+					line = line.replace("${entity.var}", entityCamelCase);
+				}
+				if (line.contains("${entity.id.var}")) {
+					line = line.replace("${entity.id.var}", entityCamelCase + "Id");
+				}
+				if (line.contains("${entity.id.type}")) {
+					line = line.replace("${entity.id.type}", idType);
+				}
+				if (line.contains("${util.package}")) {
+					line = line.replace("${util.package}", utilPackage);
+				}
+				if (line.contains("${exception.package}")) {
+					line = line.replace("${exception.package}", exceptionPackage);
+				}
+				newLines.add(line);
+			}
+
+			objectContent = "";
+			for (String line : newLines) {
+				objectContent += line + "\n";
+			}
+			LOG.log(Level.INFO, "Gerando o DataModel ...");
+			LOG.log(Level.INFO, "dataModelClassPath "+dataModelClassPath);
+			LOG.log(Level.INFO, "objectContent "+objectContent);
+			LOG.log(Level.INFO, "dataModelPath "+dataModelPath);			
+
+			File baseViewFolderPathDir = new File(dataModelPath);
+			if (!baseViewFolderPathDir.exists()) {
+				baseViewFolderPathDir.mkdirs();
+			}		
+			
+			
+			try {
+				FileWriter fileWriter = new FileWriter(dataModelClassPath);
+				fileWriter.write(objectContent);
+				fileWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
+		}		
+		
+	}
 
 	public void generateViewForm() {
 		try {
@@ -369,21 +587,14 @@ public class ScaffoldBean implements Serializable {
 			// String beanPath = basePath.concat(beanParcialPath);
 			String modelViewFormPath = basePath.concat(modelParcialBeanPath.concat("/viewForm.txt"));
 
-
+			String entityPackage = "";
 			String entityCreateLabel = "";
-			String entityListLabel = "";			
+			String entityListLabel = "";
+			String idType = "";
 			String entityCamelCase = "";
 			String entityEditLabel = "";
 			String entityDetailLabel = "";
 			String entityDeleteLabel = "";
-			LOG.info("---------------------DADOS---------------------");
-			LOG.info("basePath " + basePath);
-			LOG.info("baseViewPath " + baseViewPath);
-			LOG.info("baseViewFolderName " + baseViewFolderName);
-			LOG.info("baseViewFolderPath " + baseViewFolderPath);
-			LOG.info("modelParcialBeanPath " + modelParcialBeanPath);
-			LOG.info("modelViewFormPath " + modelViewFormPath);
-
 			for (AvaliableProperties entityLine : selected.getProperties()) {
 
 				if (entityLine.getType() == "entityCamelCase") {
@@ -404,12 +615,8 @@ public class ScaffoldBean implements Serializable {
 				if (entityLine.getName() == "entityDelete") {
 					entityDeleteLabel = entityCamelCase + "." + entityLine.getName();
 				}
-
-				System.out.println("------------------------------");
-				System.out.println(entityLine);
-
 			}
-//			String beanPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".bean");
+
 			String beanClass = selected.getName().concat("Bean");
 			String beanClassView = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, beanClass);
 
@@ -452,21 +659,14 @@ public class ScaffoldBean implements Serializable {
 				objectContent += line + "\n";
 			}
 
-			LOG.info("*************************************************");
-			// LOG.info(objectContent);
-//			String teste = "";
-			LOG.info("-------------------------------------------------");
-
 			int beginFieldsTemplate = objectContent.indexOf("${partial.fields.begin}");
 			int endFieldsTemplate = objectContent.indexOf("${partial.fields.end}") + 21;
-
 			String templateFields = objectContent.substring(beginFieldsTemplate, endFieldsTemplate);
 			String templateFieldsFinal = templateFields;
 			templateFieldsFinal = templateFieldsFinal.replace("${partial.fields.begin}", "");
 			templateFieldsFinal = templateFieldsFinal.replace("${partial.fields.end}", "");
-			LOG.info(templateFields);
 			String finalLines = "";
-
+			
 			for (AvaliableProperties item : selected.getProperties()) {
 
 				if (StringUtils.isEmpty(item.getValue())) {
@@ -493,12 +693,6 @@ public class ScaffoldBean implements Serializable {
 			}
 
 			objectContent = objectContent.replace(templateFields, finalLines);
-
-			LOG.info("*************************************************");
-			LOG.info(objectContent);
-
-			// String baseViewFormPath = baseViewFolderPath.concat("/form.xhtml");
-
 			File baseViewFolderPathDir = new File(baseViewFolderPath);
 			if (!baseViewFolderPathDir.exists()) {
 				baseViewFolderPathDir.mkdirs();
@@ -538,13 +732,6 @@ public class ScaffoldBean implements Serializable {
 			String entityEditLabel = "";
 			String entityDetailLabel = "";
 			String entityDeleteLabel = "";
-			LOG.info("---------------------DADOS---------------------");
-			LOG.info("basePath " + basePath);
-			LOG.info("baseViewPath " + baseViewPath);
-			LOG.info("baseViewFolderName " + baseViewFolderName);
-			LOG.info("baseViewFolderPath " + baseViewFolderPath);
-			LOG.info("modelParcialBeanPath " + modelParcialBeanPath);
-			LOG.info("modelViewListPath " + modelViewListPath);
 
 			for (AvaliableProperties entityLine : selected.getProperties()) {
 
@@ -566,10 +753,6 @@ public class ScaffoldBean implements Serializable {
 				if (entityLine.getName() == "entityDelete") {
 					entityDeleteLabel = entityCamelCase + "." + entityLine.getName();
 				}
-
-				System.out.println("------------------------------");
-				System.out.println(entityLine);
-
 			}
 
 			String beanClass = selected.getName().concat("Bean");
@@ -610,10 +793,6 @@ public class ScaffoldBean implements Serializable {
 				objectContent += line + "\n";
 			}
 
-			LOG.info("*************************************************");
-			// LOG.info(objectContent);
-//				String teste = "";
-			LOG.info("-------------------------------------------------");
 
 			int beginFieldsTemplate = objectContent.indexOf("${partial.fields.begin}");
 			int endFieldsTemplate = objectContent.indexOf("${partial.fields.end}") + 21;
@@ -622,7 +801,7 @@ public class ScaffoldBean implements Serializable {
 			String templateFieldsFinal = templateFields;
 			templateFieldsFinal = templateFieldsFinal.replace("${partial.fields.begin}", "");
 			templateFieldsFinal = templateFieldsFinal.replace("${partial.fields.end}", "");
-			LOG.info(templateFields);
+
 			String finalLines = "";
 
 			for (AvaliableProperties item : selected.getProperties()) {
@@ -644,10 +823,6 @@ public class ScaffoldBean implements Serializable {
 				 */
 			}
 			objectContent = objectContent.replace(templateFields, finalLines);
-
-			LOG.info("*************************************************");
-			LOG.info(objectContent);
-
 			File baseViewFolderPathDir = new File(baseViewFolderPath);
 			if (!baseViewFolderPathDir.exists()) {
 				baseViewFolderPathDir.mkdirs();
@@ -667,6 +842,129 @@ public class ScaffoldBean implements Serializable {
 			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para a view de listagem");
 		}
 	}
+	
+	public void generateViewListLazy() {
+		try {
+			if (selected.getProperties().isEmpty()) {
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
+						MessageUtil.getMsg("error.scaffold.not_found"));
+			}
+			String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
+			String baseViewPath = propertiesUtil.get(SCAFFOLD_VIEW_PATH);
+			String baseViewFolderName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, selected.getName());
+			String baseViewFolderPath = baseViewPath + "/" + baseViewFolderName;
+			String baseViewListPath = baseViewFolderPath + "/index.xhtml";
+			String modelParcialBeanPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
+			String modelViewListPath = basePath.concat(modelParcialBeanPath.concat("/indexLazy.txt"));
+			String entityCreateLabel = "";
+			String entityListLabel = "";
+			String entityCamelCase = "";
+			String entityEditLabel = "";
+			String entityDetailLabel = "";
+			String entityDeleteLabel = "";
+			for (AvaliableProperties entityLine : selected.getProperties()) {
+
+				if (entityLine.getType() == "entityCamelCase") {
+					entityCamelCase = entityLine.getValue();
+				}
+				if (entityLine.getName() == "entityCreate") {
+					entityCreateLabel = entityCamelCase + "." + entityLine.getName();
+				}
+				if (entityLine.getName() == "entityList") {
+					entityListLabel = entityCamelCase + "." + entityLine.getName();
+				}
+				if (entityLine.getName() == "entityEdit") {
+					entityEditLabel = entityCamelCase + "." + entityLine.getName();
+				}
+				if (entityLine.getName() == "entityDetail") {
+					entityDetailLabel = entityCamelCase + "." + entityLine.getName();
+				}
+				if (entityLine.getName() == "entityDelete") {
+					entityDeleteLabel = entityCamelCase + "." + entityLine.getName();
+				}
+			}
+
+			String beanClass = selected.getName().concat("Bean");
+			String beanClassView = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, beanClass);
+			List<String> lines = readFile(modelViewListPath, false);
+			List<String> newLines = new ArrayList<String>();
+
+			for (String line : lines) {
+				if (line.contains("${view.beanList}")) {
+					line = line.replace("${view.beanList}", beanClassView);
+				}
+				if (line.contains("${view.beanList}")) {
+					line = line.replace("${view.beanList}", beanClassView);
+				}
+				if (line.contains("${entity.var}")) {
+					line = line.replace("${entity.var}", entityCamelCase);
+				}
+				if (line.contains("${entity.label.create}")) {
+					line = line.replace("${entity.label.create}", entityCreateLabel);
+				}
+				if (line.contains("${entity.label.list}")) {
+					line = line.replace("${entity.label.list}", entityListLabel);
+				}
+				if (line.contains("${entity.label.edit}")) {
+					line = line.replace("${entity.label.edit}", entityEditLabel);
+				}
+				if (line.contains("${entity.label.detail}")) {
+					line = line.replace("${entity.label.detail}", entityDetailLabel);
+				}
+				if (line.contains("${entity.label.delete}")) {
+					line = line.replace("${entity.label.delete}", entityDeleteLabel);
+				}
+				newLines.add(line);
+			}
+
+			objectContent = "";
+			for (String line : newLines) {
+				objectContent += line + "\n";
+			}
+
+
+			int beginFieldsTemplate = objectContent.indexOf("${partial.fields.begin}");
+			int endFieldsTemplate = objectContent.indexOf("${partial.fields.end}") + 21;
+
+			String templateFields = objectContent.substring(beginFieldsTemplate, endFieldsTemplate);
+			String templateFieldsFinal = templateFields;
+			templateFieldsFinal = templateFieldsFinal.replace("${partial.fields.begin}", "");
+			templateFieldsFinal = templateFieldsFinal.replace("${partial.fields.end}", "");
+			String finalLines = "";
+
+			for (AvaliableProperties item : selected.getProperties()) {
+
+				if (StringUtils.isEmpty(item.getValue()) && !item.getIsId()) {
+
+					String tmp = templateFieldsFinal.replace("${entity.field}", item.getName());
+					tmp = tmp.replace("${entity.var}", entityCamelCase);
+					tmp = tmp.replace("${view.beanList}", beanClassView);
+
+					finalLines += tmp + "\n";
+
+				}
+			}
+			
+			objectContent = objectContent.replace(templateFields, finalLines);
+			File baseViewFolderPathDir = new File(baseViewFolderPath);
+			if (!baseViewFolderPathDir.exists()) {
+				baseViewFolderPathDir.mkdirs();
+			}
+
+			try {
+				FileWriter fileWriter = new FileWriter(baseViewListPath);
+				fileWriter.write(objectContent);
+				fileWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para a view de listagem");
+		}
+	}	
 
 	public void generateMenuItem() {
 		try {
@@ -675,11 +973,8 @@ public class ScaffoldBean implements Serializable {
 						MessageUtil.getMsg("error.scaffold.not_found"));
 			}
 			objectContent = null;
-			System.out.println("#########################");
-			System.out.println(SCAFFOLD_MENU_FILE_PATH);
-			System.out.println("#########################");
 			String menuItemPath = propertiesUtil.get(SCAFFOLD_MENU_FILE_PATH);
-			System.out.println(menuItemPath);
+
 //			if (menuItemPath != null && !menuItemPath.isEmpty()) {
 //				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),MessageUtil.getMsg("scaffold.menu_item_config.not_found"));
 //			}			
@@ -695,16 +990,9 @@ public class ScaffoldBean implements Serializable {
 			String entityCreateLabel = "";
 			String entityListLabel = "";
 			String entityCamelCase = "";
-			LOG.info("---------------------DADOS---------------------");
-			LOG.info("basePath " + basePath);
-			LOG.info("baseViewPath " + baseViewPath);
-			LOG.info("baseViewFolderName " + baseViewFolderName);
-			LOG.info("baseViewFolderPath " + baseViewFolderPath);
-			LOG.info("modelParcialBeanPath " + modelParcialBeanPath);
-//	        LOG.info("modelViewListPath "+modelViewListPath);	
-			LOG.info("menuItemPath " + menuItemPath);
-			LOG.info("modelItemMenuPath " + modelItemMenuPath);
-
+			String entityEditLabel = "";
+			String entityDetailLabel = "";
+			String entityDeleteLabel = "";
 			for (AvaliableProperties entityLine : selected.getProperties()) {
 				if (entityLine.getType() == "entityCamelCase") {
 					entityCamelCase = entityLine.getValue();
@@ -723,7 +1011,7 @@ public class ScaffoldBean implements Serializable {
 			List<String> lines = readFile(modelItemMenuPath, false);
 			List<String> newLines = new ArrayList<String>();
 
-			// System.out.println(lines);
+
 
 			for (String line : lines) {
 				if (line.contains("${entity.var}")) {
@@ -735,11 +1023,11 @@ public class ScaffoldBean implements Serializable {
 				if (line.contains("${entity.label.list}")) {
 					line = line.replace("${entity.label.list}", entityListLabel);
 				}
+				if (line.contains("${entity.resources}")) {
+					line = line.replace("${entity.resources}", baseViewFolderName);
+				}
 				newLines.add(line);
 			}
-			System.out.println("-----------------------------");
-			System.out.println("markerMenu " + markerMenu);
-			System.out.println("-----------------------------");
 			String objectContentNewItem = markerMenu + "\n";
 			for (String line : newLines) {
 				objectContentNewItem += line + "\n";
@@ -754,58 +1042,50 @@ public class ScaffoldBean implements Serializable {
 				}
 				newLines1.add(line);
 			}
-//			objectContent = "";
-//			for (String line : newLines) {
-//				objectContent += line + "\n";
-//			}        
-//	        
-//			String objectContent1 = "";
-//			for (String line : newLines1) {
-//				objectContent += line + "\n";
-//			}
+
 			String objectFinalMenuContent = "";
 			if (menuItemExist == false) {
-				System.out.println("ai!---------------------------------------------");
-				System.out.println(objectContentNewItem);
-				System.out.println("oi?---------------------------------------------");
 				for (String line : newLines1) {
 					objectFinalMenuContent += line + "\n";
 				}
 				objectContent = objectFinalMenuContent.replace(markerMenu, objectContentNewItem);
-				System.out.println("E aí?---------------------------------------------");
-				System.out.println(objectFinalMenuContent);
 			}
 
-			System.out.println("Agora que já tenho o modelo pronto , tenho que sobrescrever no arquivo de menu");
-
-			System.out.println(objectContent);
-			System.out.println();
-			System.out.println("menuItemPath " + menuItemPath);
-
-			try {
-				FileWriter fileWriter = new FileWriter(menuItemPath);
-				fileWriter.write(objectContent);
-				fileWriter.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+			if ( StringUtils.isNotBlank(objectContent.trim())){			
+				try {
+					FileWriter fileWriter = new FileWriter(menuItemPath);
+					fileWriter.write(objectContent);
+					fileWriter.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+				}
+			}else {
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.content.empty"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para os itens de menu");
 		}
 	}
+	
+	private AvaliableProperties getPropertyByName(String property) {
+		List<AvaliableProperties> properties = selected.getProperties();
+		
+		for (AvaliableProperties item : properties) {
+			if (item.getName().equalsIgnoreCase(property)) {
+				return item;
+			}
+		}
+		return null;
+	}
 
 	public void generateLabels() {
-		System.out.println(selected);
 		if (selected.getProperties().isEmpty()) {
 			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.scaffold.not_found"));
 		}
 
 		String labelPath = propertiesUtil.get(SCAFFOLD_LABEL_PATH);
-		System.out.println("######################");
-		System.out.println(labelPath);
-		System.out.println("######################");
 		if (StringUtils.isEmpty(labelPath)) {
 			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
 					MessageUtil.getMsg("scaffold.labels_config.not_found"));
@@ -826,7 +1106,7 @@ public class ScaffoldBean implements Serializable {
 			String formattedName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, item.getName());
 			formattedName = formattedName.replace("-", " ");
 			formattedName = StringUtils.capitalize(formattedName);
-			String newLine = String.format("%s.%s=%s", selected.getName().toLowerCase(), item.getName(), formattedName);
+			String newLine = String.format("%s.%s=%s", getPropertyByName("entity").getValue(), item.getName(), formattedName);
 
 			Boolean fieldExist = false;
 			for (String line : lines) {
@@ -847,7 +1127,7 @@ public class ScaffoldBean implements Serializable {
 			String formattedName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, item.getValue());
 			formattedName = formattedName.replace("-", " ");
 			formattedName = StringUtils.capitalize(formattedName);
-			String newLine = String.format("%s.%s=%s", selected.getName().toLowerCase(), item.getName(), formattedName);
+			String newLine = String.format("%s.%s=%s", getPropertyByName("entity").getValue(), item.getName(), formattedName);
 			Boolean fieldExist = false;
 			for (String line : lines) {
 				if (line.substring(0, line.indexOf("=")).equalsIgnoreCase(newLine.substring(0, newLine.indexOf("=")))) {

@@ -14,24 +14,33 @@
     </f:metadata>
 
     <ui:define name="title">
-        <ui:fragment rendered="#{empty organizationBean.organizationId}">#{lb['organization.entityCreate']}
+        <ui:fragment rendered="#{empty (organizationBean.organizationId)}">
+        	#{lb['organization.entityCreate']}
         </ui:fragment>
-        <ui:fragment rendered="#{not empty organizationBean.organizationId}">#{lb['organization.entityEdit']}
+        <ui:fragment rendered="#{not empty (organizationBean.organizationId)}">
+        	#{lb['organization.entityEdit']}
         </ui:fragment>
     </ui:define>
 
-    <ui:define name="title">#{lb['organization.entityCreate']}</ui:define>
     <ui:define name="content">
     
 		<section class="content-header">
 	      <div class="container-fluid">
 	        <div class="row mb-2">
 	          <div class="col-sm-6">
-	            <h1>#{lb['organization.entityCreate']}</h1>
+	            <h1>
+			        <ui:fragment rendered="#{empty (organizationBean.organizationId)}">
+			        	#{lb['organization.entityCreate']}
+			        </ui:fragment>
+			        <ui:fragment rendered="#{not empty (organizationBean.organizationId)}">
+			        	#{lb['organization.entityEdit']}
+			        </ui:fragment>	            
+	            </h1>
 	          </div>
 	          <div class="col-sm-6">
 	            <ol class="breadcrumb float-sm-right">
 	              <li class="breadcrumb-item"><a href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+	              <li class="breadcrumb-item"><h:link outcome="index" value="#{lb['organization.entityList']}" immediate="true" /></li>
 	              <li class="breadcrumb-item active">#{lb['organization.entityCreate']}</li>
 	            </ol>
 	          </div>
@@ -65,7 +74,7 @@
 														jsf:value="#{organizationBean.organization.id}"
 														jsf:label="#{lb['organization.id']}"													
 														disabled="true"				
-													/>		 										 
+													/>												 
 													<small class="invalid-feedback"> 
 														<h:message for="id" showDetail="false" showSummary="true"/>
 													</small>
