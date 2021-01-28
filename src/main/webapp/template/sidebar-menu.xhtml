@@ -6,105 +6,141 @@
 <body>
 	<ui:composition>
 		<nav class="mt-2">
-		<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-<li class="nav-item has-treeview" id="item-menu-scaffold-address">
-	<a href="#" class="nav-link"> <i class="nav-icon fas fa-book"></i>
-		<p>
-			#{lb['address.entity']}<i class="right fas fa-angle-left"></i>
-		</p>
-</a>
-	<ul class="nav nav-treeview">
-		<li class="nav-item"><a  
-			href="${facesContext.externalContext.requestContextPath}/address/"
-			class="nav-link"> <i class="fas fa-table nav-icon"></i>
-				<p>
-					<h:outputText value="#{lb['address.entityList']}" />
-				</p>
-		</a></li>
-		<li class="nav-item"><a
-			href="${facesContext.externalContext.requestContextPath}/address/form.xhtml"
-			class="nav-link"> <i class="fas fa-edit nav-icon"></i>
-				<p>
-					<h:outputText value="#{lb['address.entityCreate']}" />
-				</p>
-		</a></li>
-	</ul>
-</li>
+			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+			<li
+				class="nav-item has-treeview #{view.viewId.contains('/role/')?'menu-open':''}"
+				id="item-menu-scaffold-role">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-book"></i>
+						<p>#{lb['role.entity']}<i class="right fas fa-angle-left"></i></p>
+					</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item"><a
+						href="${facesContext.externalContext.requestContextPath}/role/"
+						class="nav-link #{view.viewId.contains('/role/index.xhtml')?'active':''}">
+							<i class="fas fa-table nav-icon"></i>
+							<p>
+								<h:outputText value="#{lb['role.entityList']}" />
+							</p>
+					</a></li>
+					<li class="nav-item">
+						<a href="${facesContext.externalContext.requestContextPath}/role/form.xhtml"
+						class="nav-link #{view.viewId.contains('/role/form.xhtml')?'active':''}">
+							<i class="fas fa-edit nav-icon"></i>
+							<p><h:outputText value="#{lb['role.entityCreate']}" /></p>
+						</a>
+					</li>
+				</ul>
+			</li>
 
-<li class="nav-item has-treeview" id="item-menu-scaffold-role">
-	<a href="#" class="nav-link"> <i class="nav-icon fas fa-book"></i>
-		<p>
-			#{lb['role.entity']}<i class="right fas fa-angle-left"></i>
-		</p>
-</a>
-	<ul class="nav nav-treeview">
-		<li class="nav-item"><a  
-			href="${facesContext.externalContext.requestContextPath}/role/"
-			class="nav-link"> <i class="fas fa-table nav-icon"></i>
-				<p>
-					<h:outputText value="#{lb['role.entityList']}" />
-				</p>
-		</a></li>
-		<li class="nav-item"><a
-			href="${facesContext.externalContext.requestContextPath}/role/form.xhtml"
-			class="nav-link"> <i class="fas fa-edit nav-icon"></i>
-				<p>
-					<h:outputText value="#{lb['role.entityCreate']}" />
-				</p>
-		</a></li>
-	</ul>
-</li>
+			<li
+				class="nav-item has-treeview #{view.viewId.contains('/address/')?'menu-open':''}"
+				id="item-menu-scaffold-address">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-book"></i>
+						<p>#{lb['address.entity']}<i class="right fas fa-angle-left"></i></p>
+					</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item"><a
+						href="${facesContext.externalContext.requestContextPath}/address/"
+						class="nav-link #{view.viewId.contains('/address/index.xhtml')?'active':''}">
+							<i class="fas fa-table nav-icon"></i>
+							<p>
+								<h:outputText value="#{lb['address.entityList']}" />
+							</p>
+					</a></li>
+					<li class="nav-item">
+						<a href="${facesContext.externalContext.requestContextPath}/address/form.xhtml"
+						class="nav-link #{view.viewId.contains('/address/form.xhtml')?'active':''}">
+							<i class="fas fa-edit nav-icon"></i>
+							<p><h:outputText value="#{lb['address.entityCreate']}" /></p>
+						</a>
+					</li>
+				</ul>
+			</li>
 
-<li class="nav-item has-treeview" id="item-menu-scaffold-user">
-	<a href="#" class="nav-link"> <i class="nav-icon fas fa-book"></i>
-		<p>
-			#{lb['user.entity']}<i class="right fas fa-angle-left"></i>
-		</p>
-</a>
-	<ul class="nav nav-treeview">
-		<li class="nav-item"><a  
-			href="${facesContext.externalContext.requestContextPath}/user/"
-			class="nav-link"> <i class="fas fa-table nav-icon"></i>
-				<p>
-					<h:outputText value="#{lb['user.entityList']}" />
-				</p>
-		</a></li>
-		<li class="nav-item"><a
-			href="${facesContext.externalContext.requestContextPath}/user/form.xhtml"
-			class="nav-link"> <i class="fas fa-edit nav-icon"></i>
-				<p>
-					<h:outputText value="#{lb['user.entityCreate']}" />
-				</p>
-		</a></li>
-	</ul>
-</li>
+			<li
+				class="nav-item has-treeview #{view.viewId.contains('/task/')?'menu-open':''}"
+				id="item-menu-scaffold-task">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-book"></i>
+						<p>#{lb['task.entity']}<i class="right fas fa-angle-left"></i></p>
+					</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item"><a
+						href="${facesContext.externalContext.requestContextPath}/task/"
+						class="nav-link #{view.viewId.contains('/task/index.xhtml')?'active':''}">
+							<i class="fas fa-table nav-icon"></i>
+							<p>
+								<h:outputText value="#{lb['task.entityList']}" />
+							</p>
+					</a></li>
+					<li class="nav-item">
+						<a href="${facesContext.externalContext.requestContextPath}/task/form.xhtml"
+						class="nav-link #{view.viewId.contains('/task/form.xhtml')?'active':''}">
+							<i class="fas fa-edit nav-icon"></i>
+							<p><h:outputText value="#{lb['task.entityCreate']}" /></p>
+						</a>
+					</li>
+				</ul>
+			</li>
 
-			<li class="nav-item has-treeview"
-				id="item-menu-scaffold-organization"><a href="#"
-				class="nav-link"> <i class="nav-icon fas fa-book"></i>
-					<p>
-						#{lb['organization.entity']}<i class="right fas fa-angle-left"></i>
-					</p>
-			</a>
+			<li
+				class="nav-item has-treeview #{view.viewId.contains('/user/')?'menu-open':''}"
+				id="item-menu-scaffold-user">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-book"></i>
+						<p>#{lb['user.entity']}<i class="right fas fa-angle-left"></i></p>
+					</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item"><a
+						href="${facesContext.externalContext.requestContextPath}/user/"
+						class="nav-link #{view.viewId.contains('/user/index.xhtml')?'active':''}">
+							<i class="fas fa-table nav-icon"></i>
+							<p>
+								<h:outputText value="#{lb['user.entityList']}" />
+							</p>
+					</a></li>
+					<li class="nav-item">
+						<a href="${facesContext.externalContext.requestContextPath}/user/form.xhtml"
+						class="nav-link #{view.viewId.contains('/user/form.xhtml')?'active':''}">
+							<i class="fas fa-edit nav-icon"></i>
+							<p><h:outputText value="#{lb['user.entityCreate']}" /></p>
+						</a>
+					</li>
+				</ul>
+			</li>
+
+			<li
+				class="nav-item has-treeview #{view.viewId.contains('/organization/')?'menu-open':''}"
+				id="item-menu-scaffold-organization">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-book"></i>
+						<p>#{lb['organization.entity']}<i class="right fas fa-angle-left"></i></p>
+					</a>
 				<ul class="nav nav-treeview">
 					<li class="nav-item"><a
 						href="${facesContext.externalContext.requestContextPath}/organization/"
-						class="nav-link"> <i class="nav-icon fas fa-table"></i>
+						class="nav-link #{view.viewId.contains('/organization/index.xhtml')?'active':''}">
+							<i class="fas fa-table nav-icon"></i>
 							<p>
 								<h:outputText value="#{lb['organization.entityList']}" />
 							</p>
 					</a></li>
-					<li class="nav-item"><a
-						href="${facesContext.externalContext.requestContextPath}/organization/form.xhtml"
-						class="nav-link"> <i class="fas fa-edit nav-icon"></i>
-							<p>
-								<h:outputText value="#{lb['organization.entityCreate']}" />
-							</p>
-					</a></li>
-				</ul></li>
+					<li class="nav-item">
+						<a href="${facesContext.externalContext.requestContextPath}/organization/form.xhtml"
+						class="nav-link #{view.viewId.contains('/organization/form.xhtml')?'active':''}">
+							<i class="fas fa-edit nav-icon"></i>
+							<p><h:outputText value="#{lb['organization.entityCreate']}" /></p>
+						</a>
+					</li>
+				</ul>
+			</li>
 
-			<li class="nav-item has-treeview"><a href="#" class="nav-link">
-					<i class="nav-icon fas fa-tachometer-alt"></i>
+			<li
+				class="nav-item has-treeview #{view.viewId.contains('/scaffold/')?'menu-open':''}"><a
+				href="#" class="nav-link"> <i
+					class="nav-icon fas fa-tachometer-alt"></i>
 					<p>
 						#{msg['scaffold.project']} <i class="right fas fa-angle-left"></i>
 					</p>
@@ -112,11 +148,12 @@
 				<ul class="nav nav-treeview">
 					<li class="nav-item"><a
 						href="${facesContext.externalContext.requestContextPath}/scaffold/"
-						class="nav-link"> <i class="far fa-circle nav-icon"></i>
+						class="nav-link #{view.viewId.contains('/index.xhtml')?'active':''}">
+							<i class="far fa-circle nav-icon"></i>
 							<p>#{msg['list_scaffold']}</p>
 					</a></li>
 				</ul></li>
-		</ul>
+			</ul>
 		</nav>
 	</ui:composition>
 </body>

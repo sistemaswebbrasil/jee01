@@ -52,7 +52,7 @@
 							styleClass="img-circle elevation-2" />
 					</div>
 					<div class="info">
-						<a href="#" class="d-block">#{msg['project.name']}</a>
+						<a href="#" class="d-block">#{msg['project.name']}</a>				
 					</div>
 				</div>
 				<ui:include src="/template/sidebar-menu.xhtml" />
@@ -65,12 +65,10 @@
 	</div>
 	<ui:include src="/template/footer.xhtml" />
 	</div>
-	<h:outputScript library="primefaces" name="jquery/jquery.js"
-		target="head" />
-	<h:outputScript library="primefaces" name="jquery/jquery-plugins.js"
-		target="head" />
+	<h:outputScript library="primefaces" name="jquery/jquery.js" />
+	<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" />
 	<h:outputScript library="popper" name="popper.min.js" target="head" />
-	<h:outputScript library="bootstrap" name="/js/bootstrap.min.js" />
+	<h:outputScript library="bootstrap" name="/js/bootstrap.bundle.min.js" />
 	<h:outputScript library="adminlte" name="/js/adminlte.min.js" />
 </body>
 </html>

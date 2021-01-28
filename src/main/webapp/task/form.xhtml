@@ -14,24 +14,33 @@
     </f:metadata>
 
     <ui:define name="title">
-        <ui:fragment rendered="#{empty taskBean.taskId}">#{lb['task.entityCreate']}
+        <ui:fragment rendered="#{empty (taskBean.taskId)}">
+        	#{lb['task.entityCreate']}
         </ui:fragment>
-        <ui:fragment rendered="#{not empty taskBean.taskId}">#{lb['task.entityEdit']}
+        <ui:fragment rendered="#{not empty (taskBean.taskId)}">
+        	#{lb['task.entityEdit']}
         </ui:fragment>
     </ui:define>
 
-    <ui:define name="title">#{lb['task.entityCreate']}</ui:define>
     <ui:define name="content">
     
 		<section class="content-header">
 	      <div class="container-fluid">
 	        <div class="row mb-2">
 	          <div class="col-sm-6">
-	            <h1>#{lb['task.entityCreate']}</h1>
+	            <h1>
+			        <ui:fragment rendered="#{empty (taskBean.taskId)}">
+			        	#{lb['task.entityCreate']}
+			        </ui:fragment>
+			        <ui:fragment rendered="#{not empty (taskBean.taskId)}">
+			        	#{lb['task.entityEdit']}
+			        </ui:fragment>	            
+	            </h1>
 	          </div>
 	          <div class="col-sm-6">
 	            <ol class="breadcrumb float-sm-right">
 	              <li class="breadcrumb-item"><a href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+	              <li class="breadcrumb-item"><h:link outcome="index" value="#{lb['task.entityList']}" immediate="true" /></li>
 	              <li class="breadcrumb-item active">#{lb['task.entityCreate']}</li>
 	            </ol>
 	          </div>
@@ -61,7 +70,7 @@
 													<label jsf:for="id">#{lb['task.id']}</label> 
 													<input
 														type="text" jsf:id="id"
-														class="form-control #{not empty (facesContext.getMessageList('form:id')?'is-invalid':''})"
+														class="form-control #{not empty (facesContext.getMessageList('form:id'))?'is-invalid':''}"
 														jsf:value="#{taskBean.task.id}"
 														jsf:label="#{lb['task.id']}"													
 														disabled="true"				
@@ -82,7 +91,7 @@
 													<label jsf:for="title">#{lb['task.title']}</label> 
 													<input
 														type="text" jsf:id="title"
-														class="form-control #{not empty (facesContext.getMessageList('form:title')?'is-invalid':''})"
+														class="form-control #{not empty (facesContext.getMessageList('form:title'))?'is-invalid':''}"
 														jsf:value="#{taskBean.task.title}"
 														jsf:label="#{lb['task.title']}"													
 																		
@@ -103,7 +112,7 @@
 													<label jsf:for="description">#{lb['task.description']}</label> 
 													<input
 														type="text" jsf:id="description"
-														class="form-control #{not empty (facesContext.getMessageList('form:description')?'is-invalid':''})"
+														class="form-control #{not empty (facesContext.getMessageList('form:description'))?'is-invalid':''}"
 														jsf:value="#{taskBean.task.description}"
 														jsf:label="#{lb['task.description']}"													
 																		
@@ -129,7 +138,7 @@
 	                                        </div>
 	                                        <div class="btn-group">
 	                                            <p:commandLink value="#{msg.save} " action="#{taskBean.save}"
-	                                                update="@form" styleClass="btn btn-primary float-right">
+	                                                update="@form messages" styleClass="btn btn-primary float-right">
 	                                                <span class="fas fa-edit"></span>
 	                                            </p:commandLink>
 	                                        </div>

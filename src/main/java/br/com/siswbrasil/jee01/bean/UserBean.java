@@ -3,18 +3,20 @@ package br.com.siswbrasil.jee01.bean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import lombok.Getter;
-import lombok.Setter;
-import javax.annotation.PostConstruct;
 
+import br.com.siswbrasil.jee01.datamodel.UserDataModel;
 import br.com.siswbrasil.jee01.exception.DatabaseException;
-import br.com.siswbrasil.jee01.util.MessageUtil;
 import br.com.siswbrasil.jee01.model.User;
 import br.com.siswbrasil.jee01.service.UserService;
+import br.com.siswbrasil.jee01.util.MessageUtil;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter
@@ -30,6 +32,9 @@ public class UserBean implements Serializable {
 	
     @Inject
     private FacesContext facesContext;
+    
+    @Inject
+    private UserDataModel dataModel;    
     	
 	private Long userId;
 	private User user;
@@ -45,7 +50,7 @@ public class UserBean implements Serializable {
 				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			}			
         }
-    }
+    }  
     
 	public List<User> listAll() throws DatabaseException {
 		return service.findAll();

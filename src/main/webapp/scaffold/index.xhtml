@@ -6,7 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
 
-	<ui:define name="title">#{msg['scaffold.project']}</ui:define>
+	<ui:define name="title">#{msg['scaffold.entity.list']}</ui:define>
 
 	<ui:define name="content">
 
@@ -15,7 +15,7 @@
 			<div class="container-fluid">
 				<div class="row mb-2">
 					<div class="col-sm-6">
-						<h1>#{msg['scaffold.project']}</h1>
+						<h1>#{msg['scaffold.entity.list']}</h1>
 					</div>
 					<div class="col-sm-6">
 						<ol class="breadcrumb float-sm-right">
@@ -27,6 +27,7 @@
 				</div>
 			</div>
 		</section>
+		
 		<section class="content">
 			<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
 			<div class="container-fluid">

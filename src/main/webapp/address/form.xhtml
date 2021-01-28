@@ -14,24 +14,33 @@
     </f:metadata>
 
     <ui:define name="title">
-        <ui:fragment rendered="#{empty (addressBean.addressId})">#{lb['address.entityCreate']}
+        <ui:fragment rendered="#{empty (addressBean.addressId)}">
+        	#{lb['address.entityCreate']}
         </ui:fragment>
-        <ui:fragment rendered="#{not empty addressBean.addressId}">#{lb['address.entityEdit']}
+        <ui:fragment rendered="#{not empty (addressBean.addressId)}">
+        	#{lb['address.entityEdit']}
         </ui:fragment>
     </ui:define>
 
-    <ui:define name="title">#{lb['address.entityCreate']}</ui:define>
     <ui:define name="content">
     
 		<section class="content-header">
 	      <div class="container-fluid">
 	        <div class="row mb-2">
 	          <div class="col-sm-6">
-	            <h1>#{lb['address.entityCreate']}</h1>
+	            <h1>
+			        <ui:fragment rendered="#{empty (addressBean.addressId)}">
+			        	#{lb['address.entityCreate']}
+			        </ui:fragment>
+			        <ui:fragment rendered="#{not empty (addressBean.addressId)}">
+			        	#{lb['address.entityEdit']}
+			        </ui:fragment>	            
+	            </h1>
 	          </div>
 	          <div class="col-sm-6">
 	            <ol class="breadcrumb float-sm-right">
 	              <li class="breadcrumb-item"><a href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+	              <li class="breadcrumb-item"><h:link outcome="index" value="#{lb['address.entityList']}" immediate="true" /></li>
 	              <li class="breadcrumb-item active">#{lb['address.entityCreate']}</li>
 	            </ol>
 	          </div>
@@ -234,7 +243,7 @@
 	                                        </div>
 	                                        <div class="btn-group">
 	                                            <p:commandLink value="#{msg.save} " action="#{addressBean.save}"
-	                                                update="@form" styleClass="btn btn-primary float-right">
+	                                                update="@form messages" styleClass="btn btn-primary float-right">
 	                                                <span class="fas fa-edit"></span>
 	                                            </p:commandLink>
 	                                        </div>
