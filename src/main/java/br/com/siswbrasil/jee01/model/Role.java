@@ -1,7 +1,5 @@
 package br.com.siswbrasil.jee01.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,9 +14,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true,callSuper = false)
 @Entity
-public class Role implements Serializable {
+public class Role extends Audit {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,7 +25,7 @@ public class Role implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Size(min = 5)
+	@Size(min = 4)
 	private String name;
 
 	private String description;

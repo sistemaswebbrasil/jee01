@@ -10,9 +10,11 @@ import javax.inject.Inject;
 
 import br.com.siswbrasil.jee01.exception.BusinessException;
 import br.com.siswbrasil.jee01.model.Organization;
+import br.com.siswbrasil.jee01.model.Role;
 import br.com.siswbrasil.jee01.model.Task;
 import br.com.siswbrasil.jee01.model.User;
 import br.com.siswbrasil.jee01.service.OrganizationService;
+import br.com.siswbrasil.jee01.service.RoleService;
 import br.com.siswbrasil.jee01.service.TaskService;
 import br.com.siswbrasil.jee01.service.UserService;
 import br.com.siswbrasil.jee01.util.PropertiesUtil;
@@ -35,6 +37,9 @@ public class Bootstrap {
 
 	@Inject
 	private OrganizationService organizationService;
+	
+	@Inject
+	private RoleService roleService;
 
 	@PostConstruct
 	public void init() {
@@ -50,6 +55,7 @@ public class Bootstrap {
 				initialUsers();
 				initialTasks();
 				initOrganizations();
+				initRoles();
 			} catch (BusinessException e) {
 				LOG.log(Level.SEVERE,
 						"Falha ao gerar os dados iniciais de desenvolvimento , aparentemente erro nos dados enviados para o servidor",
@@ -64,7 +70,8 @@ public class Bootstrap {
 		LOG.log(Level.INFO, "Initials user list");
 		User user1 = new User(null, "Adriano Faria Alves", "adriano.faria@gmail.com", "adriano.faria");
 		User user2 = new User(null, "Michele Cristina Teixeira Faria Alves", "micheletalves@gmail.com", "mixxa19");
-		User user3 = new User(null, "Beatriz Teixeira Faria Alves", "beatriz.t.f.alves@gmail.com", "bia");
+		User user3 = new User(null, "Beatriz Teixeira Faria Alves", "beatriz.t.f.alves@gmail.com", "bia");		
+		
 		userService.create(user1);
 		userService.create(user2);
 		userService.create(user3);
@@ -88,5 +95,15 @@ public class Bootstrap {
 		organizationService.create(organization1);
 		organizationService.create(organization2);
 		organizationService.create(organization3);
+	}
+	
+	private void initRoles() throws Throwable, BusinessException {
+		Role role1 = new Role(null,"ADMIN","Administrador");
+		Role role2 = new Role(null,"MANAGER","Gerente");
+		Role role3 = new Role(null,"USER","Usuário Comum");
+		
+		roleService.create(role1);
+		roleService.create(role2);
+		roleService.create(role3);		
 	}
 }

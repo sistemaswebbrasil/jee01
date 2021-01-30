@@ -3,7 +3,9 @@ package br.com.siswbrasil.jee01.dao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -21,10 +23,15 @@ import org.primefaces.model.SortOrder;
 public abstract class GenericDAO<T, ID> {
 
 	protected Class<T> entityClass;
+	
+	@Inject
+	private Logger LOG;
 
 	public GenericDAO(Class<T> entityClass) {
 		this.entityClass = entityClass;
 	}
+	
+	
 
 	protected abstract EntityManager getEntityManager();
 
@@ -33,7 +40,11 @@ public abstract class GenericDAO<T, ID> {
 	}
 
 	public void update(T entity) {
+		LOG.info("Antes de atualizar");
 		getEntityManager().merge(entity);
+		LOG.info(entity.toString());
+		LOG.info("Depois de atualizar");
+		
 	}
 
 	public void remove(T entity) {

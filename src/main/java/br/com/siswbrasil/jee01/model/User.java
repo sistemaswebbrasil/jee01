@@ -3,6 +3,7 @@ package br.com.siswbrasil.jee01.model;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,10 +21,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true,callSuper = false)
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class User extends Audit {
 
 	private static final long serialVersionUID = 1L;
 
@@ -42,6 +43,28 @@ public class User implements Serializable {
 	private String email;	
 	
 	private String loginName;
+	
+//    @Embedded
+//    private Audit audit = new Audit();	
+
+
+//	@Column(nullable = false, columnDefinition = "datetime")
+//	private LocalDateTime createAt;
+//
+//	@Column(nullable = false, columnDefinition = "datetime")
+//	private LocalDateTime updateAt;
+//	
+//	  @PrePersist
+//	  protected void onCreate() {
+//		  System.out.println("Ante de criar");
+//		  createAt = LocalDateTime.now();
+//	  }
+//
+//	  @PreUpdate
+//	  protected void onUpdate() {
+//		  System.out.println("Depois de criar");
+//		  updateAt = LocalDateTime.now();
+//	  }	
 
 	
 }
