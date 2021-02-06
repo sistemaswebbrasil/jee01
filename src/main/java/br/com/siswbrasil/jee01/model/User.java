@@ -1,13 +1,18 @@
 package br.com.siswbrasil.jee01.model;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -21,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true,callSuper = false)
+//@EqualsAndHashCode(onlyExplicitlyIncluded = true,callSuper = false)
 @Entity
 @Table(name = "users")
 public class User extends Audit {
@@ -44,27 +49,10 @@ public class User extends Audit {
 	
 	private String loginName;
 	
-//    @Embedded
-//    private Audit audit = new Audit();	
-
-
-//	@Column(nullable = false, columnDefinition = "datetime")
-//	private LocalDateTime createAt;
-//
-//	@Column(nullable = false, columnDefinition = "datetime")
-//	private LocalDateTime updateAt;
-//	
-//	  @PrePersist
-//	  protected void onCreate() {
-//		  System.out.println("Ante de criar");
-//		  createAt = LocalDateTime.now();
-//	  }
-//
-//	  @PreUpdate
-//	  protected void onUpdate() {
-//		  System.out.println("Depois de criar");
-//		  updateAt = LocalDateTime.now();
-//	  }	
+	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private List<Role> roleList = new ArrayList<Role>();
 
 	
 }

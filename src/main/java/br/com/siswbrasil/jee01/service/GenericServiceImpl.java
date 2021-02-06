@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import br.com.siswbrasil.jee01.dao.GenericDAO;
 import br.com.siswbrasil.jee01.exception.CustomExceptions;
@@ -41,6 +42,7 @@ public abstract class GenericServiceImpl<T,ID extends Serializable> implements G
 	}
 
 	@Override
+	@Transactional
 	public T findById(ID id) {
 		return getDao().find(id);
 	}

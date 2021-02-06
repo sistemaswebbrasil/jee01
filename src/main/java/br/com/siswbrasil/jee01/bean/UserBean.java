@@ -2,17 +2,25 @@ package br.com.siswbrasil.jee01.bean;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.management.relation.RoleList;
+import javax.transaction.Transactional;
 
 import br.com.siswbrasil.jee01.datamodel.UserDataModel;
 import br.com.siswbrasil.jee01.exception.DatabaseException;
+import br.com.siswbrasil.jee01.model.Role;
 import br.com.siswbrasil.jee01.model.User;
+import br.com.siswbrasil.jee01.service.OrganizationService;
+import br.com.siswbrasil.jee01.service.RoleService;
 import br.com.siswbrasil.jee01.service.UserService;
 import br.com.siswbrasil.jee01.util.MessageUtil;
 import lombok.Getter;
@@ -34,12 +42,20 @@ public class UserBean implements Serializable {
     private FacesContext facesContext;
     
     @Inject
-    private UserDataModel dataModel;    
+    private UserDataModel dataModel; 
+    
+    @Inject
+    private RoleService roleService;
+    
+    @Inject
+    private OrganizationService orgService;
     	
 	private Long userId;
 	private User user;
+	private List<Role> availableRoles = new ArrayList<Role>();
     
     @PostConstruct
+    @Transactional
     public void init() throws IOException {    
         if (userId == null) {
             user = new User();
@@ -50,6 +66,7 @@ public class UserBean implements Serializable {
 				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			}			
         }
+        availableRoles = roleService.findAll();
     }  
     
 	public List<User> listAll() throws DatabaseException {

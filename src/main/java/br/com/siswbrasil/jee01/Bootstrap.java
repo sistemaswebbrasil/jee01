@@ -68,9 +68,9 @@ public class Bootstrap {
 
 	private void initialUsers() throws Throwable, BusinessException {
 		LOG.log(Level.INFO, "Initials user list");
-		User user1 = new User(null, "Adriano Faria Alves", "adriano.faria@gmail.com", "adriano.faria");
-		User user2 = new User(null, "Michele Cristina Teixeira Faria Alves", "micheletalves@gmail.com", "mixxa19");
-		User user3 = new User(null, "Beatriz Teixeira Faria Alves", "beatriz.t.f.alves@gmail.com", "bia");		
+		User user1 = new User(null, "Adriano Faria Alves", "adriano.faria@gmail.com", "adriano.faria",null);
+		User user2 = new User(null, "Michele Cristina Teixeira Faria Alves", "micheletalves@gmail.com", "mixxa19",null);
+		User user3 = new User(null, "Beatriz Teixeira Faria Alves", "beatriz.t.f.alves@gmail.com", "bia",null);		
 		
 		userService.create(user1);
 		userService.create(user2);

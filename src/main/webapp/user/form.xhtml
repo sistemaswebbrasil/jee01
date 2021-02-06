@@ -87,7 +87,7 @@
 
 											<div class="col-lg-3 col-md-4 col-sm-6">
 												<div class="form-group">
-													<label jsf:for="createAt">createAt</label> <input
+													<label jsf:for="createAt">#{lb['audit.createAt']}</label> <input
 														type="text" jsf:id="createAt"
 														class="form-control #{not empty (facesContext.getMessageList('form:createAt'))?'is-invalid':''}"
 														jsf:value="#{userBean.user.createAt}"
@@ -105,7 +105,7 @@
 
 											<div class="col-lg-3 col-md-4 col-sm-6">
 												<div class="form-group">
-													<label jsf:for="updateAt">updateAt</label> <input
+													<label jsf:for="updateAt">#{lb['audit.updateAt']}</label> <input
 														type="text" jsf:id="updateAt"
 														class="form-control #{not empty (facesContext.getMessageList('form:updateAt'))?'is-invalid':''}"
 														jsf:value="#{userBean.user.updateAt}"
@@ -175,6 +175,22 @@
 													jsf:label="#{lb['user.loginName']}" /> <small
 													class="invalid-feedback"> <h:message
 														for="loginName" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+										</div>
+										
+										
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="roleList">#{lb['user.roleList']}</label>										
+												
+												
+										        <h:selectManyCheckbox id="roleList" value="#{userBean.user.roleList}" styleClass="form-check #{not empty (facesContext.getMessageList('form:roleList'))?'is-invalid':''}">
+										            <f:selectItems value="#{userBean.availableRoles}" var="item" itemValue="#{item}" itemLabel="#{item.name}" />
+										        </h:selectManyCheckbox>											
+
+												<small class="invalid-feedback"> <h:message
+														for="roleList" showDetail="false" showSummary="true" />
 												</small>
 											</div>
 										</div>

@@ -249,6 +249,7 @@ public class CustomPrimeExceptionHandler extends ExceptionHandlerWrapper {
 			 */			
 			String formatedPrint = EscapeUtils.forXml(sw.toString());			
 			formatedPrint = formatedPrint.replace("&#34;", "\"");
+			formatedPrint = formatedPrint.replace("&#39;", "'");
 			formatedPrint = formatedPrint.replace("&lt;", "<");
 			formatedPrint = formatedPrint.replace("&gt;", ">");
 			info.setFormattedStackTrace(formatedPrint);
