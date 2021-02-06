@@ -23,5 +23,9 @@ public class UserService extends GenericServiceImpl<User, Long> {
 		}
 		return true;
 	}
+	
+	public User findById(Long id) {
+		return dao.findByIdEger(id);
+	}	
 
 }

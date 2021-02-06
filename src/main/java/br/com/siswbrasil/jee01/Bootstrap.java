@@ -1,5 +1,7 @@
 package br.com.siswbrasil.jee01;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,10 +54,10 @@ public class Bootstrap {
 		if (env.equalsIgnoreCase("dev")) {
 			LOG.log(Level.INFO, "Gerando dados iniciais de desenvolvimento ...");
 			try {
-				initialUsers();
 				initialTasks();
 				initOrganizations();
 				initRoles();
+				initialUsers();
 			} catch (BusinessException e) {
 				LOG.log(Level.SEVERE,
 						"Falha ao gerar os dados iniciais de desenvolvimento , aparentemente erro nos dados enviados para o servidor",
@@ -70,7 +72,28 @@ public class Bootstrap {
 		LOG.log(Level.INFO, "Initials user list");
 		User user1 = new User(null, "Adriano Faria Alves", "adriano.faria@gmail.com", "adriano.faria",null);
 		User user2 = new User(null, "Michele Cristina Teixeira Faria Alves", "micheletalves@gmail.com", "mixxa19",null);
-		User user3 = new User(null, "Beatriz Teixeira Faria Alves", "beatriz.t.f.alves@gmail.com", "bia",null);		
+		User user3 = new User(null, "Beatriz Teixeira Faria Alves", "beatriz.t.f.alves@gmail.com", "bia",null);	
+		
+		Role role1 = roleService.findById(1L);
+		Role role2 = roleService.findById(2L);
+		Role role3 = roleService.findById(3L);
+		
+		List<Role> roleList1 = new ArrayList<Role>();
+		List<Role> roleList2 = new ArrayList<Role>();
+		List<Role> roleList3 = new ArrayList<Role>();
+		
+		roleList1.add(role1);
+		roleList1.add(role2);
+		roleList1.add(role3);
+		
+		roleList2.add(role2);
+		roleList2.add(role1);
+		
+		roleList3.add(role3);
+		
+		user1.setRoleList(roleList1);
+		user2.setRoleList(roleList2);
+		user3.setRoleList(roleList3);
 		
 		userService.create(user1);
 		userService.create(user2);

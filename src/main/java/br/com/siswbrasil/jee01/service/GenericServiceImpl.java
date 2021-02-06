@@ -33,8 +33,6 @@ public abstract class GenericServiceImpl<T,ID extends Serializable> implements G
 	public void update(T entity) throws Throwable,Exception,SQLException {
 		try {
 			getDao().update(entity);
-			System.out.println("--------------------------------------------------");
-			System.out.println(entity);
 		} catch (Exception e) {			
 			//throw CustomExceptions.converterException(e);
 			throw new Exception("Erro", e);

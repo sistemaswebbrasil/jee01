@@ -30,4 +30,15 @@ public class UserDAO extends GenericDAO<User, Long> {
 			return null;
 		}
 	}
+	
+	public User findByIdEger(Long id) {
+		try {		
+			Query query = getEntityManager().createQuery("SELECT u FROM User u  join fetch u.roleList  WHERE u.id=:id");			
+			return (User) query.setParameter("id", id).getSingleResult();
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}	
+
 }
