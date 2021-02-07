@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//@EqualsAndHashCode(onlyExplicitlyIncluded = true,callSuper = false)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true,callSuper = false)
 @Entity
 @Table(name = "users")
 public class User extends Audit {
@@ -53,6 +54,10 @@ public class User extends Audit {
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private List<Role> roleList = new ArrayList<Role>();
+	
+	@ManyToOne
+	@JoinColumn(name = "organization_id")
+	private Organization organization;	
 
 	
 }

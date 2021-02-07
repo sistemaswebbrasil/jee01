@@ -194,6 +194,25 @@
 												</small>
 											</div>
 										</div>
+										
+										
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="cdUnidadeUge">#{lb['organization.entity']}</label>
+
+												<h:selectOneMenu value="#{userBean.user.organization}" converter="organizationConverter"
+													id="organization"
+													styleClass="form-control #{not empty (facesContext.getMessageList('form:organization'))?'is-invalid':''}"
+													label="#{lb['organization.entity']}">
+													<f:selectItems value="#{userBean.availablesOrganization}" var="item"
+														itemLabel="#{item.initials}" itemValue="#{item}" />
+												</h:selectOneMenu>
+
+												<small class="invalid-feedback"> <h:message
+														for="organization" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+										</div>										
 
 
 

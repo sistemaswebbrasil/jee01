@@ -70,9 +70,14 @@ public class Bootstrap {
 
 	private void initialUsers() throws Throwable, BusinessException {
 		LOG.log(Level.INFO, "Initials user list");
-		User user1 = new User(null, "Adriano Faria Alves", "adriano.faria@gmail.com", "adriano.faria",null);
-		User user2 = new User(null, "Michele Cristina Teixeira Faria Alves", "micheletalves@gmail.com", "mixxa19",null);
-		User user3 = new User(null, "Beatriz Teixeira Faria Alves", "beatriz.t.f.alves@gmail.com", "bia",null);	
+		
+		Organization organization1 = organizationService.findById(1L);
+		Organization organization2 = organizationService.findById(2L);
+		Organization organization3 = organizationService.findById(3L);
+		
+		User user1 = new User(null, "Adriano Faria Alves", "adriano.faria@gmail.com", "adriano.faria",null,organization1);
+		User user2 = new User(null, "Michele Cristina Teixeira Faria Alves", "micheletalves@gmail.com", "mixxa19",null,organization2);
+		User user3 = new User(null, "Beatriz Teixeira Faria Alves", "beatriz.t.f.alves@gmail.com", "bia",null,organization3);	
 		
 		Role role1 = roleService.findById(1L);
 		Role role2 = roleService.findById(2L);

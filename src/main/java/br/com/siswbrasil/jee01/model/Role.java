@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//@EqualsAndHashCode(onlyExplicitlyIncluded = true,callSuper = false)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true,callSuper = false)
 @Entity
 public class Role extends Audit {
 
@@ -22,7 +22,6 @@ public class Role extends Audit {
 
 	@EqualsAndHashCode.Include
 	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Long id;
 

@@ -16,12 +16,12 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true,callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "Organizations")
-public class Organization implements Serializable {
+public class Organization extends Audit {
 	private static final long serialVersionUID = 1L;
 
 	@EqualsAndHashCode.Include
