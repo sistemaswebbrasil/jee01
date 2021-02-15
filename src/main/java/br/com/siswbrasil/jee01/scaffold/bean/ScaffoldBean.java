@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.CaseFormat;
 
+import br.com.siswbrasil.jee01.scaffold.ScaffoldService;
 import br.com.siswbrasil.jee01.scaffold.model.AvailableObject;
 import br.com.siswbrasil.jee01.scaffold.model.AvailableObject.AvaliableProperties;
 import br.com.siswbrasil.jee01.util.MessageUtil;
@@ -62,18 +62,13 @@ public class ScaffoldBean implements Serializable {
 	private Logger LOG;
 
 	private String finalEntityPath;
+	
+	@Inject
+	private ScaffoldService scaffoldService;
 
 	@PostConstruct
 	public void init() {
-		String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
-		String entityPath = propertiesUtil.get(SCAFFOLD_ENTITY_PATH);
-		finalEntityPath = basePath.concat(entityPath);
-		readEntitysFromProject();
-
-	}
-
-	private void readEntitysFromProject() {
-		this.entities = scanFiles(finalEntityPath, "entity");
+		this.entities =  scaffoldService.readEntitysFromProject();
 	}
 
 	public void carregaPelaId() {
@@ -97,31 +92,6 @@ public class ScaffoldBean implements Serializable {
 			}
 		}
 
-	}
-
-	private List<AvailableObject> scanFiles(String folder, String type) {
-		List<AvailableObject> entities = new ArrayList<AvailableObject>();
-		File actual = new File(folder);
-		if (!actual.exists()) {
-			MessageUtil.clearMessages();
-			MessageUtil.addErrorMessage("Falha ao ler diretório", String.format(
-					"O diretório %s não existe,favor configurar o seu amiente \"appication.{env}.properties\" de acordo com a sua máquina de desenvolvimento! ",
-					folder));
-			return null;
-		}
-		LOG.info("Escaneando os arquivos");
-		LOG.info("folder " + folder);
-		LOG.info("type " + type);
-		LOG.info("entities " + entities);
-		for (File f : actual.listFiles()) {
-			AvailableObject object = new AvailableObject();
-			object.setId(UUID.randomUUID().toString());
-			object.setName(f.getName().replace(".java", ""));
-			object.setType(type);
-			object.setPath(f.getAbsolutePath());
-			entities.add(object);
-		}
-		return entities;
 	}
 
 	public void generateService() {
