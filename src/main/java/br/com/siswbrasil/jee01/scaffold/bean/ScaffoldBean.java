@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +50,7 @@ public class ScaffoldBean implements Serializable {
 
 	private List<AvailableObject> entities = new ArrayList<AvailableObject>();
 	private AvailableObject selected = new AvailableObject();
-	private String objectContent;
+	private String objectContent = "";
 
 	@Inject
 	private PropertiesUtil propertiesUtil;
@@ -62,27 +59,25 @@ public class ScaffoldBean implements Serializable {
 	private Logger LOG;
 
 	private String finalEntityPath;
-	
+
 	@Inject
 	private ScaffoldService scaffoldService;
 
 	@PostConstruct
 	public void init() {
-		this.entities =  scaffoldService.readEntitysFromProject();
+		this.entities = scaffoldService.readEntitysFromProject();
 	}
 
 	public void carregaPelaId() {
 		Optional<AvailableObject> objectItem = entities.stream()
 				.filter(item -> item.getName().equals(this.selected.getName()))
 				.filter(item -> item.getType().equals(this.selected.getType())).findFirst();
-
 		if (objectItem.isPresent()) {
 			selected = objectItem.get();
-			readProperties();
+			objectContent = scaffoldService.readProperties(selected);
 		} else {
 			selected = new AvailableObject();
 			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.object.not_found"));
-
 			try {
 				FacesContext context = FacesContext.getCurrentInstance();
 				ExternalContext externalContext = context.getExternalContext();
@@ -91,7 +86,6 @@ public class ScaffoldBean implements Serializable {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	public void generateService() {
@@ -118,7 +112,7 @@ public class ScaffoldBean implements Serializable {
 			String daoPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".service");
 			String serviceClass = selected.getName().concat("Service");
 			String serviceClassPath = String.format("%s/%s.%s", servicePath, serviceClass, "java");
-			List<String> lines = readFile(modelServicePath, false);
+			List<String> lines = scaffoldService.readFile(modelServicePath, false);
 			List<String> newLines = new ArrayList<String>();
 			for (String line : lines) {
 				if (line.contains("${service.package}")) {
@@ -181,7 +175,7 @@ public class ScaffoldBean implements Serializable {
 			String daoClass = selected.getName().concat("DAO");
 			String daoClassPath = String.format("%s/%s.%s", daoPath, daoClass, "java");
 
-			List<String> lines = readFile(modelDaoPath, false);
+			List<String> lines = scaffoldService.readFile(modelDaoPath, false);
 			List<String> newLines = new ArrayList<String>();
 
 			for (String line : lines) {
@@ -259,7 +253,7 @@ public class ScaffoldBean implements Serializable {
 			String serviceClass = selected.getName().concat("Service");
 			String beanClassPath = String.format("%s/%s.%s", beanPath, beanClass, "java");
 
-			List<String> lines = readFile(modelBeanPath, false);
+			List<String> lines = scaffoldService.readFile(modelBeanPath, false);
 			List<String> newLines = new ArrayList<String>();
 
 			for (String line : lines) {
@@ -321,7 +315,7 @@ public class ScaffoldBean implements Serializable {
 			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
 		}
 	}
-	
+
 	public void generateBeanLazy() {
 		try {
 			if (selected.getProperties().isEmpty()) {
@@ -358,7 +352,7 @@ public class ScaffoldBean implements Serializable {
 			String serviceClass = selected.getName().concat("Service");
 			String beanClassPath = String.format("%s/%s.%s", beanPath, beanClass, "java");
 
-			List<String> lines = readFile(modelBeanPath, false);
+			List<String> lines = scaffoldService.readFile(modelBeanPath, false);
 			List<String> newLines = new ArrayList<String>();
 
 			for (String line : lines) {
@@ -367,16 +361,17 @@ public class ScaffoldBean implements Serializable {
 				}
 				if (line.contains("${entity.package}")) {
 					line = line.replace("${entity.package}", entityPackage);
-				}				
+				}
 				if (line.contains("${entity.class}")) {
 					line = line.replace("${entity.class}", selected.getName());
 				}
 				if (line.contains("${datamodel.package}")) {
-					line = line.replace("${datamodel.package}", String.format("%s.%s", dataModelPackage,dataModelClass));
+					line = line.replace("${datamodel.package}",
+							String.format("%s.%s", dataModelPackage, dataModelClass));
 				}
 				if (line.contains("${datamodel.class}")) {
 					line = line.replace("${datamodel.class}", selected.getName().concat("DataModel"));
-				}				
+				}
 				if (line.contains("${entity.id.type}") && StringUtils.isEmpty(idType) == false) {
 					line = line.replace("${entity.id.type}", idType);
 				}
@@ -423,10 +418,10 @@ public class ScaffoldBean implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
-		}		
-		
+		}
+
 	}
-	
+
 	public void generateDataModel() {
 		try {
 			if (selected.getProperties().isEmpty()) {
@@ -464,7 +459,7 @@ public class ScaffoldBean implements Serializable {
 			String daoClass = selected.getName().concat("DAO");
 			String dataModelClassPath = String.format("%s/%s.%s", dataModelPath, dataModelClass, "java");
 
-			List<String> lines = readFile(modelDataModelPath, false);
+			List<String> lines = scaffoldService.readFile(modelDataModelPath, false);
 			List<String> newLines = new ArrayList<String>();
 
 			for (String line : lines) {
@@ -472,8 +467,8 @@ public class ScaffoldBean implements Serializable {
 					line = line.replace("${bean.package}", beanPackage);
 				}
 				if (line.contains("${entity.package}")) {
-					line = line.replace("${entity.package}",  String.format("%s.%s", entityPackage,selected.getName()));
-				}				
+					line = line.replace("${entity.package}", String.format("%s.%s", entityPackage, selected.getName()));
+				}
 				if (line.contains("${entity.class}")) {
 					line = line.replace("${entity.class}", selected.getName());
 				}
@@ -487,7 +482,7 @@ public class ScaffoldBean implements Serializable {
 					line = line.replace("${dao.class}", daoClass);
 				}
 				if (line.contains("${dao.package}")) {
-					line = line.replace("${dao.package}", String.format("%s.%s", daoPackage,daoClass) );
+					line = line.replace("${dao.package}", String.format("%s.%s", daoPackage, daoClass));
 				}
 				if (line.contains("${entity.var}")) {
 					line = line.replace("${entity.var}", entityCamelCase);
@@ -512,16 +507,15 @@ public class ScaffoldBean implements Serializable {
 				objectContent += line + "\n";
 			}
 			LOG.log(Level.INFO, "Gerando o DataModel ...");
-			LOG.log(Level.INFO, "dataModelClassPath "+dataModelClassPath);
-			LOG.log(Level.INFO, "objectContent "+objectContent);
-			LOG.log(Level.INFO, "dataModelPath "+dataModelPath);			
+			LOG.log(Level.INFO, "dataModelClassPath " + dataModelClassPath);
+			LOG.log(Level.INFO, "objectContent " + objectContent);
+			LOG.log(Level.INFO, "dataModelPath " + dataModelPath);
 
 			File baseViewFolderPathDir = new File(dataModelPath);
 			if (!baseViewFolderPathDir.exists()) {
 				baseViewFolderPathDir.mkdirs();
-			}		
-			
-			
+			}
+
 			try {
 				FileWriter fileWriter = new FileWriter(dataModelClassPath);
 				fileWriter.write(objectContent);
@@ -534,8 +528,8 @@ public class ScaffoldBean implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
-		}		
-		
+		}
+
 	}
 
 	public void generateViewForm() {
@@ -590,7 +584,7 @@ public class ScaffoldBean implements Serializable {
 			String beanClass = selected.getName().concat("Bean");
 			String beanClassView = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, beanClass);
 
-			List<String> lines = readFile(modelViewFormPath, false);
+			List<String> lines = scaffoldService.readFile(modelViewFormPath, false);
 			List<String> newLines = new ArrayList<String>();
 
 			for (String line : lines) {
@@ -636,7 +630,7 @@ public class ScaffoldBean implements Serializable {
 			templateFieldsFinal = templateFieldsFinal.replace("${partial.fields.begin}", "");
 			templateFieldsFinal = templateFieldsFinal.replace("${partial.fields.end}", "");
 			String finalLines = "";
-			
+
 			for (AvaliableProperties item : selected.getProperties()) {
 
 				if (StringUtils.isEmpty(item.getValue())) {
@@ -646,17 +640,20 @@ public class ScaffoldBean implements Serializable {
 						tmp = tmp.replace("${entity.var}", entityCamelCase);
 						tmp = tmp.replace("${view.beanForm}", beanClassView);
 						tmp = tmp.replace("${optional.render.begin}", "");
-						tmp = tmp.replace("${optional.render.end}", "");						
+						tmp = tmp.replace("${optional.render.end}", "");
 						tmp = tmp.replace("${optional.hidden}", "");
 						tmp = tmp.replace("${optional.disable}", "");
 					} else {
 						tmp = templateFieldsFinal.replace("${entity.field}", item.getName());
 						tmp = tmp.replace("${entity.var}", entityCamelCase);
 						tmp = tmp.replace("${view.beanForm}", beanClassView);
-						tmp = tmp.replace("${optional.render.begin}", String.format("<ui:fragment rendered=\"#{not empty %s.%s.%s}\">",beanClassView, entityCamelCase, item.getName()));
+						tmp = tmp.replace("${optional.render.begin}",
+								String.format("<ui:fragment rendered=\"#{not empty %s.%s.%s}\">", beanClassView,
+										entityCamelCase, item.getName()));
 						tmp = tmp.replace("${optional.render.end}", "</ui:fragment>");
-						tmp = tmp.replace("${optional.hidden}", String.format("<h:inputHidden value=\"#{%s.%s.%s}\" />",beanClassView, entityCamelCase, item.getName()));
-						tmp = tmp.replace("${optional.disable}", "disabled=\"true\"");						
+						tmp = tmp.replace("${optional.hidden}", String.format("<h:inputHidden value=\"#{%s.%s.%s}\" />",
+								beanClassView, entityCamelCase, item.getName()));
+						tmp = tmp.replace("${optional.disable}", "disabled=\"true\"");
 					}
 					finalLines += tmp + "\n";
 				}
@@ -727,7 +724,7 @@ public class ScaffoldBean implements Serializable {
 
 			String beanClass = selected.getName().concat("Bean");
 			String beanClassView = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, beanClass);
-			List<String> lines = readFile(modelViewListPath, false);
+			List<String> lines = scaffoldService.readFile(modelViewListPath, false);
 			List<String> newLines = new ArrayList<String>();
 
 			for (String line : lines) {
@@ -762,7 +759,6 @@ public class ScaffoldBean implements Serializable {
 			for (String line : newLines) {
 				objectContent += line + "\n";
 			}
-
 
 			int beginFieldsTemplate = objectContent.indexOf("${partial.fields.begin}");
 			int endFieldsTemplate = objectContent.indexOf("${partial.fields.end}") + 21;
@@ -812,7 +808,7 @@ public class ScaffoldBean implements Serializable {
 			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para a view de listagem");
 		}
 	}
-	
+
 	public void generateViewListLazy() {
 		try {
 			if (selected.getProperties().isEmpty()) {
@@ -856,7 +852,7 @@ public class ScaffoldBean implements Serializable {
 
 			String beanClass = selected.getName().concat("Bean");
 			String beanClassView = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, beanClass);
-			List<String> lines = readFile(modelViewListPath, false);
+			List<String> lines = scaffoldService.readFile(modelViewListPath, false);
 			List<String> newLines = new ArrayList<String>();
 
 			for (String line : lines) {
@@ -892,7 +888,6 @@ public class ScaffoldBean implements Serializable {
 				objectContent += line + "\n";
 			}
 
-
 			int beginFieldsTemplate = objectContent.indexOf("${partial.fields.begin}");
 			int endFieldsTemplate = objectContent.indexOf("${partial.fields.end}") + 21;
 
@@ -914,7 +909,7 @@ public class ScaffoldBean implements Serializable {
 
 				}
 			}
-			
+
 			objectContent = objectContent.replace(templateFields, finalLines);
 			File baseViewFolderPathDir = new File(baseViewFolderPath);
 			if (!baseViewFolderPathDir.exists()) {
@@ -934,7 +929,7 @@ public class ScaffoldBean implements Serializable {
 			e.printStackTrace();
 			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para a view de listagem");
 		}
-	}	
+	}
 
 	public void generateMenuItem() {
 		try {
@@ -978,10 +973,8 @@ public class ScaffoldBean implements Serializable {
 			// String beanClass = selected.getName().concat("Bean");
 			// String beanClassView = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL,
 			// beanClass);
-			List<String> lines = readFile(modelItemMenuPath, false);
+			List<String> lines = scaffoldService.readFile(modelItemMenuPath, false);
 			List<String> newLines = new ArrayList<String>();
-
-
 
 			for (String line : lines) {
 				if (line.contains("${entity.var}")) {
@@ -1003,11 +996,12 @@ public class ScaffoldBean implements Serializable {
 				objectContentNewItem += line + "\n";
 			}
 
-			List<String> lines1 = readFile(menuItemPath, false);
+			List<String> lines1 = scaffoldService.readFile(menuItemPath, false);
 			List<String> newLines1 = new ArrayList<String>();
 			boolean menuItemExist = false;
 			for (String line : lines1) {
-				if (line.contains(String.format("<li class=\"nav-item has-treeview\" id=\"item-menu-scaffold-%s\">", entityCamelCase)) == true) {
+				if (line.contains(String.format("<li class=\"nav-item has-treeview\" id=\"item-menu-scaffold-%s\">",
+						entityCamelCase)) == true) {
 					menuItemExist = true;
 				}
 				newLines1.add(line);
@@ -1021,27 +1015,29 @@ public class ScaffoldBean implements Serializable {
 				objectContent = objectFinalMenuContent.replace(markerMenu, objectContentNewItem);
 			}
 
-			if ( StringUtils.isNotBlank(objectContent.trim())){			
+			if (StringUtils.isNotBlank(objectContent.trim())) {
 				try {
 					FileWriter fileWriter = new FileWriter(menuItemPath);
 					fileWriter.write(objectContent);
 					fileWriter.close();
 				} catch (IOException e) {
 					e.printStackTrace();
-					MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+					MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
+							MessageUtil.getMsg("error.file.fail_write"));
 				}
-			}else {
-				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.content.empty"));
+			} else {
+				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
+						MessageUtil.getMsg("error.file.content.empty"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para os itens de menu");
 		}
 	}
-	
+
 	private AvaliableProperties getPropertyByName(String property) {
 		List<AvaliableProperties> properties = selected.getProperties();
-		
+
 		for (AvaliableProperties item : properties) {
 			if (item.getName().equalsIgnoreCase(property)) {
 				return item;
@@ -1061,7 +1057,7 @@ public class ScaffoldBean implements Serializable {
 					MessageUtil.getMsg("scaffold.labels_config.not_found"));
 		}
 
-		List<String> lines = readFile(labelPath, true);
+		List<String> lines = scaffoldService.readFile(labelPath, true);
 		List<String> newLines = new ArrayList<String>();
 		List<AvaliableProperties> properties = selected.getProperties();
 		for (String line : lines) {
@@ -1076,7 +1072,8 @@ public class ScaffoldBean implements Serializable {
 			String formattedName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, item.getName());
 			formattedName = formattedName.replace("-", " ");
 			formattedName = StringUtils.capitalize(formattedName);
-			String newLine = String.format("%s.%s=%s", getPropertyByName("entity").getValue(), item.getName(), formattedName);
+			String newLine = String.format("%s.%s=%s", getPropertyByName("entity").getValue(), item.getName(),
+					formattedName);
 
 			Boolean fieldExist = false;
 			for (String line : lines) {
@@ -1097,7 +1094,8 @@ public class ScaffoldBean implements Serializable {
 			String formattedName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, item.getValue());
 			formattedName = formattedName.replace("-", " ");
 			formattedName = StringUtils.capitalize(formattedName);
-			String newLine = String.format("%s.%s=%s", getPropertyByName("entity").getValue(), item.getName(), formattedName);
+			String newLine = String.format("%s.%s=%s", getPropertyByName("entity").getValue(), item.getName(),
+					formattedName);
 			Boolean fieldExist = false;
 			for (String line : lines) {
 				if (line.substring(0, line.indexOf("=")).equalsIgnoreCase(newLine.substring(0, newLine.indexOf("=")))) {
@@ -1125,90 +1123,74 @@ public class ScaffoldBean implements Serializable {
 		}
 	}
 
-	public void readProperties() {
-		List<String> lines = readFile(selected.getPath(), true);
-		objectContent = "";
-		List<AvaliableProperties> properties = new ArrayList<>();
-		Boolean selectedIsId = false;
-		objectContent = null;
-		for (String line : lines) {
-			objectContent += line + "\n";
-			String selectedName = null;
-			String selectedType = null;
-			String selectedValue = null;
-			if (line.contains(";")) {
-				line = line.substring(0, line.indexOf(";"));
-			}
-			String[] partLine = line.split(" ");
-			if (selected.getType().equalsIgnoreCase("entity")) {
-				if (partLine[0].contentEquals("@Id")) {
-					selectedIsId = true;
-				}
-				if (partLine[0].contentEquals("private") && !partLine[1].contentEquals("static")) {
-					selectedType = partLine[1];
-					selectedName = partLine[2];
-				}
-			}
-
-			if (line.startsWith("package")) {
-				String packageName = line.split("package ")[1].trim();
-				selectedName = "packageName";
-				selectedType = "package";
-				selectedValue = packageName;
-			}
-
-			if (selected.getType().equalsIgnoreCase("entity") && selectedType != null) {
-				AvaliableProperties property = selected.new AvaliableProperties(selectedType, selectedName,
-						selectedIsId.booleanValue(), selectedValue);
-				properties.add(property);
-				selectedIsId = false;
-			}
-		}
-		String entityCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName());
-		AvaliableProperties property = selected.new AvaliableProperties("entityCamelCase", "entity", false,
-				entityCamelCase);
-		properties.add(property);
-
-		String entityListCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "List";
-		property = selected.new AvaliableProperties("entityListCamelCase", "entityList", false, entityListCamelCase);
-		properties.add(property);
-
-		String entityCreateCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Create";
-		property = selected.new AvaliableProperties("entityCreateCamelCase", "entityCreate", false,
-				entityCreateCamelCase);
-		properties.add(property);
-
-		String entityEditCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Edit";
-		property = selected.new AvaliableProperties("entityEditCamelCase", "entityEdit", false, entityEditCamelCase);
-		properties.add(property);
-
-		String entityDetailCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Detail";
-		property = selected.new AvaliableProperties("entityDetailCamelCase", "entityDetail", false,
-				entityDetailCamelCase);
-		properties.add(property);
-
-		String entityDeleteCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Delete";
-		property = selected.new AvaliableProperties("entityDeleteCamelCase", "entityDelete", false,
-				entityDeleteCamelCase);
-		properties.add(property);
-
-		selected.setProperties(properties);
-	}
-
-	private List<String> readFile(String objectPath, Boolean clear) {
-		List<String> rowsArray = new ArrayList<String>();
-		Path path = Paths.get(objectPath);
-		try {
-			if (clear) {
-				Files.lines(path).map(s -> s.trim()).filter(s -> !((String) s).isEmpty())
-						.forEach(s -> rowsArray.add(s));
-			} else {
-				Files.lines(path).forEach(s -> rowsArray.add(s));
-			}
-		} catch (IOException e) {
-			MessageUtil.addErrorMessage(MessageUtil.getMsg("error.file.not_found"), e.getMessage());
-		}
-		return rowsArray;
-	}
+//	public void readProperties() {
+//		List<String> lines = scaffoldService.readFile(selected.getPath(), true);
+//		objectContent = "";
+//		List<AvaliableProperties> properties = new ArrayList<>();
+//		Boolean selectedIsId = false;
+//		objectContent = null;
+//		for (String line : lines) {
+//			objectContent += line + "\n";
+//			String selectedName = null;
+//			String selectedType = null;
+//			String selectedValue = null;
+//			if (line.contains(";")) {
+//				line = line.substring(0, line.indexOf(";"));
+//			}
+//			String[] partLine = line.split(" ");
+//			if (selected.getType().equalsIgnoreCase("entity")) {
+//				if (partLine[0].contentEquals("@Id")) {
+//					selectedIsId = true;
+//				}
+//				if (partLine[0].contentEquals("private") && !partLine[1].contentEquals("static")) {
+//					selectedType = partLine[1];
+//					selectedName = partLine[2];
+//				}
+//			}
+//
+//			if (line.startsWith("package")) {
+//				String packageName = line.split("package ")[1].trim();
+//				selectedName = "packageName";
+//				selectedType = "package";
+//				selectedValue = packageName;
+//			}
+//
+//			if (selected.getType().equalsIgnoreCase("entity") && selectedType != null) {
+//				AvaliableProperties property = selected.new AvaliableProperties(selectedType, selectedName,
+//						selectedIsId.booleanValue(), selectedValue);
+//				properties.add(property);
+//				selectedIsId = false;
+//			}
+//		}
+//		String entityCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName());
+//		AvaliableProperties property = selected.new AvaliableProperties("entityCamelCase", "entity", false,
+//				entityCamelCase);
+//		properties.add(property);
+//
+//		String entityListCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "List";
+//		property = selected.new AvaliableProperties("entityListCamelCase", "entityList", false, entityListCamelCase);
+//		properties.add(property);
+//
+//		String entityCreateCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Create";
+//		property = selected.new AvaliableProperties("entityCreateCamelCase", "entityCreate", false,
+//				entityCreateCamelCase);
+//		properties.add(property);
+//
+//		String entityEditCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Edit";
+//		property = selected.new AvaliableProperties("entityEditCamelCase", "entityEdit", false, entityEditCamelCase);
+//		properties.add(property);
+//
+//		String entityDetailCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Detail";
+//		property = selected.new AvaliableProperties("entityDetailCamelCase", "entityDetail", false,
+//				entityDetailCamelCase);
+//		properties.add(property);
+//
+//		String entityDeleteCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Delete";
+//		property = selected.new AvaliableProperties("entityDeleteCamelCase", "entityDelete", false,
+//				entityDeleteCamelCase);
+//		properties.add(property);
+//
+//		selected.setProperties(properties);
+//	}
 
 }

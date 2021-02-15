@@ -1,6 +1,10 @@
 package br.com.siswbrasil.jee01.scaffold;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,7 +14,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import com.google.common.base.CaseFormat;
+
 import br.com.siswbrasil.jee01.scaffold.model.AvailableObject;
+import br.com.siswbrasil.jee01.scaffold.model.AvailableObject.AvaliableProperties;
 import br.com.siswbrasil.jee01.util.MessageUtil;
 import br.com.siswbrasil.jee01.util.PropertiesUtil;
 
@@ -24,8 +31,6 @@ public class ScaffoldService {
 	private PropertiesUtil propertiesUtil;
 
 	private String finalEntityPath;
-
-	private List<AvailableObject> entities = new ArrayList<AvailableObject>();
 
 	public static final String SCAFFOLD_BASE_PATH = "scaffold.base.path";
 	public static final String SCAFFOLD_ENTITY_PATH = "scaffold.entity.path";
@@ -51,10 +56,7 @@ public class ScaffoldService {
 					folder));
 			return null;
 		}
-		LOG.info("Escaneando os arquivos");
-		LOG.info("folder " + folder);
-		LOG.info("type " + type);
-		LOG.info("entities " + entities);
+
 		for (File f : actual.listFiles()) {
 			AvailableObject object = new AvailableObject();
 			object.setId(UUID.randomUUID().toString());
@@ -64,6 +66,93 @@ public class ScaffoldService {
 			entities.add(object);
 		}
 		return entities;
+	}
+	
+	public List<String> readFile(String objectPath, Boolean clear) {
+		List<String> rowsArray = new ArrayList<String>();
+		Path path = Paths.get(objectPath);
+		try {
+			if (clear) {
+				Files.lines(path).map(s -> s.trim()).filter(s -> !((String) s).isEmpty())
+						.forEach(s -> rowsArray.add(s));
+			} else {
+				Files.lines(path).forEach(s -> rowsArray.add(s));
+			}
+		} catch (IOException e) {
+			MessageUtil.addErrorMessage(MessageUtil.getMsg("error.file.not_found"), e.getMessage());
+		}
+		return rowsArray;
+	}	
+	
+	public String readProperties(AvailableObject selected) {
+		String objectContent = "";
+		List<String> lines = readFile(selected.getPath(), true);
+		List<AvaliableProperties> properties = new ArrayList<>();
+		Boolean selectedIsId = false;
+		objectContent = null;
+		for (String line : lines) {
+			objectContent += line + "\n";
+			String selectedName = null;
+			String selectedType = null;
+			String selectedValue = null;
+			if (line.contains(";")) {
+				line = line.substring(0, line.indexOf(";"));
+			}
+			String[] partLine = line.split(" ");
+			if (selected.getType().equalsIgnoreCase("entity")) {
+				if (partLine[0].contentEquals("@Id")) {
+					selectedIsId = true;
+				}
+				if (partLine[0].contentEquals("private") && !partLine[1].contentEquals("static")) {
+					selectedType = partLine[1];
+					selectedName = partLine[2];
+				}
+			}
+
+			if (line.startsWith("package")) {
+				String packageName = line.split("package ")[1].trim();
+				selectedName = "packageName";
+				selectedType = "package";
+				selectedValue = packageName;
+			}
+
+			if (selected.getType().equalsIgnoreCase("entity") && selectedType != null) {
+				AvaliableProperties property = selected.new AvaliableProperties(selectedType, selectedName,
+						selectedIsId.booleanValue(), selectedValue);
+				properties.add(property);
+				selectedIsId = false;
+			}
+		}
+		String entityCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName());
+		AvaliableProperties property = selected.new AvaliableProperties("entityCamelCase", "entity", false,
+				entityCamelCase);
+		properties.add(property);
+
+		String entityListCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "List";
+		property = selected.new AvaliableProperties("entityListCamelCase", "entityList", false, entityListCamelCase);
+		properties.add(property);
+
+		String entityCreateCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Create";
+		property = selected.new AvaliableProperties("entityCreateCamelCase", "entityCreate", false,
+				entityCreateCamelCase);
+		properties.add(property);
+
+		String entityEditCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Edit";
+		property = selected.new AvaliableProperties("entityEditCamelCase", "entityEdit", false, entityEditCamelCase);
+		properties.add(property);
+
+		String entityDetailCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Detail";
+		property = selected.new AvaliableProperties("entityDetailCamelCase", "entityDetail", false,
+				entityDetailCamelCase);
+		properties.add(property);
+
+		String entityDeleteCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Delete";
+		property = selected.new AvaliableProperties("entityDeleteCamelCase", "entityDelete", false,
+				entityDeleteCamelCase);
+		properties.add(property);
+
+		selected.setProperties(properties);		
+		return objectContent;
 	}
 
 }

@@ -11,6 +11,7 @@
 		<f:viewParam name="type" value="#{scaffoldBean.selected.type }" />
 		<f:viewAction action="#{scaffoldBean.carregaPelaId}" />
 	</f:metadata>
+	
 	<ui:define name="title">#{msg['scaffold.entity.detail']}</ui:define>
 	<ui:define name="content">
 	
@@ -81,7 +82,7 @@
 								<br />
 								<div class="card-footer">
 									<p:commandButton value="#{msg['scaffold.read_object']}"
-										action="#{scaffoldBean.readProperties()}" icon="pi pi-search"
+										action="#{scaffoldBean.carregaPelaId()}" icon="pi pi-search"
 										update="@form" />
 									<p:commandButton value="#{msg['scaffold.generate_label']}"
 										action="#{scaffoldBean.generateLabels()}" icon="pi pi-tags"
