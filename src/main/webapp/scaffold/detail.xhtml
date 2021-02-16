@@ -66,13 +66,13 @@
 								<p:dataTable var="item"
 									value="#{scaffoldBean.selected.properties}"
 									rowStyleClass="#{item.isId == true ? 'old' : null }">
-									<p:column headerText="#{msg.name}">
+									<p:column headerText="#{msg.name}" style="width:200px;">
 										<h:outputText value="#{item.name}" />
 									</p:column>
-									<p:column headerText="#{msg.type}">
+									<p:column headerText="#{msg.type}" style="width:200px;">
 										<h:outputText value="#{item.type}" />
 									</p:column>
-									<p:column headerText="#{msg.id}">
+									<p:column headerText="#{msg.id}" style="width:50px;">
 										<h:outputText value="#{item.isId}" />
 									</p:column>
 									<p:column headerText="#{msg.value}">

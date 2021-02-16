@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.CaseFormat;
 
+import br.com.siswbrasil.jee01.exception.ScaffoldException;
 import br.com.siswbrasil.jee01.scaffold.ScaffoldService;
 import br.com.siswbrasil.jee01.scaffold.model.AvailableObject;
 import br.com.siswbrasil.jee01.scaffold.model.AvailableObject.AvaliableProperties;
@@ -87,134 +88,34 @@ public class ScaffoldBean implements Serializable {
 			}
 		}
 	}
-
-	public void generateService() {
-		try {
-			if (selected.getProperties().isEmpty()) {
-				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
-						MessageUtil.getMsg("error.scaffold.not_found"));
-			}
-			String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
-			String serviceParcialPath = propertiesUtil.get(SCAFFOLD_SERVICE_PATH);
-			String modelParcialServicePath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
-			String servicePath = basePath.concat(serviceParcialPath);
-			String modelServicePath = basePath.concat(modelParcialServicePath.concat("/service.txt"));
-			String entityPackage = "";
-			String idType = null;
-			for (AvaliableProperties entityLine : selected.getProperties()) {
-				if (entityLine.getName() == "packageName") {
-					entityPackage = entityLine.getValue();
-				}
-				if (entityLine.getIsId().booleanValue() == true) {
-					idType = entityLine.getType();
-				}
-			}
-			String daoPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".service");
-			String serviceClass = selected.getName().concat("Service");
-			String serviceClassPath = String.format("%s/%s.%s", servicePath, serviceClass, "java");
-			List<String> lines = scaffoldService.readFile(modelServicePath, false);
-			List<String> newLines = new ArrayList<String>();
-			for (String line : lines) {
-				if (line.contains("${service.package}")) {
-					line = line.replace("${service.package}", daoPackage);
-				}
-				if (line.contains("${entity.package}")) {
-					line = line.replace("${entity.package}", entityPackage);
-				}
-				if (line.contains("${entity.class}")) {
-					line = line.replace("${entity.class}", selected.getName());
-				}
-				if (line.contains("${entity.id.type}") && StringUtils.isEmpty(idType) == false) {
-					line = line.replace("${entity.id.type}", idType);
-				}
-				if (line.contains("${service.class}")) {
-					line = line.replace("${service.class}", serviceClass);
-				}
-				newLines.add(line);
-			}
-			objectContent = "";
-			for (String line : newLines) {
-				objectContent += line + "\n";
-			}
-			try {
-				FileWriter fileWriter = new FileWriter(serviceClassPath);
-				fileWriter.write(objectContent);
-				fileWriter.close();
-			} catch (IOException e) {
-				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
-			}
-		} catch (Exception e) {
-			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Service");
-		}
-	}
+	
+	public void generateLabels() {		
+		objectContent = scaffoldService.generateLabels(selected);
+	}	
 
 	public void generateDao() {
 		try {
-
-			if (selected.getProperties().isEmpty()) {
-				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
-						MessageUtil.getMsg("error.scaffold.not_found"));
-			}
-			String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
-			String daoParcialPath = propertiesUtil.get(SCAFFOLD_DAO_PATH);
-			String modelParcialDaoPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
-
-			String daoPath = basePath.concat(daoParcialPath);
-			String modelDaoPath = basePath.concat(modelParcialDaoPath.concat("/dao.txt"));
-			String entityPackage = "";
-			String idType = null;
-			for (AvaliableProperties entityLine : selected.getProperties()) {
-				if (entityLine.getName() == "packageName") {
-					entityPackage = entityLine.getValue();
-				}
-				if (entityLine.getIsId().booleanValue() == true) {
-					idType = entityLine.getType();
-				}
-			}
-			String daoPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".dao");
-			String daoClass = selected.getName().concat("DAO");
-			String daoClassPath = String.format("%s/%s.%s", daoPath, daoClass, "java");
-
-			List<String> lines = scaffoldService.readFile(modelDaoPath, false);
-			List<String> newLines = new ArrayList<String>();
-
-			for (String line : lines) {
-				if (line.contains("${dao.package}")) {
-					line = line.replace("${dao.package}", daoPackage);
-				}
-				if (line.contains("${entity.package}")) {
-					line = line.replace("${entity.package}", entityPackage);
-				}
-				if (line.contains("${entity.class}")) {
-					line = line.replace("${entity.class}", selected.getName());
-				}
-				if (line.contains("${entity.id.type}") && StringUtils.isEmpty(idType) == false) {
-					line = line.replace("${entity.id.type}", idType);
-				}
-				if (line.contains("${dao.class}")) {
-					line = line.replace("${dao.class}", daoClass);
-				}
-				newLines.add(line);
-			}
-
-			objectContent = "";
-			for (String line : newLines) {
-				objectContent += line + "\n";
-			}
-
-			try {
-				FileWriter fileWriter = new FileWriter(daoClassPath);
-				fileWriter.write(objectContent);
-				fileWriter.close();
-			} catch (IOException e) {
-				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
-			}
-
-		} catch (Exception e) {
-			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo DAO");
+			objectContent = scaffoldService.generateDAO(selected);
+		} catch (ScaffoldException e) {
+			e.printStackTrace();
+			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), e.getMessage());			
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("scaffold.generate_dao.fail"));
 		}
-
 	}
+	
+	public void generateService() {
+		try {
+			objectContent = scaffoldService.generateService(selected);			
+		} catch (ScaffoldException e) {
+			e.printStackTrace();
+			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), e.getMessage());		
+		} catch (Exception e) {
+			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("scaffold.generate_service.fail"));			
+		}
+	}	
 
 	public void generateBean() {
 		try {
@@ -1026,10 +927,6 @@ public class ScaffoldBean implements Serializable {
 			e.printStackTrace();
 			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para os itens de menu");
 		}
-	}
-
-	public void generateLabels() {		
-		objectContent = scaffoldService.generateLabels(selected);
 	}
 
 }
