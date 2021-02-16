@@ -97,16 +97,21 @@ public class ScaffoldService {
 		List<String> lines = readFile(selected.getPath(), true);
 		List<AvaliableProperties> properties = new ArrayList<>();
 		Boolean selectedIsId = false;
-
+		
+		String auxType = "aux";
+		String labelType = "label";
+		String packageType = "package";
+		String pathType = "path";
+		String classNameType = "class";
 		String entityPackage = "";
 		String idType = "";
 		String idName = "";
 
 		for (String line : lines) {
 			objectContent += line + "\n";
+			
 			String selectedName = null;
 			String selectedType = null;
-			String selectedValue = null;
 			if (line.contains(";")) {
 				line = line.substring(0, line.indexOf(";"));
 			}
@@ -117,66 +122,43 @@ public class ScaffoldService {
 				}
 				if (partLine[0].contentEquals("private") && !partLine[1].contentEquals("static")) {
 					selectedType = partLine[1];
-					selectedName = partLine[2];
+					selectedName = partLine[2];					
+					addNewProperty(selected, properties, "field",selectedType, selectedName, selectedIsId,null);
+					if (selectedIsId == true) {
+						idType = selectedType;
+						idName = selectedName;
+					}
+					selectedIsId = false;					
 				}
 			}
 
 			if (line.startsWith("package")) {
 				String packageName = line.split("package ")[1].trim();
 				selectedName = "packageName";
-				selectedType = "package";
-				selectedValue = packageName;  
-				entityPackage = packageName;//String.format("%s.%s", packageName,selected.getName());
-
+				selectedType = "package";  
+				entityPackage = packageName;//String.format("%s.%s", packageName,selected.getName());				
+				addNewProperty(selected, properties, "package",null, "packageName",false, packageName);
 			}
 
-			if (selected.getType().equalsIgnoreCase("entity") && selectedType != null) {
-				AvaliableProperties property = selected.new AvaliableProperties(selectedType, selectedName,
-						selectedIsId.booleanValue(), selectedValue);
-				properties.add(property);
-
-				if (selectedIsId == true) {
-					idType = selectedType;
-					idName = selectedName;
-				}
-				selectedIsId = false;
-			}
+//			if (selected.getType().equalsIgnoreCase("entity") && selectedType != null) {
+////				AvaliableProperties property = selected.new AvaliableProperties(selectedType,null, selectedName,
+////						selectedIsId.booleanValue(), selectedValue);
+////				properties.add(property);
+//
+//				if (selectedIsId == true) {
+//					idType = selectedType;
+//					idName = selectedName;
+//				}
+//				selectedIsId = false;
+//			}
 		}
 
 		String entityCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName());
-		AvaliableProperties property = selected.new AvaliableProperties("entityCamelCase", "entity", false,
-				entityCamelCase);
-		properties.add(property);
-
 		String entityListCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "List";
-		property = selected.new AvaliableProperties("entityListCamelCase", "entityList", false, entityListCamelCase);
-		properties.add(property);
-
 		String entityCreateCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Create";
-		property = selected.new AvaliableProperties("entityCreateCamelCase", "entityCreate", false,
-				entityCreateCamelCase);
-		properties.add(property);
-
 		String entityEditCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Edit";
-		property = selected.new AvaliableProperties("entityEditCamelCase", "entityEdit", false, entityEditCamelCase);
-		properties.add(property);
-
 		String entityDetailCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Detail";
-		property = selected.new AvaliableProperties("entityDetailCamelCase", "entityDetail", false,
-				entityDetailCamelCase);
-		properties.add(property);
-
 		String entityDeleteCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Delete";
-		property = selected.new AvaliableProperties("entityDeleteCamelCase", "entityDelete", false,
-				entityDeleteCamelCase);
-		properties.add(property);
-
-		// ########################################
-
-		addNewProperty(selected, properties, "aux", "entityPackage", entityPackage);
-		addNewProperty(selected, properties, "aux", "idType", idType);
-		addNewProperty(selected, properties, "aux", "idName", idName);
-
 		String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
 		String daoParcialPath = propertiesUtil.get(SCAFFOLD_DAO_PATH);
 		String modelParcialDaoPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
@@ -193,54 +175,41 @@ public class ScaffoldService {
 		String serviceClassPath = String.format("%s/%s.%s", servicePath, serviceClass, "java");
 		String modelServicePath = basePath.concat(modelParcialServicePath.concat("/service.txt"));
 
-		// teste
-
-		String newType = "aux";
-		addNewProperty(selected, properties, newType, "basePath", basePath);
-		addNewProperty(selected, properties, newType, "daoParcialPath", daoParcialPath);
-		addNewProperty(selected, properties, newType, "modelParcialDaoPath", modelParcialDaoPath);
-		addNewProperty(selected, properties, newType, "daoPath", daoPath);
-		addNewProperty(selected, properties, newType, "modelDaoPath", modelDaoPath);
-		addNewProperty(selected, properties, newType, "daoPackage", daoPackage);
-		addNewProperty(selected, properties, newType, "servicePackage", servicePackage);		
-		addNewProperty(selected, properties, newType, "daoClass", daoClass);
-		addNewProperty(selected, properties, newType, "serviceClass", serviceClass);		
-		addNewProperty(selected, properties, newType, "daoClassPath", daoClassPath);
-		addNewProperty(selected, properties, newType, "serviceClassPath", serviceClassPath);		
-		addNewProperty(selected, properties, newType, "serviceParcialPath", serviceParcialPath);
-		addNewProperty(selected, properties, newType, "modelParcialServicePath", modelParcialServicePath);
-		addNewProperty(selected, properties, newType, "servicePath", servicePath);
-		addNewProperty(selected, properties, newType, "modelServicePath", modelServicePath);
-
-//		property = selected.new AvaliableProperties("aux", "basePath", false,propertiesUtil.get(SCAFFOLD_BASE_PATH));
-//		properties.add(property);
-//		
-//		
-//		property = selected.new AvaliableProperties("aux", "daoParcialPath", false,propertiesUtil.get(SCAFFOLD_DAO_PATH));
-//		properties.add(property);
-//		
-//		property = selected.new AvaliableProperties("aux", "modelParcialDaoPath", false,propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH));
-//		properties.add(property);
-//		
-//		property = selected.new AvaliableProperties("aux", "daoPath", false,propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH));
-//		properties.add(property);		
-
-		/*
-		 * 
-		 * String daoPath = basePath.concat(daoParcialPath); String modelDaoPath =
-		 * basePath.concat(modelParcialDaoPath.concat("/dao.txt")); String entityPackage
-		 * = ""; String idType = null;
-		 */
-
-		// ########################################
-
+		addNewProperty(selected, properties, labelType,null, "entity", false,entityCamelCase);
+		addNewProperty(selected, properties, labelType,null, "entityList", false,entityListCamelCase);
+		addNewProperty(selected, properties, labelType,null, "entityCreate", false,entityCreateCamelCase);
+		addNewProperty(selected, properties, labelType,null, "entityEdit", false,entityEditCamelCase);		
+		addNewProperty(selected, properties, labelType,null, "entityDetail", false,entityDetailCamelCase);
+		addNewProperty(selected, properties, labelType,null, "entityDelete", false,entityDeleteCamelCase);
+		
+		addNewProperty(selected, properties, packageType,null, "entityPackage", false,entityPackage);
+		addNewProperty(selected, properties, packageType,null, "servicePackage", false,servicePackage);		
+		addNewProperty(selected, properties, packageType,null, "daoPackage", false,daoPackage);
+		
+		addNewProperty(selected, properties, pathType,null, "basePath", false,basePath);
+		addNewProperty(selected, properties, pathType,null, "daoParcialPath", false,daoParcialPath);
+		addNewProperty(selected, properties, pathType,null, "modelParcialDaoPath", false,modelParcialDaoPath);
+		addNewProperty(selected, properties, pathType,null, "modelDaoPath", false,modelDaoPath);
+		addNewProperty(selected, properties, pathType,null, "daoClassPath", false,daoClassPath);
+		addNewProperty(selected, properties, pathType,null, "serviceClassPath", false,serviceClassPath);		
+		addNewProperty(selected, properties, pathType,null, "serviceParcialPath", false,serviceParcialPath);
+		addNewProperty(selected, properties, pathType,null, "modelParcialServicePath", false,modelParcialServicePath);
+		addNewProperty(selected, properties, pathType,null, "servicePath", false,servicePath);
+		addNewProperty(selected, properties, pathType,null, "modelServicePath",false, modelServicePath);
+		addNewProperty(selected, properties, pathType,null, "daoPath", false,daoPath);
+		
+		addNewProperty(selected, properties, classNameType,null, "daoClass", false,daoClass);
+		addNewProperty(selected, properties, classNameType,null, "serviceClass", false,serviceClass);
+		
+		addNewProperty(selected, properties, auxType,null, "idType", false,idType);
+		addNewProperty(selected, properties, auxType,null, "idName", false,idName);		
 		selected.setProperties(properties);
 		return objectContent;
 	}
 
-	private void addNewProperty(AvailableObject selected, List<AvaliableProperties> properties, String newType,
-			String newName, String newValue) {
-		AvaliableProperties property = selected.new AvaliableProperties(newType, newName, false, newValue);
+	private void addNewProperty(AvailableObject selected, List<AvaliableProperties> properties, String newType,String javaType,
+			String newName,boolean isId, String newValue) {
+		AvaliableProperties property = selected.new AvaliableProperties(newType,javaType, newName, isId, newValue);
 
 		properties.add(property);
 	}
@@ -258,7 +227,7 @@ public class ScaffoldService {
 		List<AvaliableProperties> properties = selected.getProperties();
 
 		for (AvaliableProperties item : properties) {
-			if (item.getType().contains("package") || item.getType().equalsIgnoreCase("aux")) {
+			if (!item.getType().contains("label") && !item.getType().contains("field") ) {
 				continue;
 			}
 
@@ -291,11 +260,30 @@ public class ScaffoldService {
 
 	public String generateDAO(AvailableObject selected) throws ScaffoldException {
 		String objectContent = "";
+		String modelDaoPath = getPropertyByName("modelDaoPath", selected).getValue();
+		String daoClassPath = getPropertyByName("daoClassPath", selected).getValue();
+		
+		objectContent = replaceFromTemplate(selected, objectContent, modelDaoPath, daoClassPath);
+		return objectContent;
+	}
+	
+	public String generateService(AvailableObject selected) throws ScaffoldException {
+		String objectContent = "";
+		String modelServicePath = getPropertyByName("modelServicePath", selected).getValue();
+		String serviceClassPath = getPropertyByName("serviceClassPath", selected).getValue();
+		
+		objectContent = replaceFromTemplate(selected, objectContent, modelServicePath, serviceClassPath);
+		return objectContent;
+	}	
+
+	public String replaceFromTemplate(AvailableObject selected, String objectContent, String modelDaoPath,
+			String daoClassPath) throws ScaffoldException {
 		if (selected.getProperties().isEmpty()) {
 			throw new ScaffoldException(MessageUtil.getMsg("error.scaffold.object.not_found"));
 		}
 
-		List<String> lines = readFile(getPropertyByName("modelDaoPath", selected).getValue(), false);
+		List<String> lines = readFile(modelDaoPath, false);
+		
 		List<String> newLines = new ArrayList<String>();
 		for (String line : lines) {
 			if (line.contains("${dao.package}")) {
@@ -312,42 +300,18 @@ public class ScaffoldService {
 			}
 			if (line.contains("${dao.class}")) {
 				line = line.replace("${dao.class}", getPropertyByName("daoClass", selected).getValue());
-			}
-			newLines.add(line);
-		}
-		objectContent = buildObjectContent(objectContent, newLines);
-		writeInFile(objectContent, getPropertyByName("daoClassPath", selected).getValue());
-		return objectContent;
-	}
-
-	public String generateService(AvailableObject selected) throws ScaffoldException {
-
-		String objectContent = "";
-		if (selected.getProperties().isEmpty()) {
-			throw new ScaffoldException(MessageUtil.getMsg("error.scaffold.object.not_found"));
-		}
-		List<String> lines = readFile(getPropertyByName("modelServicePath", selected).getValue() , false);
-		List<String> newLines = new ArrayList<String>();
-		for (String line : lines) {  
+			}			
 			if (line.contains("${service.package}")) {
 				line = line.replace("${service.package}", getPropertyByName("servicePackage", selected).getValue() );
-			}
-			if (line.contains("${entity.package}")) {
-				line = line.replace("${entity.package}", getPropertyByName("entityPackage", selected).getValue() );
-			}
-			if (line.contains("${entity.class}")) {
-				line = line.replace("${entity.class}", selected.getName());
-			}			
-			if (line.contains("${entity.id.type}") && StringUtils.isEmpty( getPropertyByName("idType", selected).getValue()  ) == false) {
-				line = line.replace("${entity.id.type}", getPropertyByName("idType", selected).getValue());
 			}			
 			if (line.contains("${service.class}")) {
 				line = line.replace("${service.class}", getPropertyByName("serviceClass", selected).getValue() );
-			}
+			}			
 			newLines.add(line);
-		}
+		}		
 		objectContent = buildObjectContent(objectContent, newLines);
-		writeInFile(objectContent, getPropertyByName("serviceClassPath", selected).getValue() );
+		
+		writeInFile(objectContent, daoClassPath );
 		return objectContent;
 	}
 

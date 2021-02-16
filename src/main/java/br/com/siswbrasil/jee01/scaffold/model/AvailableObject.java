@@ -14,7 +14,7 @@ public class AvailableObject {
 	
 	private String id;
 	private String name;
-	private String type;
+	private String type;	
 	private String path;
 	private List<AvaliableProperties> properties = new ArrayList<AvailableObject.AvaliableProperties>();	
 	
@@ -23,6 +23,7 @@ public class AvailableObject {
 	@NoArgsConstructor
 	public class AvaliableProperties {
 		private String type;
+		private String javaType;
 		private String name;		
 		private Boolean isId;		
 		private String value;   
