@@ -1,6 +1,7 @@
 package br.com.siswbrasil.jee01.scaffold;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,6 +14,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.CaseFormat;
 
@@ -34,6 +37,7 @@ public class ScaffoldService {
 
 	public static final String SCAFFOLD_BASE_PATH = "scaffold.base.path";
 	public static final String SCAFFOLD_ENTITY_PATH = "scaffold.entity.path";
+	public static final String SCAFFOLD_LABEL_PATH = "scaffold.labels_pt_BR.path";
 
 	@PostConstruct
 	public void init() {
@@ -89,7 +93,7 @@ public class ScaffoldService {
 		List<String> lines = readFile(selected.getPath(), true);
 		List<AvaliableProperties> properties = new ArrayList<>();
 		Boolean selectedIsId = false;
-		objectContent = null;
+		
 		for (String line : lines) {
 			objectContent += line + "\n";
 			String selectedName = null;
@@ -123,6 +127,7 @@ public class ScaffoldService {
 				selectedIsId = false;
 			}
 		}
+		
 		String entityCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName());
 		AvaliableProperties property = selected.new AvaliableProperties("entityCamelCase", "entity", false,
 				entityCamelCase);
@@ -154,5 +159,77 @@ public class ScaffoldService {
 		selected.setProperties(properties);		
 		return objectContent;
 	}
+	
+	
+	public String generateLabels(AvailableObject selected) {
+		String objectContent = "";
+		String labelPath = propertiesUtil.get(SCAFFOLD_LABEL_PATH);
+		if (StringUtils.isEmpty(labelPath)) {
+			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
+					MessageUtil.getMsg("scaffold.labels_config.not_found"));
+		}
+
+		List<String> lines = readFile(labelPath, true);
+		List<String> newLines = lines;
+		List<AvaliableProperties> properties = selected.getProperties();		
+		
+		for (AvaliableProperties item : properties) {
+			if (item.getType().contains("package")) {
+				continue;
+			}
+
+			String formattedName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, item.getName());
+			if (!StringUtils.isEmpty(item.getValue())) {
+				formattedName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, item.getValue());
+			}
+			formattedName = formattedName.replace("-", " ");
+			formattedName = StringUtils.capitalize(formattedName);
+			String newLine = String.format("%s.%s=%s", getPropertyByName("entity",selected).getValue(), item.getName(),
+					formattedName);
+
+			Boolean fieldExist = false;
+			for (String line : lines) {
+				if (line.substring(0, line.indexOf("=")).equalsIgnoreCase(newLine.substring(0, newLine.indexOf("=")))) {
+					fieldExist = true;
+				}
+			}
+			if (fieldExist == false) {
+				newLines.add(newLine);
+			}
+		}
+		
+		newLines.sort((p1, p2) -> p1.compareTo(p2));
+
+
+		for (String line : newLines) {
+			objectContent += line + "\n";
+		}
+		
+		writeInFile(objectContent, labelPath);
+		
+		return objectContent;
+	}
+
+	private void writeInFile(String objectContent, String labelPath) {
+		try {
+			FileWriter fileWriter = new FileWriter(labelPath);
+			fileWriter.write(objectContent);
+			fileWriter.close();
+		} catch (IOException e) {
+			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+		}
+	}
+	
+	private AvaliableProperties getPropertyByName(String property,AvailableObject selected) {
+		List<AvaliableProperties> properties = selected.getProperties();
+
+		for (AvaliableProperties item : properties) {
+			if (item.getName().equalsIgnoreCase(property)) {
+				return item;
+			}
+		}
+		return null;
+	}	
+	
 
 }
