@@ -36,11 +36,11 @@
                                             <p:link outcome="form.xhtml" type="button"
                                                 styleClass="btn btn-primary btn-sm" title="#{msg.edit}">
                                                 <i class="fa fa-edit" />
-                                                <f:param name="id" value="#{item.id}" />
+                                                <f:param name="id" value="#{item.${entity.id.field}}" />
                                             </p:link>
                                         </p:column>
                                         <p:column style="width:33px;text-align: center">
-                                            <p:commandLink action="#{${view.beanList}.delete(item.id)}" type="button"
+                                            <p:commandLink action="#{${view.beanList}.delete(item.${entity.id.field})}" type="button"
                                                 styleClass="btn btn-danger btn-sm" update="@form messages"
                                                 title="#{msg.delete}">
                                                 <i class="fa fa-trash" />

@@ -119,102 +119,111 @@ public class ScaffoldBean implements Serializable {
 
 	public void generateBean() {
 		try {
-			if (selected.getProperties().isEmpty()) {
-				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
-						MessageUtil.getMsg("error.scaffold.not_found"));
-			}
-			String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
-			String beanParcialPath = propertiesUtil.get(SCAFFOLD_BEAN_PATH);
-			String modelParcialBeanPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
-			String beanPath = basePath.concat(beanParcialPath);
-			String modelBeanPath = basePath.concat(modelParcialBeanPath.concat("/bean.txt"));
-
-			String entityPackage = "";
-			String idType = "";
-			String entityCamelCase = "";
-			for (AvaliableProperties entityLine : selected.getProperties()) {
-				if (entityLine.getName() == "packageName") {
-					entityPackage = entityLine.getValue();
-				}
-				if (entityLine.getIsId().booleanValue() == true) {
-					idType = entityLine.getType();
-				}
-				if (entityLine.getType() == "entityCamelCase") {
-					entityCamelCase = entityLine.getValue();
-				}
-				System.out.println("------------------------------");
-				System.out.println(entityLine);
-
-			}
-			String beanPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".bean");
-			String utilPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".util");
-			String exceptionPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".exception");
-			String beanClass = selected.getName().concat("Bean");
-			String servicePackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".service");
-			String serviceClass = selected.getName().concat("Service");
-			String beanClassPath = String.format("%s/%s.%s", beanPath, beanClass, "java");
-
-			List<String> lines = scaffoldService.readFile(modelBeanPath, false);
-			List<String> newLines = new ArrayList<String>();
-
-			for (String line : lines) {
-				if (line.contains("${bean.package}")) {
-					line = line.replace("${bean.package}", beanPackage);
-				}
-				if (line.contains("${entity.package}")) {
-					line = line.replace("${entity.package}", entityPackage);
-				}
-				if (line.contains("${entity.class}")) {
-					line = line.replace("${entity.class}", selected.getName());
-				}
-				if (line.contains("${entity.id.type}") && StringUtils.isEmpty(idType) == false) {
-					line = line.replace("${entity.id.type}", idType);
-				}
-				if (line.contains("${bean.class}")) {
-					line = line.replace("${bean.class}", beanClass);
-				}
-				if (line.contains("${service.class}")) {
-					line = line.replace("${service.class}", serviceClass);
-				}
-				if (line.contains("${service.package}")) {
-					line = line.replace("${service.package}", servicePackage);
-				}
-				if (line.contains("${entity.var}")) {
-					line = line.replace("${entity.var}", entityCamelCase);
-				}
-				if (line.contains("${entity.id.var}")) {
-					line = line.replace("${entity.id.var}", entityCamelCase + "Id");
-				}
-				if (line.contains("${entity.id.type}")) {
-					line = line.replace("${entity.id.type}", idType);
-				}
-				if (line.contains("${util.package}")) {
-					line = line.replace("${util.package}", utilPackage);
-				}
-				if (line.contains("${exception.package}")) {
-					line = line.replace("${exception.package}", exceptionPackage);
-				}
-				newLines.add(line);
-			}
-
-			objectContent = "";
-			for (String line : newLines) {
-				objectContent += line + "\n";
-			}
-			System.out.println("Teste1");
-			try {
-				FileWriter fileWriter = new FileWriter(beanClassPath);
-				fileWriter.write(objectContent);
-				fileWriter.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
-			}
-
-		} catch (Exception e) {
+			objectContent = scaffoldService.generateBean(selected);			
+		} catch (ScaffoldException e) {
 			e.printStackTrace();
-			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
+			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), e.getMessage());		
+		} catch (Exception e) {
+			MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("scaffold.generate_bean.fail"));			
 		}
+		
+//		try {
+//			if (selected.getProperties().isEmpty()) {
+//				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
+//						MessageUtil.getMsg("error.scaffold.not_found"));
+//			}
+//			String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
+//			String beanParcialPath = propertiesUtil.get(SCAFFOLD_BEAN_PATH);
+//			String modelParcialBeanPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
+//			String beanPath = basePath.concat(beanParcialPath);
+//			String modelBeanPath = basePath.concat(modelParcialBeanPath.concat("/bean.txt"));
+//
+//			String entityPackage = "";
+//			String idType = "";
+//			String entityCamelCase = "";
+//			for (AvaliableProperties entityLine : selected.getProperties()) {
+//				if (entityLine.getName() == "packageName") {
+//					entityPackage = entityLine.getValue();
+//				}
+//				if (entityLine.getIsId().booleanValue() == true) {
+//					idType = entityLine.getType();
+//				}
+//				if (entityLine.getType() == "entityCamelCase") {
+//					entityCamelCase = entityLine.getValue();
+//				}
+//				System.out.println("------------------------------");
+//				System.out.println(entityLine);
+//
+//			}
+//			String beanPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".bean");
+//			String utilPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".util");
+//			String exceptionPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".exception");
+//			String beanClass = selected.getName().concat("Bean");
+//			String servicePackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".service");
+//			String serviceClass = selected.getName().concat("Service");
+//			String beanClassPath = String.format("%s/%s.%s", beanPath, beanClass, "java");
+//
+//			List<String> lines = scaffoldService.readFile(modelBeanPath, false);
+//			List<String> newLines = new ArrayList<String>();
+//
+//			for (String line : lines) {
+//				if (line.contains("${bean.package}")) {
+//					line = line.replace("${bean.package}", beanPackage);
+//				}
+//				if (line.contains("${entity.package}")) {
+//					line = line.replace("${entity.package}", entityPackage);
+//				}
+//				if (line.contains("${entity.class}")) {
+//					line = line.replace("${entity.class}", selected.getName());
+//				}
+//				if (line.contains("${entity.id.type}") && StringUtils.isEmpty(idType) == false) {
+//					line = line.replace("${entity.id.type}", idType);
+//				}
+//				if (line.contains("${bean.class}")) {
+//					line = line.replace("${bean.class}", beanClass);
+//				}
+//				if (line.contains("${service.class}")) {
+//					line = line.replace("${service.class}", serviceClass);
+//				}
+//				if (line.contains("${service.package}")) {
+//					line = line.replace("${service.package}", servicePackage);
+//				}
+//				if (line.contains("${entity.var}")) {
+//					line = line.replace("${entity.var}", entityCamelCase);
+//				}
+//				if (line.contains("${entity.id.var}")) {
+//					line = line.replace("${entity.id.var}", entityCamelCase + "Id");
+//				}
+//				if (line.contains("${entity.id.type}")) {
+//					line = line.replace("${entity.id.type}", idType);
+//				}
+//				if (line.contains("${util.package}")) {
+//					line = line.replace("${util.package}", utilPackage);
+//				}
+//				if (line.contains("${exception.package}")) {
+//					line = line.replace("${exception.package}", exceptionPackage);
+//				}
+//				newLines.add(line);
+//			}
+//
+//			objectContent = "";
+//			for (String line : newLines) {
+//				objectContent += line + "\n";
+//			}
+//			System.out.println("Teste1");
+//			try {
+//				FileWriter fileWriter = new FileWriter(beanClassPath);
+//				fileWriter.write(objectContent);
+//				fileWriter.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+//			}
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
+//		}
 	}
 
 	public void generateBeanLazy() {

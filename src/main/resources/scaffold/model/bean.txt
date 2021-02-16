@@ -52,7 +52,7 @@ public class ${bean.class} implements Serializable {
 	}    
     
     public String save() throws Throwable {
-    	if (${entity.var}.getId() == null) {
+    	if (${entity.var}.${entity.id.get}() == null) {
             service.create(${entity.var});
         } else {
             service.update(${entity.var});
