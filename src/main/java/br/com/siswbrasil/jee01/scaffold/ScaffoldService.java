@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -172,13 +173,18 @@ public class ScaffoldService {
 		String modelParcialBeanPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
 		String beanPath = basePath.concat(beanParcialPath);
 		String modelBeanPath = basePath.concat(modelParcialBeanPath.concat("/bean.txt"));	
+		String modelBeanLazyPath = basePath.concat(modelParcialBeanPath.concat("/beanLazy.txt"));
 		String beanPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".bean");		
 		String exceptionPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".exception");
 		String beanClass = selected.getName().concat("Bean");
-		String beanClassPath = String.format("%s/%s.%s", beanPath, beanClass, "java");		
+		String beanClassPath = String.format("%s/%s.%s", beanPath, beanClass, "java");
+		String entityIdGet = "get"+CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, idName);		
+		String dataModelParcialPath = propertiesUtil.get(SCAFFOLD_DATA_MODEL_PATH);		
+		String dataModelPath = basePath.concat(dataModelParcialPath);
+		String modelDataModelPath = basePath.concat(modelParcialBeanPath.concat("/dataModel.txt"));
 		String dataModelPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".datamodel");		
 		String dataModelClass = selected.getName().concat("DataModel");		
-		String entityIdGet = "get"+CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, idName); 
+		String dataModelClassPath = String.format("%s/%s.%s", dataModelPath, dataModelClass, "java");		
 
 
 		addNewProperty(selected, properties, labelType,null, "entityCamelCase", false,entityCamelCase);
@@ -209,12 +215,18 @@ public class ScaffoldService {
 		addNewProperty(selected, properties, pathType,null, "daoPath", false,daoPath);
 		addNewProperty(selected, properties, pathType,null, "beanClassPath", false,beanClassPath);		
 		addNewProperty(selected, properties, pathType,null, "beanPath", false,beanPath);
-		addNewProperty(selected, properties, pathType,null, "modelBeanPath", false,modelBeanPath);		
+		addNewProperty(selected, properties, pathType,null, "modelBeanPath", false,modelBeanPath);
+		addNewProperty(selected, properties, pathType,null, "modelBeanLazyPath", false,modelBeanLazyPath);		
+		addNewProperty(selected, properties, pathType,null, "dataModelParcialPath", false,dataModelParcialPath);
+		addNewProperty(selected, properties, pathType,null, "dataModelPath", false,dataModelPath);
+		addNewProperty(selected, properties, pathType,null, "modelDataModelPath", false,modelDataModelPath);		
+		addNewProperty(selected, properties, pathType,null, "dataModelParcialPath", false,dataModelParcialPath);
 		
 		addNewProperty(selected, properties, classNameType,null, "daoClass", false,daoClass);
 		addNewProperty(selected, properties, classNameType,null, "serviceClass", false,serviceClass);
 		addNewProperty(selected, properties, classNameType,null, "beanClass", false,beanClass);		
 		addNewProperty(selected, properties, classNameType,null, "dataModelClass", false,dataModelClass);		
+		addNewProperty(selected, properties, classNameType,null, "dataModelClassPath", false,dataModelClassPath);
 		
 		addNewProperty(selected, properties, auxType,null, "idType", false,idType);
 		addNewProperty(selected, properties, auxType,null, "idName", false,idName);
@@ -300,15 +312,141 @@ public class ScaffoldService {
 		
 		objectContent = replaceFromTemplate(selected, objectContent, modelBeanPath, beanClassPath);
 		return objectContent;
+	}
+	
+	public String generateBeanLazy(AvailableObject selected) throws ScaffoldException {
+		String objectContent = "";
+		String modelBeanLazyPath = getPropertyByName("modelBeanLazyPath", selected).getValue();
+		String beanClassPath = getPropertyByName("beanClassPath", selected).getValue();
+		
+		objectContent = replaceFromTemplate(selected, objectContent, modelBeanLazyPath, beanClassPath);
+		return objectContent;
+	}
+	
+	public String generateDataModel(AvailableObject selected) throws ScaffoldException {
+		
+		String objectContent = "";
+		String modelDataModelPath = getPropertyByName("modelDataModelPath", selected).getValue();
+		String dataModelClassPath = getPropertyByName("dataModelClassPath", selected).getValue();
+		
+		objectContent = replaceFromTemplate(selected, objectContent, modelDataModelPath, dataModelClassPath);
+		return objectContent;		
+		
+//		try {
+//			if (selected.getProperties().isEmpty()) {
+//				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"),
+//						MessageUtil.getMsg("error.scaffold.not_found"));
+//			}
+//			String basePath = propertiesUtil.get(SCAFFOLD_BASE_PATH);
+//			String dataModelParcialPath = propertiesUtil.get(SCAFFOLD_DATA_MODEL_PATH);
+//			String modelParcialBeanPath = propertiesUtil.get(SCAFFOLD_GENERATE_MODELS_PATH);
+//			String dataModelPath = basePath.concat(dataModelParcialPath);
+//			String modelDataModelPath = basePath.concat(modelParcialBeanPath.concat("/dataModel.txt"));
+//			String entityPackage = "";
+//			String idType = "";
+//			String entityCamelCase = "";
+//			for (AvaliableProperties entityLine : selected.getProperties()) {
+//				if (entityLine.getName() == "packageName") {
+//					entityPackage = entityLine.getValue();
+//				}
+//				if (entityLine.getIsId().booleanValue() == true) {
+//					idType = entityLine.getType();
+//				}
+//				if (entityLine.getType() == "entityCamelCase") {
+//					entityCamelCase = entityLine.getValue();
+//				}
+//				System.out.println("------------------------------");
+//				System.out.println(entityLine);
+//
+//			}
+//			String beanPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".bean");
+//			String dataModelPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".datamodel");
+//			String utilPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".util");
+//			String exceptionPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".exception");
+//			String dataModelClass = selected.getName().concat("DataModel");
+//			String daoPackage = entityPackage.substring(0, entityPackage.lastIndexOf(".")).concat(".dao");
+//			String daoClass = selected.getName().concat("DAO");
+//			String dataModelClassPath = String.format("%s/%s.%s", dataModelPath, dataModelClass, "java");
+//
+//			List<String> lines = scaffoldService.readFile(modelDataModelPath, false);
+//			List<String> newLines = new ArrayList<String>();
+//
+//			for (String line : lines) {
+//				if (line.contains("${bean.package}")) {
+//					line = line.replace("${bean.package}", beanPackage);
+//				}
+//				if (line.contains("${entity.package}")) {
+//					line = line.replace("${entity.package}", String.format("%s.%s", entityPackage, selected.getName()));
+//				}
+//				if (line.contains("${entity.class}")) {
+//					line = line.replace("${entity.class}", selected.getName());
+//				}
+//				if (line.contains("${datamodel.package}")) {
+//					line = line.replace("${datamodel.package}", dataModelPackage);
+//				}
+//				if (line.contains("${datamodel.class}")) {
+//					line = line.replace("${datamodel.class}", dataModelClass);
+//				}
+//				if (line.contains("${dao.class}")) {
+//					line = line.replace("${dao.class}", daoClass);
+//				}
+//				if (line.contains("${dao.package}")) {
+//					line = line.replace("${dao.package}", String.format("%s.%s", daoPackage, daoClass));
+//				}
+//				if (line.contains("${entity.var}")) {
+//					line = line.replace("${entity.var}", entityCamelCase);
+//				}
+//				if (line.contains("${entity.id.var}")) {
+//					line = line.replace("${entity.id.var}", entityCamelCase + "Id");
+//				}
+//				if (line.contains("${entity.id.type}")) {
+//					line = line.replace("${entity.id.type}", idType);
+//				}
+//				if (line.contains("${util.package}")) {
+//					line = line.replace("${util.package}", utilPackage);
+//				}
+//				if (line.contains("${exception.package}")) {
+//					line = line.replace("${exception.package}", exceptionPackage);
+//				}
+//				newLines.add(line);
+//			}
+//
+//			objectContent = "";
+//			for (String line : newLines) {
+//				objectContent += line + "\n";
+//			}
+//			LOG.log(Level.INFO, "Gerando o DataModel ...");
+//			LOG.log(Level.INFO, "dataModelClassPath " + dataModelClassPath);
+//			LOG.log(Level.INFO, "objectContent " + objectContent);
+//			LOG.log(Level.INFO, "dataModelPath " + dataModelPath);
+//
+//			File baseViewFolderPathDir = new File(dataModelPath);
+//			if (!baseViewFolderPathDir.exists()) {
+//				baseViewFolderPathDir.mkdirs();
+//			}
+//
+//			try {
+//				FileWriter fileWriter = new FileWriter(dataModelClassPath);
+//				fileWriter.write(objectContent);
+//				fileWriter.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("error.file.fail_write"));
+//			}
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			MessageUtil.addErrorMessage("Falha", "Erro ao gerar o Scaffold para classe tipo Bean");
+//		}
 	}	
 
-	public String replaceFromTemplate(AvailableObject selected, String objectContent, String modelDaoPath,
-			String daoClassPath) throws ScaffoldException {
+	public String replaceFromTemplate(AvailableObject selected, String objectContent, String templateFile,
+			String finalPath) throws ScaffoldException {
 		if (selected.getProperties().isEmpty()) {
 			throw new ScaffoldException(MessageUtil.getMsg("error.scaffold.object.not_found"));
 		}
 
-		List<String> lines = readFile(modelDaoPath, false);
+		List<String> lines = readFile(templateFile, false);
 		
 		List<String> newLines = new ArrayList<String>();
 		for (String line : lines) {
@@ -362,12 +500,18 @@ public class ScaffoldService {
 			}
 			if (line.contains("${entity.id.field}")) {
 				line = line.replace("${entity.id.field}", getPropertyByName("idName", selected).getValue());
-			}			
+			}
 			newLines.add(line);
 		}		
 		objectContent = buildObjectContent(objectContent, newLines);
+		String fileAux = new File(finalPath).getParent();
+		File baseViewFolderPathDir = new File(fileAux);
+		if (!baseViewFolderPathDir.exists()) {
+			baseViewFolderPathDir.mkdirs();
+		}		
 		
-		writeInFile(objectContent, daoClassPath );
+		
+		writeInFile(objectContent, finalPath );
 		return objectContent;
 	}
 

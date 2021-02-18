@@ -10,8 +10,8 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
-import ${dao.package};
-import ${entity.package};
+import ${dao.package}.${dao.class};
+import ${entity.package}.${entity.class};
 
 @ViewScoped
 public class ${datamodel.class} extends LazyDataModel<${entity.class}> {

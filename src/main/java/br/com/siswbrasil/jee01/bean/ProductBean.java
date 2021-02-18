@@ -15,6 +15,7 @@ import br.com.siswbrasil.jee01.exception.DatabaseException;
 import br.com.siswbrasil.jee01.util.MessageUtil;
 import br.com.siswbrasil.jee01.model.Product;
 import br.com.siswbrasil.jee01.service.ProductService;
+import br.com.siswbrasil.jee01.datamodel;
 
 
 @Getter
@@ -30,6 +31,9 @@ public class ProductBean implements Serializable {
 	
     @Inject
     private FacesContext facesContext;
+    
+    @Inject
+    private ProductDataModel dataModel;    
     	
 	private Long productId;
 	private Product product;
@@ -45,11 +49,7 @@ public class ProductBean implements Serializable {
 				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			}			
         }
-    }
-    
-	public List<Product> listAll() throws DatabaseException {
-		return service.findAll();
-	}    
+    }  
     
     public String save() throws Throwable {
     	if (product.getId() == null) {
