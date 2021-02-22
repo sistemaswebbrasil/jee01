@@ -2,7 +2,6 @@ package ${bean.package};
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -10,12 +9,10 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 import javax.annotation.PostConstruct;
-
-import ${exception.package}.DatabaseException;
 import ${util.package}.MessageUtil;
 import ${entity.package}.${entity.class};
 import ${service.package}.${service.class};
-import ${datamodel.package};
+import ${datamodel.package}.${datamodel.class};
 
 
 @Getter

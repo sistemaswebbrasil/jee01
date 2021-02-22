@@ -132,14 +132,14 @@
 									
 									<p:commandButton value="#{msg['scaffold.generate_view_form']}"
 										action="#{scaffoldBean.generateViewForm()}" icon="pi pi-clone"
-										update="@form messages">
+										update="@form messages growl">
 										<p:confirm header="Confirmation"
 											message="#{msg['scaffold.generate_view_form.confirm']}"
 											icon="pi pi-exclamation-triangle" />
 									</p:commandButton>
 									<p:commandButton value="#{msg['scaffold.generate_view_list']}"
 										action="#{scaffoldBean.generateViewList()}" icon="pi pi-clone"
-										update="@form messages">
+										update="@form messages growl">
 										<p:confirm header="Confirmation"
 											message="#{msg['scaffold.generate_view_list.confirm']}"
 											icon="pi pi-exclamation-triangle" />

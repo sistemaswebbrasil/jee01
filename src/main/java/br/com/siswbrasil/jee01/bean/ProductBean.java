@@ -2,7 +2,6 @@ package br.com.siswbrasil.jee01.bean;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -10,12 +9,10 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 import javax.annotation.PostConstruct;
-
-import br.com.siswbrasil.jee01.exception.DatabaseException;
 import br.com.siswbrasil.jee01.util.MessageUtil;
 import br.com.siswbrasil.jee01.model.Product;
 import br.com.siswbrasil.jee01.service.ProductService;
-import br.com.siswbrasil.jee01.datamodel;
+import br.com.siswbrasil.jee01.datamodel.ProductDataModel;
 
 
 @Getter
