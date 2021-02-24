@@ -302,10 +302,8 @@ public class ScaffoldService {
 				formattedName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, item.getValue());
 			}
 			formattedName = formattedName.replace("-", " ");
-			formattedName = StringUtils.capitalize(formattedName);
-			String newLine = String.format("%s.%s=%s", getPropertyByName("entity", selected).getValue(), item.getName(),
-					formattedName);
-
+			formattedName = StringUtils.capitalize(formattedName);			
+			String newLine = String.format("%s.%s=%s", selected.getName().toLowerCase(), item.getName(), formattedName);
 			Boolean fieldExist = false;
 			for (String line : lines) {
 				if (line.substring(0, line.indexOf("=")).equalsIgnoreCase(newLine.substring(0, newLine.indexOf("=")))) {
