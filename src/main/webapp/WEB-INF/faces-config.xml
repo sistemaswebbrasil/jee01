@@ -9,7 +9,7 @@
 			<supported-locale>en</supported-locale>
 		</locale-config>
 
-		<resource-bundle>
+		<resource-bundle>  
 			<base-name>messages</base-name>
 			<var>msg</var>
 		</resource-bundle>

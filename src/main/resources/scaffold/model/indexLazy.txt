@@ -61,7 +61,7 @@
                                         </p:column>
 
                                         ${partial.fields.begin}
-                                        <p:column headerText="#{lb['${entity.var}.${entity.field}']}" sortBy="#{item.${entity.field}}" filterBy="#{item.${entity.field}}">
+                                        <p:column headerText="#{lb['${entity_lower.var}.${entity.field}']}" sortBy="#{item.${entity.field}}" filterBy="#{item.${entity.field}}">
                                             <h:outputText value="#{item.${entity.field}}" />
                                         </p:column>
                                         ${partial.fields.end}
@@ -71,7 +71,7 @@
                                         <h:commandLink action="form.xhtml?faces-redirect=true" type="button"
                                             styleClass="btn btn-primary float-right">
                                             <span class="fas fa-edit" aria-hidden="true"></span>
-                                            #{lb['${entity.var}.entityCreate']}
+                                            #{lb['${entity_lower.var}.entityCreate']}
                                         </h:commandLink>
                                     </div>
                                 </div>

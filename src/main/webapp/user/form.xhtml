@@ -87,14 +87,16 @@
 
 											<div class="col-lg-3 col-md-4 col-sm-6">
 												<div class="form-group">
-													<label jsf:for="createAt">#{lb['audit.createAt']}</label> <input
+													<label jsf:for="createAt">#{lb['audit.createAt']}</label> 
+													<input
 														type="text" jsf:id="createAt"
 														class="form-control #{not empty (facesContext.getMessageList('form:createAt'))?'is-invalid':''}"
 														jsf:value="#{userBean.user.createAt}"
 														jsf:label="#{lb['user.createAt']}" disabled="true">
-													<f:convertDateTime type="localDateTime"
-														pattern="dd/MM/yyyy H:mm:s" />
-													</input> <small class="invalid-feedback"> <h:message
+													<f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy H:mm:s" />
+													</input>
+													 
+													<small class="invalid-feedback"> <h:message
 															for="createAt" showDetail="false" showSummary="true" />
 													</small>
 												</div>

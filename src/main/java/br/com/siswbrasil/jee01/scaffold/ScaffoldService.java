@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EmbeddedId;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -122,7 +123,7 @@ public class ScaffoldService {
 			}
 			String[] partLine = line.split(" ");
 			if (selected.getType().equalsIgnoreCase("entity")) {
-				if (partLine[0].contentEquals("@Id")) {
+				if (partLine[0].contentEquals("@Id") || partLine[0].contentEquals("@EmbeddedId") ) {
 					selectedIsId = true;
 				}
 				if (partLine[0].contentEquals("private") && !partLine[1].contentEquals("static")) {
@@ -147,6 +148,7 @@ public class ScaffoldService {
 		}
 
 		String entityCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName());
+		String entity = selected.getName().toLowerCase();
 		String entityListCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "List";
 		String entityCreateCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Create";
 		String entityEditCamelCase = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, selected.getName()) + "Edit";
@@ -191,12 +193,12 @@ public class ScaffoldService {
 		String baseViewFolderPath = baseViewPath + "/" + baseViewFolderName;
 		String baseViewFormPath = baseViewFolderPath + "/form.xhtml";
 		String modelViewFormPath = basePath.concat(modelParcialBeanPath.concat("/viewForm.txt"));
-		String entityCreateLabel = entityCamelCase + ".entityCreate";
-
-		String entityListLabel = entityCamelCase + ".entityList";
-		String entityEditLabel = entityCamelCase + ".entityEdit";
-		String entityDetailLabel = entityCamelCase + ".entityDetail";
-		String entityDeleteLabel = entityCamelCase + ".entityDelete";
+		
+		String entityCreateLabel = entity + ".entityCreate";
+		String entityListLabel = entity + ".entityList";
+		String entityEditLabel = entity + ".entityEdit";
+		String entityDetailLabel = entity + ".entityDetail";
+		String entityDeleteLabel = entity + ".entityDelete";
 
 		String baseViewListPath = baseViewFolderPath + "/index.xhtml";
 		String modelViewListPath = basePath.concat(modelParcialBeanPath.concat("/index.txt"));
@@ -205,7 +207,8 @@ public class ScaffoldService {
 		String markerMenu = propertiesUtil.get(SCAFFOLD_MENU_MARK_ITEM) ;
 		String modelItemMenuPath = basePath.concat(modelParcialBeanPath.concat("/itemMenu.txt"));
 		String menuItemPath = propertiesUtil.get(SCAFFOLD_MENU_FILE_PATH);
-
+		
+		addNewProperty(selected, properties, labelType, null, "entity", false, entity);
 		addNewProperty(selected, properties, labelType, null, "entityCamelCase", false, entityCamelCase);
 		addNewProperty(selected, properties, labelType, null, "entityList", false, entityListCamelCase);
 		addNewProperty(selected, properties, labelType, null, "entityCreate", false, entityCreateCamelCase);
@@ -576,6 +579,9 @@ public class ScaffoldService {
 			if (line.contains("${entity.var}")) {
 				line = line.replace("${entity.var}", getPropertyByName("entityCamelCase", selected).getValue());
 			}
+			if (line.contains("${entity_lower.var}")) {
+				line = line.replace("${entity_lower.var}", getPropertyByName("entity", selected).getValue());
+			}			
 			if (line.contains("${entity.id.var}")) {
 				line = line.replace("${entity.id.var}",
 						getPropertyByName("entityCamelCase", selected).getValue() + "Id");

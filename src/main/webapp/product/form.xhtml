@@ -40,8 +40,13 @@
 	          <div class="col-sm-6">
 	            <ol class="breadcrumb float-sm-right">
 	              <li class="breadcrumb-item"><a href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
-	              <li class="breadcrumb-item"><h:link outcome="index" value="#{lb['product.entityList']}" immediate="true" /></li>
-	              <li class="breadcrumb-item active">#{lb['product.entityCreate']}</li>
+	              <li class="breadcrumb-item"><h:link outcome="index" value="#{lb['product.entityList']}" immediate="true" /></li>	              
+			        <ui:fragment rendered="#{empty (productBean.productId)}">
+			      		<li class="breadcrumb-item active">#{lb['product.entityCreate']}</li>
+			        </ui:fragment>
+			        <ui:fragment rendered="#{not empty (productBean.productId)}">
+			        	<li class="breadcrumb-item active">#{lb['product.entityEdit']}</li>
+			        </ui:fragment>	              
 	            </ol>
 	          </div>
 	        </div>
@@ -55,7 +60,12 @@
 	                    <div class="card">
 	                        <div class="card-header">
 	                            <h3 class="card-title">                                
-	                                #{lb['product.entityCreate']}
+							        <ui:fragment rendered="#{empty (productBean.productId)}">
+							        	#{lb['product.entityCreate']}
+							        </ui:fragment>
+							        <ui:fragment rendered="#{not empty (productBean.productId)}">
+							        	#{lb['product.entityEdit']}
+							        </ui:fragment>
 	                            </h3>
 	                        </div>
 	                        <div class="card-body">

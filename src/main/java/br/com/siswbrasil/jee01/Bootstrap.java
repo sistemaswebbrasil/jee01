@@ -2,6 +2,8 @@ package br.com.siswbrasil.jee01;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,11 +17,14 @@ import br.com.siswbrasil.jee01.exception.BusinessException;
 import br.com.siswbrasil.jee01.model.Organization;
 import br.com.siswbrasil.jee01.model.Product;
 import br.com.siswbrasil.jee01.model.Role;
+import br.com.siswbrasil.jee01.model.SellOrder;
+import br.com.siswbrasil.jee01.model.SellOrderPK;
 import br.com.siswbrasil.jee01.model.Task;
 import br.com.siswbrasil.jee01.model.User;
 import br.com.siswbrasil.jee01.service.OrganizationService;
 import br.com.siswbrasil.jee01.service.ProductService;
 import br.com.siswbrasil.jee01.service.RoleService;
+import br.com.siswbrasil.jee01.service.SellOrderService;
 import br.com.siswbrasil.jee01.service.TaskService;
 import br.com.siswbrasil.jee01.service.UserService;
 import br.com.siswbrasil.jee01.util.PropertiesUtil;
@@ -48,6 +53,9 @@ public class Bootstrap {
 	
 	@Inject
 	private ProductService productService;
+	
+	@Inject
+	private SellOrderService sellOrderService;
 
 	@PostConstruct
 	public void init() {
@@ -65,6 +73,7 @@ public class Bootstrap {
 				initRoles();
 				initialUsers();
 				initialProducts();
+				initSellOrder();
 			} catch (BusinessException e) {
 				LOG.log(Level.SEVERE,
 						"Falha ao gerar os dados iniciais de desenvolvimento , aparentemente erro nos dados enviados para o servidor",
@@ -75,6 +84,31 @@ public class Bootstrap {
 		}
 	}
 	
+	private void initSellOrder() throws Throwable {		
+		LOG.log(Level.INFO, "Initials sell list");
+		
+		SellOrderPK pk1 = new SellOrderPK(1L, "0000000001");
+		SellOrderPK pk2 = new SellOrderPK(2L, "0000000002");
+		SellOrderPK pk3 = new SellOrderPK(3L, "0000000003");
+		SellOrderPK pk4 = new SellOrderPK(1L, "0000000004");
+		SellOrderPK pk5 = new SellOrderPK(1L, "0000000005");
+		SellOrderPK pk6 = new SellOrderPK(2L, "0000000006");
+		
+		SellOrder sellOrder1 = new SellOrder(pk1, "adriano.faria", "Consumidor não identificado", new Date(), null,new BigDecimal(50.29));
+		SellOrder sellOrder2 = new SellOrder(pk2, "adriano.faria", "Consumidor não identificado", new Date(), null,new BigDecimal(120.15));
+		SellOrder sellOrder3 = new SellOrder(pk3, "adriano.faria", "Consumidor não identificado", new Date(), null,new BigDecimal(500.16));
+		SellOrder sellOrder4 = new SellOrder(pk4, "micheletalves@gmail.com", "Consumidor não identificado", new Date(), null,new BigDecimal(80.99));
+		SellOrder sellOrder5 = new SellOrder(pk5, "beatriz.t.f.alves@gmail.com", "Consumidor não identificado", new Date(), null,new BigDecimal(250.40));
+		SellOrder sellOrder6 = new SellOrder(pk6, "micheletalves@gmail.com", "Consumidor não identificado", new Date(), null,new BigDecimal(10.15));
+		
+		sellOrderService.create(sellOrder1);
+		sellOrderService.create(sellOrder2);
+		sellOrderService.create(sellOrder3);
+		sellOrderService.create(sellOrder4);
+		sellOrderService.create(sellOrder5);
+		sellOrderService.create(sellOrder6);
+	}
+
 	private void initialProducts() throws Throwable {
 		Product product1 = new Product(null,"Arroz",new BigDecimal(25.50));
 		Product product2 = new Product(null,"Feijão",new BigDecimal(9.50));

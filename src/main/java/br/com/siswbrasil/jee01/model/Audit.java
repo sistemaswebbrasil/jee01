@@ -27,13 +27,11 @@ public class Audit implements Serializable {
 
 	@PrePersist
 	private void onCreate() {
-		System.out.println("Ante de criar");
-		createAt = LocalDateTime.now();
+		createAt = LocalDateTime.now();  
 	}
 
 	@PreUpdate
 	private void onUpdate() {
-		System.out.println("Depois de criar");
 		updateAt = LocalDateTime.now();
 	}
 

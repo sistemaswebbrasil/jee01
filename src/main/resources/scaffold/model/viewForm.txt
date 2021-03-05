@@ -15,10 +15,10 @@
 
     <ui:define name="title">
         <ui:fragment rendered="#{empty (${view.beanForm}.${entity.id.var})}">
-        	#{lb['${entity.var}.entityCreate']}
+        	#{lb['${entity_lower.var}.entityCreate']}
         </ui:fragment>
         <ui:fragment rendered="#{not empty (${view.beanForm}.${entity.id.var})}">
-        	#{lb['${entity.var}.entityEdit']}
+        	#{lb['${entity_lower.var}.entityEdit']}
         </ui:fragment>
     </ui:define>
 
@@ -30,10 +30,10 @@
 	          <div class="col-sm-6">
 	            <h1>
 			        <ui:fragment rendered="#{empty (${view.beanForm}.${entity.id.var})}">
-			        	#{lb['${entity.var}.entityCreate']}
+			        	#{lb['${entity_lower.var}.entityCreate']}
 			        </ui:fragment>
 			        <ui:fragment rendered="#{not empty (${view.beanForm}.${entity.id.var})}">
-			        	#{lb['${entity.var}.entityEdit']}
+			        	#{lb['${entity_lower.var}.entityEdit']}
 			        </ui:fragment>	            
 	            </h1>
 	          </div>
@@ -67,12 +67,12 @@
 	                                    ${optional.render.begin}									
 											<div class="col-lg-3 col-md-4 col-sm-6">
 												<div class="form-group">
-													<label jsf:for="${entity.field}">#{lb['${entity.var}.${entity.field}']}</label> 
+													<label jsf:for="${entity.field}">#{lb['${entity_lower.var}.${entity.field}']}</label> 
 													<input
 														type="text" jsf:id="${entity.field}"
 														class="form-control #{not empty (facesContext.getMessageList('form:${entity.field}'))?'is-invalid':''}"
 														jsf:value="#{${view.beanForm}.${entity.var}.${entity.field}}"
-														jsf:label="#{lb['${entity.var}.${entity.field}']}"													
+														jsf:label="#{lb['${entity_lower.var}.${entity.field}']}"													
 														${optional.disable}				
 													/>												 
 													<small class="invalid-feedback"> 

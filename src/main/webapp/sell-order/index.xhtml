@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="../template/master-page.xhtml">
+    <ui:define name="title">#{lb['sellorder.entityList']}</ui:define>
+    <ui:define name="content">
+        <h:form>
+        
+			<section class="content-header">
+		      <div class="container-fluid">
+		        <div class="row mb-2">
+		          <div class="col-sm-6">
+		            <h1>#{lb['sellorder.entityList']}</h1>
+		          </div>
+		          <div class="col-sm-6">
+		            <ol class="breadcrumb float-sm-right">
+		              <li class="breadcrumb-item"><a href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+		              <li class="breadcrumb-item active">#{lb['sellorder.entityList']}</li>
+		            </ol>
+		          </div>
+		        </div>
+		      </div>
+		    </section>
+		            
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">#{lb['sellorder.entityList']}</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p:dataTable var="item" value="#{sellOrderBean.listAll()}" reflow="true">
+                                        <p:column style="width:33px;text-align: center">
+                                            <p:link outcome="form.xhtml" type="button"
+                                                styleClass="btn btn-primary btn-sm" title="#{msg.edit}">
+                                                <i class="fa fa-edit" />
+                                                <f:param name="organizationId" value="#{item.pk.organizationId}" />
+                                                <f:param name="orderId" value="#{item.pk.orderId}" />
+                                            </p:link>
+                                        </p:column>
+                                        <p:column style="width:33px;text-align: center">
+                                            <p:commandLink action="#{sellOrderBean.delete(item.pk)}" type="button"
+                                                styleClass="btn btn-danger btn-sm" update="@form messages"
+                                                title="#{msg.delete}">
+                                                <i class="fa fa-trash" />
+                                                <p:confirm header="#{msg.confirm}" message="#{msg.delete_confirm}"
+                                                    icon="pi pi-exclamation-triangle" />
+                                            </p:commandLink>
+                                        </p:column>
+                                        
+                                        <p:column headerText="#{lb['sellorderpk.organizationId']}"
+                                            style="text-align: center">
+                                            <h:outputText value="#{item.pk.organizationId}" />
+                                        </p:column>
+                                        
+                                        <p:column headerText="#{lb['sellorderpk.orderId']}"
+                                            style="text-align: center">
+                                            <h:outputText value="#{item.pk.orderId}" />
+                                        </p:column>
+                                        
+                                        <p:column headerText="#{lb['sellorder.user']}"
+                                            style="text-align: center">
+                                            <h:outputText value="#{item.user}" />
+                                        </p:column>
+                                        
+                                        <p:column headerText="#{lb['sellorder.customer']}"
+                                            style="text-align: center">
+                                            <h:outputText value="#{item.customer}" />
+                                        </p:column>                           
+
+                                        <p:column headerText="#{lb['sellorder.sellDate']}"
+                                            style="text-align: center">
+                                            <h:outputText value="#{item.sellDate}" />
+                                        </p:column>                                        
+
+                                        <p:column headerText="#{lb['sellorder.total']}"
+                                            style="text-align: center">
+                                            <h:outputText value="#{item.total}" />
+                                        </p:column>
+
+                                    </p:dataTable>
+                                    <div class="card-footer">
+                                        <h:commandLink action="form.xhtml?faces-redirect=true" type="button"
+                                            styleClass="btn btn-primary float-right">
+                                            <span class="fas fa-edit" aria-hidden="true"></span>
+                                            #{lb['sellorder.entityCreate']}
+                                        </h:commandLink>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+</html>
