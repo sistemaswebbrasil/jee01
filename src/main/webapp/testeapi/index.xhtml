@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="../template/master-page.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="id" value="#{userBean.userId}">
+		</f:viewParam>
+		<f:viewAction action="#{userBean.init()}" />
+	</f:metadata>
+
+	<ui:define name="title">
+		<ui:fragment rendered="#{empty (userBean.userId)}">
+        	#{lb['user.entityCreate']}
+        </ui:fragment>
+		<ui:fragment rendered="#{not empty (userBean.userId)}">
+        	#{lb['user.entityEdit']}
+        </ui:fragment>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>
+							Teste consulta API
+						</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a
+								href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+							<li class="breadcrumb-item"><h:link outcome="index"
+									value="#{lb['user.entityList']}" immediate="true" /></li>
+							<li class="breadcrumb-item active">Teste consulta API</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12">
+
+						<div class="card">		
+							<div class="card-body">
+								<h:form id="form" role="form" class="form">									
+									<div class="row">								
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="cep">Cep</label> <input
+													type="text" jsf:id="cep"
+													class="form-control #{not empty (facesContext.getMessageList('form:cep'))?'is-invalid':''}"
+													jsf:value="#{consultaCepBean.cep}"
+													jsf:label="#{lb['user.cep']}" /> <small
+													class="invalid-feedback"> <h:message
+														for="cep" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+										</div>
+										<div class="col-md-12">
+												<div class="form-group">
+											<p:inputTextarea styleClass="form-control" rows="10" cols="120"
+												value="#{consultaCepBean.resposta}" readonly="true" />
+											</div>
+										</div>
+									</div>
+									<div class="card-footer">
+										<div class="margin float-right">
+											<div class="btn-group">
+												<p:commandLink value="Buscar"
+													action="#{consultaCepBean.buscar()}" update="@form messages"
+													styleClass="btn btn-primary float-right">
+													<span class="fas fa-edit"></span>
+												</p:commandLink>
+												<h:outputText value="&#160;" />
+												<p:commandLink value="Limpar"
+													action="#{consultaCepBean.limpar()}" update="@form messages"
+													styleClass="btn btn-primary float-right"> 
+													<span class="fas fa-edit"></span>
+												</p:commandLink>												
+											</div>
+										</div>
+									</div>
+									<div class="row">								
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="cep">Logradouro</label> <input
+													type="text" jsf:id="logradouro"
+													class="form-control #{not empty (facesContext.getMessageList('form:logradouro'))?'is-invalid':''}"
+													jsf:value="#{consultaCepBean.cepResponse.logradouro}"
+													jsf:label="Logradouro" /> <small
+													class="invalid-feedback"> <h:message
+														for="logradouro" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+											<div class="form-group">
+												<label jsf:for="cep">Bairro</label> <input
+													type="text" jsf:id="bairro"
+													class="form-control #{not empty (facesContext.getMessageList('form:bairro'))?'is-invalid':''}"
+													jsf:value="#{consultaCepBean.cepResponse.bairro}"
+													jsf:label="bairro" /> <small
+													class="invalid-feedback"> <h:message
+														for="bairro" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+											<div class="form-group">
+												<label jsf:for="cep">Localidade</label> <input
+													type="text" jsf:id="localidade"
+													class="form-control #{not empty (facesContext.getMessageList('form:localidade'))?'is-invalid':''}"
+													jsf:value="#{consultaCepBean.cepResponse.localidade}"
+													jsf:label="Localidade" /> <small
+													class="invalid-feedback"> <h:message
+														for="localidade" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+											<div class="form-group">
+												<label jsf:for="cep">UF</label> <input
+													type="text" jsf:id="uf"
+													class="form-control #{not empty (facesContext.getMessageList('form:uf'))?'is-invalid':''}"
+													jsf:value="#{consultaCepBean.cepResponse.uf}"
+													jsf:label="uf" /> <small
+													class="invalid-feedback"> <h:message
+														for="uf" showDetail="false" showSummary="true" />
+												</small>
+											</div>											
+										</div>
+									</div>									
+								</h:form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</ui:define>
+</ui:composition>
+</html>
