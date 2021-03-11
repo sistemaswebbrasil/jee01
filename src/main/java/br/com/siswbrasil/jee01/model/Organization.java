@@ -1,7 +1,5 @@
 package br.com.siswbrasil.jee01.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

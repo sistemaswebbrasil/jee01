@@ -69,9 +69,7 @@
 								<h:form id="form" role="form" class="form">
 
 									<div class="row">
-
-
-
+									
 										<ui:fragment rendered="#{not empty sellOrderBean.sellOrder.pk.organizationId}">
 											<div class="col-lg-3 col-md-4 col-sm-6">
 												<div class="form-group">
@@ -86,7 +84,7 @@
 												<div class="form-group">
 													<label jsf:for="id">#{lb['sellorderpk.organizationId']}</label> <input type="text" jsf:id="organizationId"
 														class="form-control #{not empty (facesContext.getMessageList('form:organizationId'))?'is-invalid':''}"
-														jsf:value="#{sellOrderBean.sellOrder.pk.organizationId}" jsf:label="#{lb['sellorderpk.organizationId']}" disabled="true" /> <small
+														jsf:value="#{sellOrderBean.sellOrder.organization.initials}" jsf:label="#{lb['sellorderpk.organizationId']}" disabled="true" /> <small
 														class="invalid-feedback"> <h:message for="organizationId" showDetail="false" showSummary="true" />
 													</small>
 												</div>
@@ -102,11 +100,6 @@
 													</small>
 												</div>
 											</div>
-
-											<h:inputHidden value="#{sellOrderBean.sellOrder.createAt}">
-												<f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy H:mm:s" />
-											</h:inputHidden>
-
 											<div class="col-lg-3 col-md-4 col-sm-6">
 												<div class="form-group">
 													<label jsf:for="updateAt">#{lb['audit.updateAt']}</label> <input type="text" jsf:id="updateAt"
@@ -117,18 +110,35 @@
 													</small>
 												</div>
 											</div>
-											
-										
-									
-
-
 										</ui:fragment>
 									</div>
 									
-											<h:inputHidden  value="#{sellOrderBean.sellOrder.pk.orderId}" />																			
-											<h:inputHidden value="#{sellOrderBean.sellOrder.pk.organizationId}" />									
 									
-									<div class="row">
+									<h:inputHidden value="#{sellOrderBean.sellOrder.createAt}">
+										<f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy H:mm:s" />
+									</h:inputHidden>
+							
+									<h:inputHidden  value="#{sellOrderBean.sellOrder.pk.orderId}" />																			
+									<h:inputHidden value="#{sellOrderBean.sellOrder.pk.organizationId}" />									
+									
+									<div class="row">									
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="organization">#{lb['organization.entity']}</label>
+													<h:selectOneMenu value="#{sellOrderBean.sellOrder.pk.organizationId}" 
+														id="organization"
+														styleClass="form-control #{not empty (facesContext.getMessageList('form:organization'))?'is-invalid':''}"
+														label="#{lb['organization.entity']}">														
+														<f:selectItems value="#{userBean.availablesOrganization}" var="item"
+															itemLabel="#{item.initials}" itemValue="#{item.id}" />
+													</h:selectOneMenu>
+
+
+												<small class="invalid-feedback"> 
+													<h:message for="organization" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+										</div>									
 										<div class="col-lg-3 col-md-4 col-sm-6">
 											<div class="form-group">
 												<label jsf:for="user">#{lb['sellorder.user']}</label> <input type="text" jsf:id="user"
@@ -157,6 +167,18 @@
 												</small>
 											</div>
 										</div>
+										
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="sellDate">#{lb['sellorder.deliveryDate']}</label> <input type="date" jsf:id="deliveryDate"
+													class="form-control #{not empty (facesContext.getMessageList('form:deliveryDate'))?'is-invalid':''}"
+													jsf:value="#{sellOrderBean.sellOrder.deliveryDate}" jsf:label="#{lb['sellorder.deliveryDate']}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+												</input> <small class="invalid-feedback"> <h:message for="deliveryDate" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+										</div>
+											
 										<div class="col-lg-3 col-md-4 col-sm-6">
 											<div class="form-group">
 												<label jsf:for="total">#{lb['sellorder.total']}</label> <input type="text" jsf:id="total"

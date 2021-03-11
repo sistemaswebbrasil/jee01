@@ -2,6 +2,8 @@ package br.com.siswbrasil.jee01.bean;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -47,12 +49,16 @@ public class SellOrderBean implements Serializable {
 	@PostConstruct
 	public void init() throws IOException {		
 		if (orderId == null && organizationId == null) {
-			sellOrder = new SellOrder();
+//			sellOrder = new SellOrder();
+			sellOrder = new SellOrder(new SellOrderPK(),"Adriano","XXXX",new Date(),new Date(),new BigDecimal(55L),null);
 		} else {
 			LOG.info("OrderId "+orderId);
 			LOG.info("OrganizationId "+organizationId);
 			sellOrderId = new SellOrderPK(organizationId,orderId);
-			sellOrder = service.findById(new SellOrderPK(organizationId,orderId));			
+			sellOrder = service.findById(new SellOrderPK(organizationId,orderId));
+			System.out.println("##########################################################");
+			System.out.println(sellOrder);
+			System.out.println("##########################################################");
 			if (sellOrder == null) {
 				MessageUtil.addErrorMessage(MessageUtil.getMsg("error"), MessageUtil.getMsg("register_not_found"));
 				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
@@ -71,22 +77,22 @@ public class SellOrderBean implements Serializable {
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println(sellOrder);
 			System.out.println("-------------------------------------------------------------------");
-			System.out.println(sellOrder.getPk().getOrderId());
+			System.out.println(sellOrder.getPk().getOrganizationId());
 			System.out.println("-------------------------------------------------------------------");
 
-			if (StringUtils.isEmpty(sellOrder.getPk().getOrderId())  && sellOrder.getPk().getOrganizationId() == null) {
-				//tmp
-				SellOrderPK pk = new SellOrderPK(1L, UUID.randomUUID().toString());
-				sellOrder.setPk(pk);
+			if (StringUtils.isEmpty(sellOrder.getPk().getOrderId())) {
+				sellOrder.getPk().setOrderId(UUID.randomUUID().toString());
 				System.out.println("Vou criar");
 				System.out.println(sellOrder);
 				service.create(sellOrder);
+				MessageUtil.addSuccessMessage(MessageUtil.getMsg("success"), MessageUtil.getMsg("create_success"));
 			} else {
 				System.out.println("Vou atualizar");
 				service.update(sellOrder);
+				MessageUtil.addSuccessMessage(MessageUtil.getMsg("success"), MessageUtil.getMsg("update_success"));
 			}
 
-			MessageUtil.addSuccessMessage(MessageUtil.getMsg("success"), MessageUtil.getMsg("create_success"));
+
 			return "index.xhtml?faces-redirect=true";
 
 		} catch (Exception e) {

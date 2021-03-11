@@ -1,11 +1,13 @@
 package br.com.siswbrasil.jee01.model;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
@@ -42,5 +44,17 @@ public class SellOrder extends Audit {
 	
 	@NotNull
 	private BigDecimal total;
+	
+	@ManyToOne
+	@JoinColumn(name = "organization_id",insertable = false,updatable = false)
+	@PrimaryKeyJoinColumn(name = "organization_id",referencedColumnName = "organization_id")
+	private Organization organization;		
+	
+//	@ManyToOne
+//	@PrimaryKeyJoinColumns({
+//		 @PrimaryKeyJoinColumn(name="CD_ORIGEM", referencedColumnName="CD_ORIGEM"),
+//		 @PrimaryKeyJoinColumn(name="NR_CONTRATO", referencedColumnName="NR_CONTRATO")
+//		})
+//	private Contrato TContrato;	
 
 }

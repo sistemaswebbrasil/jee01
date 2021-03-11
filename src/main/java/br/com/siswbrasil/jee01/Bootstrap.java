@@ -92,14 +92,14 @@ public class Bootstrap {
 		SellOrderPK pk3 = new SellOrderPK(3L, "0000000003");
 		SellOrderPK pk4 = new SellOrderPK(1L, "0000000004");
 		SellOrderPK pk5 = new SellOrderPK(1L, "0000000005");
-		SellOrderPK pk6 = new SellOrderPK(2L, "0000000006");
-		
-		SellOrder sellOrder1 = new SellOrder(pk1, "adriano.faria", "Consumidor não identificado", new Date(), null,new BigDecimal(50.29));
-		SellOrder sellOrder2 = new SellOrder(pk2, "adriano.faria", "Consumidor não identificado", new Date(), null,new BigDecimal(120.15));
-		SellOrder sellOrder3 = new SellOrder(pk3, "adriano.faria", "Consumidor não identificado", new Date(), null,new BigDecimal(500.16));
-		SellOrder sellOrder4 = new SellOrder(pk4, "micheletalves@gmail.com", "Consumidor não identificado", new Date(), null,new BigDecimal(80.99));
-		SellOrder sellOrder5 = new SellOrder(pk5, "beatriz.t.f.alves@gmail.com", "Consumidor não identificado", new Date(), null,new BigDecimal(250.40));
-		SellOrder sellOrder6 = new SellOrder(pk6, "micheletalves@gmail.com", "Consumidor não identificado", new Date(), null,new BigDecimal(10.15));
+		SellOrderPK pk6 = new SellOrderPK(2L, "0000000006");		
+
+		SellOrder sellOrder1 = new SellOrder(pk1, "adriano.faria", "Consumidor não identificado", new Date(), new Date(new Date().getTime() + (15 *(1000 * 60 * 60 * 24))),new BigDecimal(50.29),null);
+		SellOrder sellOrder2 = new SellOrder(pk2, "adriano.faria", "Consumidor não identificado", new Date(), null,new BigDecimal(120.15),null);
+		SellOrder sellOrder3 = new SellOrder(pk3, "adriano.faria", "Consumidor não identificado", new Date(), null,new BigDecimal(500.16),null);
+		SellOrder sellOrder4 = new SellOrder(pk4, "micheletalves@gmail.com", "Consumidor não identificado", new Date(), null,new BigDecimal(80.99),null);
+		SellOrder sellOrder5 = new SellOrder(pk5, "beatriz.t.f.alves@gmail.com", "Consumidor não identificado", new Date(), null,new BigDecimal(250.40),null);
+		SellOrder sellOrder6 = new SellOrder(pk6, "micheletalves@gmail.com", "Consumidor não identificado", new Date(), null,new BigDecimal(10.15),null);
 		
 		sellOrderService.create(sellOrder1);
 		sellOrderService.create(sellOrder2);
