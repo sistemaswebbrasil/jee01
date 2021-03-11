@@ -102,7 +102,8 @@ public abstract class GenericDAO<T, ID> {
 		} catch (Exception e) {
 			e.printStackTrace();
 
-			throw new RuntimeException("Não sei porque está dando erro");
+//			throw new RuntimeException("Não sei porque está dando erro");
+			return null;
 		}
 
 	}
@@ -161,6 +162,13 @@ public abstract class GenericDAO<T, ID> {
 					if (filterField.contains(".time")) {
 						filterField = filterField.split(".time")[0];
 					}
+					
+					System.out.println("#########################################################");
+					System.out.println(filterField);
+					System.out.println("---------------------------------------------------------");
+					System.out.println(filterValue);					
+					System.out.println("#########################################################");					
+
 
 					switch (filterMatchMode) {
 					case CONTAINS:
@@ -173,7 +181,7 @@ public abstract class GenericDAO<T, ID> {
 						predicates.add(builder.equal(root.<String>get(filterField), filterValue.toString()));
 						break;
 					case EXACT:
-						predicates.add(builder.like(root.<String>get(filterField), filterValue.toString()));
+						predicates.add(builder.equal(root.<String>get(filterField), filterValue));
 						break;
 					case GREATER_THAN:
 						predicates.add(builder.greaterThan(root.<String>get(filterField), filterValue.toString()));

@@ -75,10 +75,15 @@
                                             <h:outputText value="#{item.loginName}" />
                                         </p:column>
                                         
-                                        <p:column headerText="#{lb['organization.entity']}" >
+                                        <p:column headerText="#{lb['organization.entity']}"  filterMatchMode="exact" filterBy="#{item.organization}" field="id">
+											<f:facet name="filter">	                                        
+												<p:selectOneMenu onchange="PF('filterTable').filter()" styleClass="custom-filter" style="width:100%;" >
+												    <f:selectItem itemLabel="#{msg['select.all']}" itemValue="#{null}" noSelectionOption="true" />
+												    <f:selectItems value="#{userBean.availablesOrganization}" var="item" itemValue="#{item.id}" itemLabel="#{item.initials}"/>
+												</p:selectOneMenu>	                                        
+											</f:facet>                                        
                                             <h:outputText value="#{item.organization.initials}" />
                                         </p:column>                                        
-                                        
 
 
                                     </p:dataTable>
