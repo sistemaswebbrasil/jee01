@@ -1,6 +1,8 @@
 package br.com.siswbrasil.jee01.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -11,6 +13,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import br.com.siswbrasil.jee01.domain.CepResponse;
+import br.com.siswbrasil.jee01.domain.RepositoryResponse;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,26 +21,29 @@ import lombok.Setter;
 @ViewScoped
 @Getter
 @Setter
-public class ConsultaCepBean implements Serializable{
+public class ConsultaGitHubBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String cep = "21221460";
+	private String username = "sistemaswebbrasil";
 	
 	private String resposta = null ;
 	
-	private CepResponse cepResponse = new CepResponse();
+	private RepositoryResponse repositoryResponse = new RepositoryResponse();
+	private List<Object> list = new ArrayList<Object>();
 
 	public void buscar() {		
 		resposta = "Pesquisando";		
         ResteasyClient client = new ResteasyClientBuilder().build();
-        ResteasyWebTarget target = client.target(String.format("https://viacep.com.br/ws/%s/json/", cep));
+        ResteasyWebTarget target = client.target(String.format("https://api.github.com/users/%s/repos", username));
         Response response = target.request().get();
         String value = response.readEntity(String.class);
         resposta = value;
+        
         response = target.request().get();        
-        cepResponse = response.readEntity(CepResponse.class);
-        System.out.println(cepResponse.getLogradouro());        
+        repositoryResponse = response.readEntity(RepositoryResponse.class);
+        System.out.println(repositoryResponse);
+        //System.out.println(cepResponse.getLogradouro());        
         response.close();
 	}
 	
