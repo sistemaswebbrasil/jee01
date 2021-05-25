@@ -24,6 +24,12 @@ public class UserDataModel extends LazyDataModel<User> {
 	@Override
 	public List<User> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
 		try {
+			
+			System.out.println("first "+first);
+			System.out.println("pageSize "+pageSize);
+			System.out.println("sortBy "+sortBy);
+			System.out.println("filterBy "+filterBy);
+			
 			List<User> list = dao.primeFacesFilter(first, pageSize, sortBy, filterBy);
 			int rowCount = dao.primeFacesFilterCount(filterBy);
 			super.setRowCount(rowCount);
