@@ -1,0 +1,38 @@
+package ${datamodel.package};
+
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortMeta;
+
+import ${dao.package}.${dao.class};
+import ${entity.package}.${entity.class};
+
+@ViewScoped
+public class ${datamodel.class} extends LazyDataModel<${entity.class}> {
+
+	private static final long serialVersionUID = 1L;
+
+	@Inject
+	private ${dao.class} dao;
+
+	@Override
+	public List<${entity.class}> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+		try {
+			List<${entity.class}> list = dao.primeFacesFilter(first, pageSize, sortBy, filterBy);
+			int rowCount = dao.primeFacesFilterCount(filterBy);
+			super.setRowCount(rowCount);
+			return list;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+}

@@ -2,26 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="template/master-page.xhtml">
+	<ui:define name="title">#{msg['project.name']}</ui:define>
 	<ui:define name="content">
-
-
-		<div class="p-grid">
-			<div class="p-col-12 p-md-6 p-lg-3">
-				<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
-				<p:panel id="toggleable" header="#{msg.list_user}" toggleable="true" toggleSpeed="500" closeSpeed="500"
-					widgetVar="panel" style="margin-bottom:20px">					
-					<h:panelGrid columns="2" cellpadding="10">
-						<p:graphicImage name="img/user-icon.png" />
-						<p:menu>
-							<p:menuitem value="Listar" url="user" icon="pi pi-home" />
-							<p:menuitem value="Criar" url="user/form.xhtml" icon="pi pi-home" />
-						</p:menu>
-					</h:panelGrid>
-
-				</p:panel>
-			</div>
-
-		</div>
 
 
 

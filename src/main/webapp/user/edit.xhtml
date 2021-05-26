@@ -1,70 +1,37 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
+	<ui:define name="title">#{msg.edit_user}</ui:define>
 	<ui:define name="content">
-
-
-
 		<h:form>
-
 			<div class="p-grid">
 				<div class="p-col p-col-align-start">
-					<p:panel id="panel" header="#{msg.edit_user}">
-
-
-
-
-
+					<p:panel id="panel" header=" ">
 						<p:panelGrid columns="4" layout="flex"
 							columnClasses="p-col-6 p-md-6 p-lg-1,p-col-12 p-md-6 p-lg-3,p-col-12 p-md-6 p-lg-1,p-col-12 p-md-6 p-lg-7"
 							contentStyleClass="p-align-baseline ui-fluid">
 
 							<p:outputLabel for="id" value="#{msg.id}" />
-							<p:inputText id="id" value="#{editRecordObj.id}" disabled="true"
-								size="5" />
+							<p:inputText id="id" value="#{editRecordObj.id}" disabled="true" size="5" />
 
 							<p:outputLabel for="name" value="#{msg.name}" />
-							<p:inputText id="name" value="#{editRecordObj.name}"
-								required="true"
-								requiredMessage="#{msg.error_required_user_name}" />
+							<p:inputText id="name" value="#{editRecordObj.name}" required="true" requiredMessage="#{msg.error_required_user_name}" />
 
 							<p:outputLabel for="email" value="#{msg.email}" />
 							<p:inputText id="email" value="#{editRecordObj.email}" />
 
 						</p:panelGrid>
-
-
-
-
-
-
-
-
-
-
-
 					</p:panel>
 				</div>
 			</div>
-
-
-
 			<p />
-
 			<p:toolbar>
 				<f:facet name="right">
-					<p:linkButton outcome="index" value="#{msg.list_user}"
-						action="index.xhtml?faces-redirect=true" icon="pi pi-search" />
-					<p:commandButton value="#{msg.save}"
-						action="#{userBean.update(editRecordObj)}" update="panel"
-						icon="pi pi-save" />
+					<p:linkButton outcome="index" value="#{msg.list_user}" action="index.xhtml?faces-redirect=true" icon="pi pi-search" />
+					<p:commandButton value="#{msg.save}" action="#{userBean.update(editRecordObj)}" update="@form messages" icon="pi pi-save" />
 				</f:facet>
 			</p:toolbar>
-
 		</h:form>
 	</ui:define>
 </ui:composition>

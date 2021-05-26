@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="../template/master-page.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="organizationId" value="#{sellOrderBean.organizationId}" />
+		<f:viewParam name="orderId" value="#{sellOrderBean.orderId}" />
+		<f:viewAction action="#{sellOrderBean.init()}" />
+	</f:metadata>
+
+	<ui:define name="title">
+
+		<ui:fragment rendered="#{empty (sellOrderBean.sellOrderId)}">  
+        	#{lb['sellorder.entityCreate']}
+        </ui:fragment>
+		<ui:fragment rendered="#{not empty (sellOrderBean.sellOrderId)}">
+        	#{lb['sellorder.entityEdit']}
+        </ui:fragment>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>
+							<ui:fragment rendered="#{empty (sellOrderBean.sellOrderId)}">
+			        	#{lb['sellorder.entityCreate']}
+			        </ui:fragment>
+							<ui:fragment rendered="#{not empty (sellOrderBean.sellOrderId)}">
+			        	#{lb['sellorder.entityEdit']}
+			        </ui:fragment>
+						</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+							<li class="breadcrumb-item"><h:link outcome="index" value="#{lb['sellorder.entityList']}" immediate="true" /></li>
+							<ui:fragment rendered="#{empty (sellOrderBean.sellOrderId)}">
+								<li class="breadcrumb-item active">#{lb['sellorder.entityCreate']}</li>
+							</ui:fragment>
+							<ui:fragment rendered="#{not empty (sellOrderBean.sellOrderId)}">
+								<li class="breadcrumb-item active">#{lb['sellorder.entityEdit']}</li>
+							</ui:fragment>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12">
+
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title">
+									<ui:fragment rendered="#{empty (sellOrderBean.sellOrderId)}">  
+							        	#{lb['sellorder.entityCreate']}
+							        </ui:fragment>
+									<ui:fragment rendered="#{not empty (sellOrderBean.sellOrderId)}">
+							        	#{lb['sellorder.entityEdit']}
+							        </ui:fragment>
+								</h3>
+							</div>
+							<div class="card-body">
+								<h:form id="form" role="form" class="form">
+
+									<div class="row">
+									
+										<ui:fragment rendered="#{not empty sellOrderBean.sellOrder.pk.organizationId}">
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="id">#{lb['sellorderpk.orderId']}</label> <input type="text" jsf:id="orderId"
+														class="form-control #{not empty (facesContext.getMessageList('form:orderId'))?'is-invalid':''}"
+														jsf:value="#{sellOrderBean.sellOrder.pk.orderId}" jsf:label="#{lb['sellorderpk.orderId']}" disabled="true" /> <small
+														class="invalid-feedback"> <h:message for="orderId" showDetail="false" showSummary="true" />
+													</small>
+												</div>
+											</div>										
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="id">#{lb['sellorderpk.organizationId']}</label> <input type="text" jsf:id="organizationId"
+														class="form-control #{not empty (facesContext.getMessageList('form:organizationId'))?'is-invalid':''}"
+														jsf:value="#{sellOrderBean.sellOrder.organization.initials}" jsf:label="#{lb['sellorderpk.organizationId']}" disabled="true" /> <small
+														class="invalid-feedback"> <h:message for="organizationId" showDetail="false" showSummary="true" />
+													</small>
+												</div>
+											</div>
+
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="createAt">#{lb['audit.createAt']}</label> <input type="text" jsf:id="createAt"
+														class="form-control #{not empty (facesContext.getMessageList('form:createAt'))?'is-invalid':''}"
+														jsf:value="#{sellOrderBean.sellOrder.createAt}" jsf:label="#{lb['user.createAt']}" disabled="true">
+													<f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy H:mm:s" />
+													</input> <small class="invalid-feedback"> <h:message for="createAt" showDetail="false" showSummary="true" />
+													</small>
+												</div>
+											</div>
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="updateAt">#{lb['audit.updateAt']}</label> <input type="text" jsf:id="updateAt"
+														class="form-control #{not empty (facesContext.getMessageList('form:updateAt'))?'is-invalid':''}"
+														jsf:value="#{sellOrderBean.sellOrder.updateAt}" jsf:label="#{lb['user.updateAt']}" disabled="true">
+													<f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy H:mm:s" />
+													</input> <small class="invalid-feedback"> <h:message for="updateAt" showDetail="false" showSummary="true" />
+													</small>
+												</div>
+											</div>
+										</ui:fragment>
+									</div>
+									
+									
+									<h:inputHidden value="#{sellOrderBean.sellOrder.createAt}">
+										<f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy H:mm:s" />
+									</h:inputHidden>
+							
+									<h:inputHidden  value="#{sellOrderBean.sellOrder.pk.orderId}" />																			
+									<h:inputHidden value="#{sellOrderBean.sellOrder.pk.organizationId}" />									
+									
+									<div class="row">									
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="organization">#{lb['organization.entity']}</label>
+													<h:selectOneMenu value="#{sellOrderBean.sellOrder.pk.organizationId}" 
+														id="organization"
+														styleClass="form-control #{not empty (facesContext.getMessageList('form:organization'))?'is-invalid':''}"
+														label="#{lb['organization.entity']}">														
+														<f:selectItems value="#{userBean.availablesOrganization}" var="item"
+															itemLabel="#{item.initials}" itemValue="#{item.id}" />
+													</h:selectOneMenu>
+
+
+												<small class="invalid-feedback"> 
+													<h:message for="organization" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+										</div>									
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="user">#{lb['sellorder.user']}</label> <input type="text" jsf:id="user"
+													class="form-control #{not empty (facesContext.getMessageList('form:user'))?'is-invalid':''}"
+													jsf:value="#{sellOrderBean.sellOrder.user}" jsf:label="#{lb['sellorder.user']}" /> <small class="invalid-feedback"> <h:message
+														for="user" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+										</div>
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="customer">#{lb['sellorder.customer']}</label> <input type="text" jsf:id="customer"
+													class="form-control #{not empty (facesContext.getMessageList('form:customer'))?'is-invalid':''}"
+													jsf:value="#{sellOrderBean.sellOrder.customer}" jsf:label="#{lb['sellorder.customer']}" /> <small class="invalid-feedback">
+													<h:message for="customer" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+										</div>
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="sellDate">#{lb['sellorder.sellDate']}</label> <input type="date" jsf:id="sellDate"
+													class="form-control #{not empty (facesContext.getMessageList('form:sellDate'))?'is-invalid':''}"
+													jsf:value="#{sellOrderBean.sellOrder.sellDate}" jsf:label="#{lb['sellorder.sellDate']}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+												</input> <small class="invalid-feedback"> <h:message for="sellDate" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+										</div>
+										
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="sellDate">#{lb['sellorder.deliveryDate']}</label> <input type="date" jsf:id="deliveryDate"
+													class="form-control #{not empty (facesContext.getMessageList('form:deliveryDate'))?'is-invalid':''}"
+													jsf:value="#{sellOrderBean.sellOrder.deliveryDate}" jsf:label="#{lb['sellorder.deliveryDate']}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+												</input> <small class="invalid-feedback"> <h:message for="deliveryDate" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+										</div>
+											
+										<div class="col-lg-3 col-md-4 col-sm-6">
+											<div class="form-group">
+												<label jsf:for="total">#{lb['sellorder.total']}</label> <input type="text" jsf:id="total"
+													class="form-control #{not empty (facesContext.getMessageList('form:total'))?'is-invalid':''}"
+													jsf:value="#{sellOrderBean.sellOrder.total}" jsf:label="#{lb['sellorder.total']}" /> <small class="invalid-feedback">
+													<h:message for="total" showDetail="false" showSummary="true" />
+												</small>
+											</div>
+										</div>
+
+
+
+
+									</div>
+
+									<div class="card-footer">
+										<div class="margin float-right">
+											<div class="btn-group">
+												<p:commandLink action="index.xhtml?faces-redirect=true" value="#{lb['sellorder.entityList']}" immediate="true"
+													styleClass="btn btn-primary float-right">
+													<span class="fas fa-table"></span>
+												</p:commandLink>
+											</div>
+											<div class="btn-group">
+												<p:commandLink value="#{msg.save} " action="#{sellOrderBean.save}" update="@form messages"
+													styleClass="btn btn-primary float-right">
+													<span class="fas fa-edit"></span>
+												</p:commandLink>
+											</div>
+										</div>
+									</div>
+								</h:form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</ui:define>
+</ui:composition>
+</html>

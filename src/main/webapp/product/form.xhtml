@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="../template/master-page.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{productBean.productId}">
+        </f:viewParam>
+        <f:viewAction action="#{productBean.init()}" />
+    </f:metadata>
+
+    <ui:define name="title">
+        <ui:fragment rendered="#{empty (productBean.productId)}">
+        	#{lb['product.entityCreate']}
+        </ui:fragment>
+        <ui:fragment rendered="#{not empty (productBean.productId)}">
+        	#{lb['product.entityEdit']}
+        </ui:fragment>
+    </ui:define>
+
+    <ui:define name="content">
+    
+		<section class="content-header">
+	      <div class="container-fluid">
+	        <div class="row mb-2">
+	          <div class="col-sm-6">
+	            <h1>
+			        <ui:fragment rendered="#{empty (productBean.productId)}">
+			        	#{lb['product.entityCreate']}
+			        </ui:fragment>
+			        <ui:fragment rendered="#{not empty (productBean.productId)}">
+			        	#{lb['product.entityEdit']}
+			        </ui:fragment>	            
+	            </h1>
+	          </div>
+	          <div class="col-sm-6">
+	            <ol class="breadcrumb float-sm-right">
+	              <li class="breadcrumb-item"><a href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+	              <li class="breadcrumb-item"><h:link outcome="index" value="#{lb['product.entityList']}" immediate="true" /></li>	              
+			        <ui:fragment rendered="#{empty (productBean.productId)}">
+			      		<li class="breadcrumb-item active">#{lb['product.entityCreate']}</li>
+			        </ui:fragment>
+			        <ui:fragment rendered="#{not empty (productBean.productId)}">
+			        	<li class="breadcrumb-item active">#{lb['product.entityEdit']}</li>
+			        </ui:fragment>	              
+	            </ol>
+	          </div>
+	        </div>
+	      </div>
+	    </section>    
+    	<section class="content">
+	        <div class="container-fluid">
+	            <div class="row">
+	                <div class="col-md-12">
+	
+	                    <div class="card">
+	                        <div class="card-header">
+	                            <h3 class="card-title">                                
+							        <ui:fragment rendered="#{empty (productBean.productId)}">
+							        	#{lb['product.entityCreate']}
+							        </ui:fragment>
+							        <ui:fragment rendered="#{not empty (productBean.productId)}">
+							        	#{lb['product.entityEdit']}
+							        </ui:fragment>
+	                            </h3>
+	                        </div>
+	                        <div class="card-body">
+	                            <h:form id="form" role="form" class="form">
+	                            	<div class="row">
+	
+	                                                                        
+	                                    
+	                                    <ui:fragment rendered="#{not empty productBean.product.id}">									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="id">#{lb['product.id']}</label> 
+													<input
+														type="text" jsf:id="id"
+														class="form-control #{not empty (facesContext.getMessageList('form:id'))?'is-invalid':''}"
+														jsf:value="#{productBean.product.id}"
+														jsf:label="#{lb['product.id']}"													
+														disabled="true"				
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="id" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+										</ui:fragment>									    
+	                                    <h:inputHidden value="#{productBean.product.id}" />                                    
+	                                    
+                                    
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="description">#{lb['product.description']}</label> 
+													<input
+														type="text" jsf:id="description"
+														class="form-control #{not empty (facesContext.getMessageList('form:description'))?'is-invalid':''}"
+														jsf:value="#{productBean.product.description}"
+														jsf:label="#{lb['product.description']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="description" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
+                                    
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="price">#{lb['product.price']}</label> 
+													<input
+														type="text" jsf:id="price"
+														class="form-control #{not empty (facesContext.getMessageList('form:price'))?'is-invalid':''}"
+														jsf:value="#{productBean.product.price}"
+														jsf:label="#{lb['product.price']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="price" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
+                                    
+	                                </div>
+	                                
+	                                <div class="card-footer">
+	                                    <div class="margin float-right">
+	                                        <div class="btn-group">
+	                                            <p:commandLink action="index.xhtml?faces-redirect=true" value="#{lb['product.entityList']}" immediate="true" 
+	                                                styleClass="btn btn-primary float-right">
+	                                                <span class="fas fa-table"></span>
+	                                            </p:commandLink>
+	                                        </div>
+	                                        <div class="btn-group">
+	                                            <p:commandLink value="#{msg.save} " action="#{productBean.save}"
+	                                                update="@form messages" styleClass="btn btn-primary float-right">
+	                                                <span class="fas fa-edit"></span>
+	                                            </p:commandLink>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </h:form>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+        </section>   
+    </ui:define>
+</ui:composition>
+</html>

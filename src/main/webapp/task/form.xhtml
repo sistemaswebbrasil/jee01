@@ -1,46 +1,156 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <ui:composition template="../template/master-page.xhtml">
-	<ui:define name="content">
-		<h:form>
 
-			<div class="p-grid">
-				<div class="p-col p-col-align-start">
-					<p:panel id="panel" header="#{bundle.CreateTaskTitle}">
-						<p:panelGrid columns="2" layout="flex"
-							columnClasses="
-							p-col-12 p-md-12 p-lg-1,
-							p-col-12 p-md-12 p-lg-11"
-							contentStyleClass="p-align-baseline ui-fluid">
+    <f:metadata>
+        <f:viewParam name="id" value="#{taskBean.taskId}">
+        </f:viewParam>
+        <f:viewAction action="#{taskBean.init()}" />
+    </f:metadata>
 
-							<p:outputLabel value="#{bundle.CreateTaskLabel_title}"
-								for="title" />
-							<p:inputText id="title" value="#{taskBean.selected.title}"
-								title="#{bundle.CreateTaskTitle_title}" />
+    <ui:define name="title">
+        <ui:fragment rendered="#{empty (taskBean.taskId)}">
+        	#{lb['task.entityCreate']}
+        </ui:fragment>
+        <ui:fragment rendered="#{not empty (taskBean.taskId)}">
+        	#{lb['task.entityEdit']}
+        </ui:fragment>
+    </ui:define>
 
-							<p:outputLabel value="#{bundle.CreateTaskLabel_description}"
-								for="description" />
-
-							<p:inputTextarea id="description" rows="6" cols="33"
-								value="#{taskBean.selected.description}" />
-
-						</p:panelGrid>
-					</p:panel>
-				</div>
-			</div>
-
-			<p:toolbar>
-				<f:facet name="right">
-					<p:linkButton outcome="index" value="#{bundle.CreateTaskShowAllLink}" action="index.xhtml?faces-redirect=true" icon="pi pi-search" style="margin-right:20px;" />
-					<p:commandButton value="#{bundle.CreateTaskSaveLink}" action="#{taskBean.create}" process="@form"  update="@form" icon="pi pi-save" />
-				</f:facet>
-			</p:toolbar>
-
-		</h:form>
-	</ui:define>
+    <ui:define name="content">
+    
+		<section class="content-header">
+	      <div class="container-fluid">
+	        <div class="row mb-2">
+	          <div class="col-sm-6">
+	            <h1>
+			        <ui:fragment rendered="#{empty (taskBean.taskId)}">
+			        	#{lb['task.entityCreate']}
+			        </ui:fragment>
+			        <ui:fragment rendered="#{not empty (taskBean.taskId)}">
+			        	#{lb['task.entityEdit']}
+			        </ui:fragment>	            
+	            </h1>
+	          </div>
+	          <div class="col-sm-6">
+	            <ol class="breadcrumb float-sm-right">
+	              <li class="breadcrumb-item"><a href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+	              <li class="breadcrumb-item"><h:link outcome="index" value="#{lb['task.entityList']}" immediate="true" /></li>
+	              <li class="breadcrumb-item active">#{lb['task.entityCreate']}</li>
+	            </ol>
+	          </div>
+	        </div>
+	      </div>
+	    </section>    
+    	<section class="content">
+	        <div class="container-fluid">
+	            <div class="row">
+	                <div class="col-md-12">
+	
+	                    <div class="card">
+	                        <div class="card-header">
+	                            <h3 class="card-title">                                
+	                                #{lb['task.entityCreate']}
+	                            </h3>
+	                        </div>
+	                        <div class="card-body">
+	                            <h:form id="form" role="form" class="form">
+	                            	<div class="row">
+	
+	                                                                        
+	                                    
+	                                    <ui:fragment rendered="#{not empty taskBean.task.id}">									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="id">#{lb['task.id']}</label> 
+													<input
+														type="text" jsf:id="id"
+														class="form-control #{not empty (facesContext.getMessageList('form:id'))?'is-invalid':''}"
+														jsf:value="#{taskBean.task.id}"
+														jsf:label="#{lb['task.id']}"													
+														disabled="true"				
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="id" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+										</ui:fragment>									    
+	                                    <h:inputHidden value="#{taskBean.task.id}" />                                    
+	                                    
+                                    
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="title">#{lb['task.title']}</label> 
+													<input
+														type="text" jsf:id="title"
+														class="form-control #{not empty (facesContext.getMessageList('form:title'))?'is-invalid':''}"
+														jsf:value="#{taskBean.task.title}"
+														jsf:label="#{lb['task.title']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="title" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
+                                    
+	                                    
+	                                    									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="description">#{lb['task.description']}</label> 
+													<input
+														type="text" jsf:id="description"
+														class="form-control #{not empty (facesContext.getMessageList('form:description'))?'is-invalid':''}"
+														jsf:value="#{taskBean.task.description}"
+														jsf:label="#{lb['task.description']}"													
+																		
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="description" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+																			    
+	                                                                        
+	                                    
+                                    
+	                                </div>
+	                                
+	                                <div class="card-footer">
+	                                    <div class="margin float-right">
+	                                        <div class="btn-group">
+	                                            <p:commandLink action="index.xhtml?faces-redirect=true" value="#{lb['task.entityList']}" immediate="true" 
+	                                                styleClass="btn btn-primary float-right">
+	                                                <span class="fas fa-table"></span>
+	                                            </p:commandLink>
+	                                        </div>
+	                                        <div class="btn-group">
+	                                            <p:commandLink value="#{msg.save} " action="#{taskBean.save}"
+	                                                update="@form messages" styleClass="btn btn-primary float-right">
+	                                                <span class="fas fa-edit"></span>
+	                                            </p:commandLink>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </h:form>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+        </section>   
+    </ui:define>
 </ui:composition>
 </html>

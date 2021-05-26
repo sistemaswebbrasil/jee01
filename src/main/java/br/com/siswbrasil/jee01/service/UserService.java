@@ -1,37 +1,31 @@
 package br.com.siswbrasil.jee01.service;
 
-import java.util.List;
-
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
-import br.com.siswbrasil.jee01.facade.UserFacade;
+import br.com.siswbrasil.jee01.dao.UserDAO;
 import br.com.siswbrasil.jee01.model.User;
 
 @Stateless
-public class UserService {
+public class UserService extends GenericServiceImpl<User, Long> {
+
+	@Inject
+	protected UserDAO dao;
+
+	public User findByEmail(String email) {
+		return dao.findByEmail(email);
+	}
+
+	public boolean emailUnique(User userForm) {
+		User user = findByEmail(userForm.getEmail());
+		if (user != null) {			
+			return user.getId().equals(userForm.getId());
+		}
+		return true;
+	}
 	
-	@EJB
-	private UserFacade facade;
-
-	public void create(User user) {		
-		facade.create(user);
-	}
-
-	public List<User> findAll() {
-		return facade.findAll();
-	}
-
 	public User findById(Long id) {
-		return facade.find(id);
-	}
-
-	public void update(User user) {
-		facade.edit(user);
-	}
-
-	public void delete(Long id) {
-		facade.remove(findById(id));
-	}
+		return dao.findByIdEger(id);
+	}	
 
 }

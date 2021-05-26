@@ -1,12 +1,18 @@
 package br.com.siswbrasil.jee01.util;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-public class MessageUtil {
+public class MessageUtil implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public static String getMsg(String messageId) {
 		String msg = "";
@@ -18,7 +24,7 @@ public class MessageUtil {
 		} catch (Exception e) {
 		}
 		return msg;
-	}
+	}   
 
 	public static void addSuccessMessage(String msg) {
 		FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
@@ -47,5 +53,21 @@ public class MessageUtil {
 		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, detail);
 		FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 	}
+
+	public static void addErrorMessageWhithField(String field, String msg, String detail) {
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+
+		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, detail);
+		FacesContext.getCurrentInstance().addMessage(field, facesMsg);
+	}
+	
+	public static void clearMessages() {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		List<FacesMessage> messages = new ArrayList<FacesMessage>();
+		for (Iterator<FacesMessage> i = facesContext.getMessages(null); i.hasNext();) {
+			messages.add(i.next());
+			i.remove();
+		}
+	}	
 
 }

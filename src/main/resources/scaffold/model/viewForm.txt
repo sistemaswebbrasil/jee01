@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="../template/master-page.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="${entity.id.field}" value="#{${view.beanForm}.${entity.id.var}}">
+        </f:viewParam>
+        <f:viewAction action="#{${view.beanForm}.init()}" />
+    </f:metadata>
+
+    <ui:define name="title">
+        <ui:fragment rendered="#{empty (${view.beanForm}.${entity.id.var})}">
+        	#{lb['${entity_lower.var}.entityCreate']}
+        </ui:fragment>
+        <ui:fragment rendered="#{not empty (${view.beanForm}.${entity.id.var})}">
+        	#{lb['${entity_lower.var}.entityEdit']}
+        </ui:fragment>
+    </ui:define>
+
+    <ui:define name="content">
+    
+		<section class="content-header">
+	      <div class="container-fluid">
+	        <div class="row mb-2">
+	          <div class="col-sm-6">
+	            <h1>
+			        <ui:fragment rendered="#{empty (${view.beanForm}.${entity.id.var})}">
+			        	#{lb['${entity_lower.var}.entityCreate']}
+			        </ui:fragment>
+			        <ui:fragment rendered="#{not empty (${view.beanForm}.${entity.id.var})}">
+			        	#{lb['${entity_lower.var}.entityEdit']}
+			        </ui:fragment>	            
+	            </h1>
+	          </div>
+	          <div class="col-sm-6">
+	            <ol class="breadcrumb float-sm-right">
+	              <li class="breadcrumb-item"><a href="${facesContext.externalContext.requestContextPath}/">#{msg['home']}</a></li>
+	              <li class="breadcrumb-item"><h:link outcome="index" value="#{lb['${entity.label.list}']}" immediate="true" /></li>
+	              <li class="breadcrumb-item active">#{lb['${entity.label.create}']}</li>
+	            </ol>
+	          </div>
+	        </div>
+	      </div>
+	    </section>    
+    	<section class="content">
+	        <div class="container-fluid">
+	            <div class="row">
+	                <div class="col-md-12">
+	
+	                    <div class="card">
+	                        <div class="card-header">
+	                            <h3 class="card-title">                                
+	                                #{lb['${entity.label.create}']}
+	                            </h3>
+	                        </div>
+	                        <div class="card-body">
+	                            <h:form id="form" role="form" class="form">
+	                            	<div class="row">
+	
+	                                    ${partial.fields.begin}                                    
+	                                    
+	                                    ${optional.render.begin}									
+											<div class="col-lg-3 col-md-4 col-sm-6">
+												<div class="form-group">
+													<label jsf:for="${entity.field}">#{lb['${entity_lower.var}.${entity.field}']}</label> 
+													<input
+														type="text" jsf:id="${entity.field}"
+														class="form-control #{not empty (facesContext.getMessageList('form:${entity.field}'))?'is-invalid':''}"
+														jsf:value="#{${view.beanForm}.${entity.var}.${entity.field}}"
+														jsf:label="#{lb['${entity_lower.var}.${entity.field}']}"													
+														${optional.disable}				
+													/>												 
+													<small class="invalid-feedback"> 
+														<h:message for="${entity.field}" showDetail="false" showSummary="true"/>
+													</small>
+												</div>
+											</div>  
+										${optional.render.end}									    
+	                                    ${optional.hidden}                                    
+	                                    ${partial.fields.end}                                    
+	                                </div>
+	                                
+	                                <div class="card-footer">
+	                                    <div class="margin float-right">
+	                                        <div class="btn-group">
+	                                            <p:commandLink action="index.xhtml?faces-redirect=true" value="#{lb['${entity.label.list}']}" immediate="true" 
+	                                                styleClass="btn btn-primary float-right">
+	                                                <span class="fas fa-table"></span>
+	                                            </p:commandLink>
+	                                        </div>
+	                                        <div class="btn-group">
+	                                            <p:commandLink value="#{msg.save} " action="#{${view.beanForm}.save}"
+	                                                update="@form messages" styleClass="btn btn-primary float-right">
+	                                                <span class="fas fa-edit"></span>
+	                                            </p:commandLink>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </h:form>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+        </section>   
+    </ui:define>
+</ui:composition>
+</html>

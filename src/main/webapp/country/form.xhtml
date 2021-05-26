@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="../template/master-page.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="id" value="#{countryBean.countryId}">
+		</f:viewParam>
+		<f:viewAction action="#{countryBean.init()}" />
+	</f:metadata>
+
+	<ui:define name="title">
+		<ui:fragment rendered="#{empty countryBean.countryId}">#{lb['country.entityCreate']}
+        </ui:fragment>
+		<ui:fragment rendered="#{not empty countryBean.countryId}">#{lb['country.entityEdit']}
+        </ui:fragment>
+	</ui:define>
+
+	<ui:define name="title">#{lb['country.entityCreate']}</ui:define>
+	<ui:define name="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">#{lb['country.entityCreate']}</h3>
+						</div>
+						<div class="card-body">
+							<h:form id="form" role="form" class="form">
+								<div class="row">
+
+
+
+
+									<div class="col-lg-3 col-md-4 col-sm-6">
+										<div class="form-group">
+											<label jsf:for="iddCode">#{lb['country.iddCode']}</label> <input
+												type="text" jsf:id="iddCode"
+												class="form-control #{not empty (facesContext.getMessageList('form:iddCode')?'is-invalid':''})"
+												jsf:value="#{countryBean.country.iddCode}"
+												jsf:label="#{lb['country.iddCode']}"
+												disabled="#{countryBean.country.iddCode}" />
+											<small class="invalid-feedback"> <h:message
+													for="iddCode" showDetail="false" showSummary="true" />
+											</small>
+										</div>
+									</div>
+<!-- 									<h:inputHidden value="#{countryBean.country.iddCode}" /> -->
+
+
+
+
+									<div class="col-lg-3 col-md-4 col-sm-6">
+										<div class="form-group">
+											<label jsf:for="name">#{lb['country.name']}</label> <input
+												type="text" jsf:id="name"
+												class="form-control #{not empty (facesContext.getMessageList('form:name')?'is-invalid':''})"
+												jsf:value="#{countryBean.country.name}"
+												jsf:label="#{lb['country.name']}" />
+											<small class="invalid-feedback"> <h:message
+													for="name" showDetail="false" showSummary="true" />
+											</small>
+										</div>
+									</div>
+
+
+
+
+
+
+									<div class="col-lg-3 col-md-4 col-sm-6">
+										<div class="form-group">
+											<label jsf:for="continent">#{lb['country.continent']}</label>
+											<input type="text" jsf:id="continent"
+												class="form-control #{not empty (facesContext.getMessageList('form:continent')?'is-invalid':''})"
+												jsf:value="#{countryBean.country.continent}"
+												jsf:label="#{lb['country.continent']}" />
+											<small class="invalid-feedback"> <h:message
+													for="continent" showDetail="false" showSummary="true" />
+											</small>
+										</div>
+									</div>
+
+
+
+
+								</div>
+
+								<div class="card-footer">
+									<div class="margin float-right">
+										<div class="btn-group">
+											<p:commandLink action="index.xhtml?faces-redirect=true"
+												value="#{lb['country.entityList']}" immediate="true"
+												styleClass="btn btn-primary float-right">
+												<span class="fas fa-table"></span>
+											</p:commandLink>
+										</div>
+										<div class="btn-group">
+											<p:commandLink value="#{msg.save} "
+												action="#{countryBean.save}" update="@form"
+												styleClass="btn btn-primary float-right">
+												<span class="fas fa-edit"></span>
+											</p:commandLink>
+										</div>
+									</div>
+								</div>
+							</h:form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>
