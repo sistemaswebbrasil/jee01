@@ -9,7 +9,12 @@
 		<class>br.com.siswbrasil.jee01.model.Organization</class>
 		<class>br.com.siswbrasil.jee01.model.Role</class>
 		<class>br.com.siswbrasil.jee01.model.Task</class>
-		<class>br.com.siswbrasil.jee01.model.User</class>		
+		<class>br.com.siswbrasil.jee01.model.User</class>
+		<class>br.com.siswbrasil.jee01.model.Address</class>
+		<class>br.com.siswbrasil.jee01.model.Product</class>
+		<class>br.com.siswbrasil.jee01.model.SellOrder</class>
+		<class>br.com.siswbrasil.jee01.model.Audit</class>
+		<class>br.com.siswbrasil.jee01.model.SellOrderPK</class>		
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<shared-cache-mode>NONE</shared-cache-mode>
 		<validation-mode>AUTO</validation-mode>
